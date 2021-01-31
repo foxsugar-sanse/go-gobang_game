@@ -1,0 +1,28 @@
+[run]
+ipaddr = "127.0.0.1"
+port = ":8080"
+mode = "debug"
+
+database = "mysql"
+
+ouath = "jwt"
+
+[mysql]
+maxidle = 5
+maxopen = 10
+debug = false
+username = "root"
+password = "cok774.."
+ipaddr   = "192.168.31.161"
+port     = ":3306"
+
+[sqllite]
+username = ""
+password = ""
+filepath   = ""
+
+
+[jwt]
+encodeMethod = "HS256" # [HS256, HS384, HS512]
+key = "0x264uuffg#$%^"
+maxEffectiveTime = "72h"  # 最大存活时间:秒("s")，分钟("m")，小时("h")

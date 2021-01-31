@@ -1,86 +1,40 @@
 package controller
 
 import (
-	"net/http"
-
-	"github.com/chuxinplan/gin-mvc/common/errors"
 	"github.com/gin-gonic/gin"
-	"github.com/go-xorm/xorm"
 )
 
-type Result struct {
-	Code    int         `json:"code"`
-	Message string      `json:"message"`
-	Data    interface{} `json:"data"`
+type RouterRequest interface {
+	LoginPost(c * gin.Context)
+	UserInfoGet(c * gin.Context)
+	UserInfoUpdate(c * gin.Context)
+	UserDelete(c * gin.Context)
+	UserOtherOperations(c * gin.Context)
 }
 
-// data为可选参数
-func Success(data ...interface{}) (int, *Result) {
-	result := &Result{
-		Code:    0,
-		Message: "success",
-		Data:    nil,
-	}
-	if len(data) > 0 {
-		result.Data = data[0]
-	}
-	return http.StatusOK, result
+type UserRouter struct {
+	
 }
 
-func Failure(err *errors.Err) (int, *Result) {
-	result := &Result{
-		Code:    err.Code(),
-		Message: err.Message(),
-		Data:    nil,
-	}
-
-	return err.HTTPCode(), result
+func (u UserRouter) LoginPost(c *gin.Context) {
+	panic("implement me")
 }
 
-func GetUserId(c *gin.Context) int64 {
-	userId, exists := c.Get("userId")
-	if exists == false {
-		return 0
-	}
-	id, ok := userId.(int64)
-	if !ok {
-		return 0
-	}
-	return id
+func (u UserRouter) UserInfoGet(c *gin.Context) {
+	panic("implement me")
 }
 
-func GetUsername(c *gin.Context) string {
-	username, exists := c.Get("userName")
-	if exists == false {
-		return ""
-	}
-	name, ok := username.(string)
-	if !ok {
-		return ""
-	}
-	return name
+func (u UserRouter) UserInfoUpdate(c *gin.Context) {
+	panic("implement me")
 }
 
-func GetRequestId(c *gin.Context) string {
-	requestId, exists := c.Get("X-Request-Id")
-	if exists == false {
-		requestId = ""
-	}
-	reqId, ok := requestId.(string)
-	if !ok {
-		return ""
-	}
-	return reqId
+func (u UserRouter) UserDelete(c *gin.Context) {
+	panic("implement me")
 }
 
-func GetDBSession(c *gin.Context) *xorm.Session {
-	DBSession, exists := c.Get("db")
-	if exists == false {
-		return nil
-	}
-	db, ok := DBSession.(*xorm.Session)
-	if !ok {
-		return nil
-	}
-	return db
+func (u UserRouter) UserOtherOperations(c *gin.Context) {
+	panic("implement me")
 }
+
+
+

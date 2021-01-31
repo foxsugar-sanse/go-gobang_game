@@ -1,43 +1,44 @@
 package db
 
 import (
-	"xorm.io/core"
-
-	"github.com/chuxinplan/gin-mvc/common/config"
-	"github.com/chuxinplan/gin-mvc/common/logger"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/go-xorm/xorm"
+	_ "github.com/jinzhu/gorm"
 )
 
-var DB *xorm.Engine
-
-func Init() {
-	conf := config.Get()
-
-	var err error
-	DB, err = xorm.NewEngine("mysql", conf.Mysql.WebAddr)
-
-	if err != nil {
-		logger.Logger.Fatalln("fail to connect mysql", conf.Mysql.WebAddr, err)
-		return
-	}
-
-	DB.SetMaxIdleConns(conf.Mysql.MaxIdle)
-	DB.SetMaxOpenConns(conf.Mysql.MaxOpen)
-
-	if conf.Mysql.Debug {
-		DB.ShowSQL(true)
-		DB.ShowExecTime(true)
-
-		DB.Logger().SetLevel(core.LOG_DEBUG)
-	}
+// 用户的数据库操作
+type User interface {
+	Login(map[string]string) (bool, int)
+	Sign(map[string]string) (string,int)
+	SetInfo(map[string]interface{}) (string, int)
+	GetUserInfo(uid int) (string, int)
 }
 
-func Close() {
-	conf := config.Get()
+type Operations struct {}
 
-	err := DB.Close()
-	if err != nil {
-		logger.Logger.Errorf("fail to connect mysql", conf.Mysql.WebAddr, err)
-	}
+// 数据库表映射
+type Users struct {
+	Uid 			int
+	UserName 		string
+	UserNickName 	string
+	UserAge			string
+	UserSex			string
+	UserBrief		string
+	UserContact		string
+}
+
+func (op *Operations) Login(user map[string]string) (bool,int) {
+
+}
+
+func (op *Operations) Sign(user map[string]string) (string,int){
+
+}
+
+func (op *Operations)SetInfo(user map[string]interface{}) (string, int) {
+
+}
+
+func (op *Operations)GetUserInfo(uid int) (string, int) {
+
+	return "", 200
 }
