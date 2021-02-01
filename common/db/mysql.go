@@ -1,44 +1,29 @@
 package db
 
 import (
+	"fmt"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm"
+	"github.com/foxsuagr-sanse/go-gobang_game/common/config"
 )
 
-// 用户的数据库操作
-type User interface {
-	Login(map[string]string) (bool, int)
-	Sign(map[string]string) (string,int)
-	SetInfo(map[string]interface{}) (string, int)
-	GetUserInfo(uid int) (string, int)
+var Db *gorm.DB
+
+
+func Init() {
+	var con config.ConFig = &config.Config{}
+	cond :=  con.InitConfig()
+	// 初始化数据库连接
+	//dsn := "user:pass@tcp(127.0.0.1:3306)/dbname?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := fmt.Sprintf("%s:%s@tcp(%s%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",cond.ConfData.Mysql.Username,cond.ConfData.Mysql.Password,cond.ConfData.Mysql.Ipaddr,cond.ConfData.Mysql.Port,cond.ConfData.Mysql.Dbname)
+	var err error
+	Db, err = gorm.Open("mysql",dsn)
+	if err != nil {
+		panic(err)
+	}
 }
 
-type Operations struct {}
-
-// 数据库表映射
-type Users struct {
-	Uid 			int
-	UserName 		string
-	UserNickName 	string
-	UserAge			string
-	UserSex			string
-	UserBrief		string
-	UserContact		string
-}
-
-func (op *Operations) Login(user map[string]string) (bool,int) {
-
-}
-
-func (op *Operations) Sign(user map[string]string) (string,int){
-
-}
-
-func (op *Operations)SetInfo(user map[string]interface{}) (string, int) {
-
-}
-
-func (op *Operations)GetUserInfo(uid int) (string, int) {
-
-	return "", 200
+func Close() error {
+	return Db.Close()
 }

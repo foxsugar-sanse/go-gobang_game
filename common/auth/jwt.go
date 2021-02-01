@@ -1,17 +1,27 @@
 package auth
 
 import (
-	"crypto/hmac"
-	"crypto/sha256"
-	"encoding/base64"
-	"encoding/json"
-	"strings"
+	"github.com/dgrijalva/jwt-go"
+	"github.com/foxsuagr-sanse/go-gobang_game/common/config"
 	"time"
-
-	"github.com/chuxinplan/gin-mvc/common/errors"
-
-	"github.com/chuxinplan/gin-mvc/common/config"
 )
+
+type JwtAPI interface {
+	Init()
+	MatchToken(token string)  (*MyClaims,bool)
+	NewToken(username string,uid string,op string) string
+}
+
+type JWT struct {
+	Key []byte
+	EncodeStyle string
+}
+
+type MyClaims struct {
+	UserName 		string
+	Uid 			string
+	jwt.StandardClaims
+}
 
 type header struct {
 	EncodeStyle string // 加密方式
@@ -24,91 +34,41 @@ type payLoad struct {
 	UserId   int64     // 用户Id
 }
 
-func EncodeToken(username string, userId int64) (string, error) {
-	cfg := config.Get()
-	header := &header{cfg.Jwt.EncodeMethod, "JWT"}
-	validTime, err := time.ParseDuration(cfg.Jwt.MaxEffectiveTime)
-	if err != nil {
-		return "", err
-	}
-	endTime := time.Now().Add(validTime)
-	payLoad := &payLoad{
-		EndTime:  endTime,
-		Username: username,
-		UserId:   userId,
-	}
-
-	headerStr, err := json.Marshal(header)
-	if err != nil {
-		return "", err
-	}
-	Header := base64.StdEncoding.EncodeToString(headerStr)
-
-	payLoadStr, err := json.Marshal(payLoad)
-	if err != nil {
-		return "", err
-	}
-	PayLoad := base64.StdEncoding.EncodeToString(payLoadStr)
-
-	secretStr, err := getSecret(payLoad)
-	if err != nil {
-		return "", err
-	}
-	Signature := computeHmac256(Header+"."+PayLoad, secretStr)
-
-	token := base64.StdEncoding.EncodeToString([]byte(Header + "." + PayLoad + "." + Signature))
-	return token, nil
+func (j *JWT) Init() {
+	// 获得token签名秘钥
+	var con config.ConFig = &config.Config{}
+	cond :=  con.InitConfig()
+	j.Key = []byte(cond.ConfData.Jwt.Key)
 }
 
-func DecodeToken(token string) (*payLoad, *errors.Err) {
-	data, err := base64.URLEncoding.DecodeString(token)
-	if err != nil {
-		return nil, errors.Warp(errors.ErrTokenValidation, err.Error())
+func (j *JWT)MatchToken(tokendata string)  (*MyClaims,bool){
+	// 解密token
+	tokens,_ := jwt.ParseWithClaims(tokendata,&MyClaims{},func(token *jwt.Token)(interface{},error){
+		return j.Key,nil
+	})
+	// 解密是否成功
+	if key, code := tokens.Claims.(*MyClaims); code && tokens.Valid {
+		return key,true
+	} else {
+		return nil, false
 	}
-	token = string(data)
-	if token == "" {
-		return nil, errors.Warp(errors.ErrTokenNotFound)
-	}
-
-	strs := strings.Split(token, ".")
-	if len(strs) != 3 {
-		return nil, errors.Warp(errors.ErrTokenValidation)
-	}
-	payStr, err := base64.URLEncoding.DecodeString(strs[1])
-	if err != nil {
-		return nil, errors.Warp(errors.ErrTokenValidation, err.Error())
-	}
-	payLoad := &payLoad{}
-	if err := json.Unmarshal(payStr, payLoad); err != nil {
-		return nil, errors.Warp(errors.ErrTokenValidation, err.Error())
-	}
-
-	secretStr, err := getSecret(payLoad)
-	if err != nil {
-		return nil, errors.Warp(errors.ErrTokenValidation, err.Error())
-	}
-	expect := computeHmac256(strs[0]+"."+strs[1], secretStr)
-	if strs[2] != expect {
-		return nil, errors.Warp(errors.ErrTokenValidation)
-	}
-	if !payLoad.EndTime.After(time.Now()) {
-		return nil, errors.Warp(errors.ErrTokenExpire)
-	}
-
-	return payLoad, nil
 }
 
-func computeHmac256(message string, secret string) string {
-	key := []byte(secret)
-	h := hmac.New(sha256.New, key)
-	h.Write([]byte(message))
-	return base64.StdEncoding.EncodeToString(h.Sum(nil))
-}
+func (j *JWT)NewToken(username string,uid string,op string) string {
 
-func getSecret(payLoad *payLoad) (string, error) {
-	payStr, err := json.Marshal(payLoad)
-	if err != nil {
-		return "", err
+	Claims := MyClaims{
+		UserName:       username,
+		Uid:            uid,
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: time.Now().Unix() + 600,
+			Issuer: op,
+		},
 	}
-	return computeHmac256(string(payStr), "a1b1c2"), nil
+	token:= jwt.NewWithClaims(jwt.SigningMethodHS256,Claims)
+	tokens,err := token.SignedString(j.Key)
+	if err != nil {
+		panic(err)
+	} else {
+		return tokens
+	}
 }

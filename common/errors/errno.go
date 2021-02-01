@@ -12,34 +12,38 @@ import (
 */
 
 type Errno struct {
-	code     int    // 错误码
-	message  string // 展示给用户看的
-	httpCode int    // HTTP状态码
+	Code     int    // 错误码
+	Message  string // 展示给用户看的
+	HttpCode int    // HTTP状态码
 }
 
 var (
-	OK = &Errno{code: 0, message: "OK", httpCode: http.StatusOK}
+	OK = &Errno{Code: 0, Message: "OK", HttpCode: http.StatusOK}
 
 	// 系统错误
-	ErrUnKnown        = &Errno{code: 100000, message: "未知错误", httpCode: http.StatusInternalServerError}
-	ErrInternalServer = &Errno{code: 100001, message: "内部服务器错误", httpCode: http.StatusInternalServerError}
-	ErrParamConvert   = &Errno{code: 100002, message: "参数转换时发生错误", httpCode: http.StatusInternalServerError}
-	ErrDatabase       = &Errno{code: 100003, message: "数据库错误", httpCode: http.StatusInternalServerError}
+	ErrUnKnown        = &Errno{Code: 100000, Message: "未知错误", HttpCode: http.StatusInternalServerError}
+	ErrInternalServer = &Errno{Code: 100001, Message: "内部服务器错误", HttpCode: http.StatusInternalServerError}
+	ErrParamConvert   = &Errno{Code: 100002, Message: "参数转换时发生错误", HttpCode: http.StatusInternalServerError}
+	ErrDatabase       = &Errno{Code: 100003, Message: "数据库错误", HttpCode: http.StatusInternalServerError}
 
 	// 模块通用错误
-	ErrValidation      = &Errno{code: 200001, message: "参数校验失败", httpCode: http.StatusForbidden}
-	ErrBadRequest      = &Errno{code: 200002, message: "请求参数错误", httpCode: http.StatusBadRequest}
-	ErrGetTokenFail    = &Errno{code: 200003, message: "获取 token 失败", httpCode: http.StatusForbidden}
-	ErrTokenNotFound   = &Errno{code: 200004, message: "用户 token 不存在", httpCode: http.StatusUnauthorized}
-	ErrTokenExpire     = &Errno{code: 200005, message: "用户 token 过期", httpCode: http.StatusForbidden}
-	ErrTokenValidation = &Errno{code: 200005, message: "用户 token 无效", httpCode: http.StatusForbidden}
+	ErrValidation      = &Errno{Code: 200001, Message: "参数校验失败", HttpCode: http.StatusForbidden}
+	ErrBadRequest      = &Errno{Code: 200002, Message: "请求参数错误", HttpCode: http.StatusBadRequest}
+	ErrGetTokenFail    = &Errno{Code: 200003, Message: "获取 token 失败", HttpCode: http.StatusForbidden}
+	ErrTokenNotFound   = &Errno{Code: 200004, Message: "用户 token 不存在", HttpCode: http.StatusUnauthorized}
+	ErrTokenExpire     = &Errno{Code: 200005, Message: "用户 token 过期", HttpCode: http.StatusForbidden}
+	ErrTokenValidation = &Errno{Code: 200005, Message: "用户 token 无效", HttpCode: http.StatusForbidden}
 
 	// User模块错误
-	ErrUserNotFound       = &Errno{code: 200104, message: "用户不存在", httpCode: http.StatusBadRequest}
-	ErrPasswordIncorrect  = &Errno{code: 200105, message: "密码错误", httpCode: http.StatusBadRequest}
-	ErrUserRegisterAgain  = &Errno{code: 200107, message: "重复注册", httpCode: http.StatusBadRequest}
-	ErrUsernameValidation = &Errno{code: 200107, message: "用户名不合法", httpCode: http.StatusBadRequest}
-	ErrPasswordValidation = &Errno{code: 200107, message: "密码不合法", httpCode: http.StatusBadRequest}
+	ErrUserNotFound       = &Errno{Code: 200104, Message: "用户不存在", HttpCode: http.StatusBadRequest}
+	ErrPasswordIncorrect  = &Errno{Code: 200105, Message: "密码错误", HttpCode: http.StatusBadRequest}
+	ErrUserRegisterAgain  = &Errno{Code: 200107, Message: "重复注册", HttpCode: http.StatusBadRequest}
+	ErrUsernameValidation = &Errno{Code: 200107, Message: "用户名不合法", HttpCode: http.StatusBadRequest}
+	ErrPasswordValidation = &Errno{Code: 200107, Message: "密码不合法", HttpCode: http.StatusBadRequest}
 
 	// Group模块错误
 )
+
+func GetErrorsStruct(failed *Errno) *Errno {
+	return failed
+}
