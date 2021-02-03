@@ -22,13 +22,15 @@
     <list default="true" id="b1a6f5dc-f627-4784-aa1c-4012ecc2474a" name="默认的" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/controller/base.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/controller/base.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/auth/jwt.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/auth/jwt.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/model/database_model.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/model/user_database_model.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/config/config.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/common/db/mysql.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/db/mysql.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/db/redis.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/db/redis.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/common/errors/errno.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/errors/errno.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/errors/error.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/conf/dev/app.conf.toml" beforeDir="false" afterPath="$PROJECT_DIR$/conf/dev/app.conf.toml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/router/middleware/jwt_oauth.go" beforeDir="false" afterPath="$PROJECT_DIR$/router/middleware/jwt_oauth.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/router/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/router/router.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -70,11 +72,20 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="go.sdk" />
   </component>
-  <component name="RunManager" selected="Go 构建.go build jwt_token.go">
+  <component name="RunManager" selected="Go 构建.go build github.com/foxsuagr-sanse/go-gobang_game/go_micro_test (1)">
+    <configuration name="go build github.com/foxsuagr-sanse/go-gobang_game/go_micro_test (1)" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="go-gobang_game" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="FILE" />
+      <filePath value="$PROJECT_DIR$/go_micro_test/redis_link.go" />
+      <package value="github.com/foxsuagr-sanse/go-gobang_game/go_micro_test" />
+      <directory value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
     <configuration name="go build github.com/foxsuagr-sanse/go-gobang_game/go_micro_test" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="go-gobang_game" />
       <working_directory value="$PROJECT_DIR$" />
-      <kind value="PACKAGE" />
+      <kind value="FILE" />
       <filePath value="$PROJECT_DIR$/go_micro_test/jwt_token.go" />
       <package value="github.com/foxsuagr-sanse/go-gobang_game/go_micro_test" />
       <directory value="$PROJECT_DIR$" />
@@ -100,8 +111,9 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Go 构建.go build jwt_token.go" />
+        <item itemvalue="Go 构建.go build github.com/foxsuagr-sanse/go-gobang_game/go_micro_test (1)" />
         <item itemvalue="Go 构建.go build github.com/foxsuagr-sanse/go-gobang_game/go_micro_test" />
+        <item itemvalue="Go 构建.go build jwt_token.go" />
         <item itemvalue="Go 构建.go build main.go" />
       </list>
     </recent_temporary>
@@ -130,26 +142,30 @@
       <screen x="33" y="23" width="1887" height="1057" />
     </state>
     <state x="777" y="392" key="#Go_模块/33.23.1887.1057@33.23.1887.1057" timestamp="1611988109499" />
-    <state width="1846" height="288" key="GridCell.Tab.0.bottom" timestamp="1612167182557">
-      <screen x="30" y="23" width="1890" height="1057" />
+    <state x="764" y="262" key="#com.intellij.ide.util.MemberChooser" timestamp="1612340183587">
+      <screen x="33" y="23" width="1887" height="1057" />
+    </state>
+    <state x="764" y="262" key="#com.intellij.ide.util.MemberChooser/33.23.1887.1057@33.23.1887.1057" timestamp="1612340183587" />
+    <state width="1847" height="473" key="GridCell.Tab.0.bottom" timestamp="1612343512682">
+      <screen x="33" y="23" width="1887" height="1057" />
     </state>
     <state width="1846" height="288" key="GridCell.Tab.0.bottom/30.23.1890.1057@30.23.1890.1057" timestamp="1612167182557" />
-    <state width="1846" height="355" key="GridCell.Tab.0.bottom/33.23.1887.1057@33.23.1887.1057" timestamp="1612097735126" />
-    <state width="1846" height="288" key="GridCell.Tab.0.center" timestamp="1612167182557">
-      <screen x="30" y="23" width="1890" height="1057" />
+    <state width="1847" height="473" key="GridCell.Tab.0.bottom/33.23.1887.1057@33.23.1887.1057" timestamp="1612343512682" />
+    <state width="1847" height="473" key="GridCell.Tab.0.center" timestamp="1612343512681">
+      <screen x="33" y="23" width="1887" height="1057" />
     </state>
     <state width="1846" height="288" key="GridCell.Tab.0.center/30.23.1890.1057@30.23.1890.1057" timestamp="1612167182557" />
-    <state width="1846" height="355" key="GridCell.Tab.0.center/33.23.1887.1057@33.23.1887.1057" timestamp="1612097735125" />
-    <state width="1846" height="288" key="GridCell.Tab.0.left" timestamp="1612167182556">
-      <screen x="30" y="23" width="1890" height="1057" />
+    <state width="1847" height="473" key="GridCell.Tab.0.center/33.23.1887.1057@33.23.1887.1057" timestamp="1612343512681" />
+    <state width="1847" height="473" key="GridCell.Tab.0.left" timestamp="1612343512681">
+      <screen x="33" y="23" width="1887" height="1057" />
     </state>
     <state width="1846" height="288" key="GridCell.Tab.0.left/30.23.1890.1057@30.23.1890.1057" timestamp="1612167182556" />
-    <state width="1846" height="355" key="GridCell.Tab.0.left/33.23.1887.1057@33.23.1887.1057" timestamp="1612097735125" />
-    <state width="1846" height="288" key="GridCell.Tab.0.right" timestamp="1612167182557">
-      <screen x="30" y="23" width="1890" height="1057" />
+    <state width="1847" height="473" key="GridCell.Tab.0.left/33.23.1887.1057@33.23.1887.1057" timestamp="1612343512681" />
+    <state width="1847" height="473" key="GridCell.Tab.0.right" timestamp="1612343512682">
+      <screen x="33" y="23" width="1887" height="1057" />
     </state>
     <state width="1846" height="288" key="GridCell.Tab.0.right/30.23.1890.1057@30.23.1890.1057" timestamp="1612167182557" />
-    <state width="1846" height="355" key="GridCell.Tab.0.right/33.23.1887.1057@33.23.1887.1057" timestamp="1612097735126" />
+    <state width="1847" height="473" key="GridCell.Tab.0.right/33.23.1887.1057@33.23.1887.1057" timestamp="1612343512682" />
     <state width="1846" height="355" key="GridCell.Tab.1.bottom" timestamp="1612097735126">
       <screen x="33" y="23" width="1887" height="1057" />
     </state>

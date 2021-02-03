@@ -27,3 +27,9 @@ ouath = "jwt"
     encodeMethod = "HS256" # [HS256, HS384, HS512]
     key = "0x264uuffg#$%^"
     maxEffectiveTime = "72h"  # 最大存活时间:秒("s")，分钟("m")，小时("h")
+
+[redis]
+    ipaddr = "127.0.0.1"
+    port = ":6379"
+    username = ""
+    password = ""

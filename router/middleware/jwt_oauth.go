@@ -1,9 +1,12 @@
 package middleware
 
 import (
+	"fmt"
 	"github.com/foxsuagr-sanse/go-gobang_game/common/auth"
+	"github.com/foxsuagr-sanse/go-gobang_game/common/db"
 	"github.com/foxsuagr-sanse/go-gobang_game/common/errors"
 	"github.com/gin-gonic/gin"
+	"github.com/go-redis/redis"
 	"strings"
 	"time"
 )
@@ -37,6 +40,15 @@ func JwtMiddlewareOAuth() gin.HandlerFunc {
 		// 对比新时间与原始时间
 		DecodeTokenOk:
 		if time.Now().Unix() > token.ExpiresAt {
+			// 获取redis中用户登录的状态并删除
+			var d db.DB = &db.SetData{}
+			dblink := d.RedisInit(0)
+			_,err3 := dblink.Do("DEL",token.Uid).Result()
+			if err3 == redis.Nil {
+				// TODO : 未做日志
+				fmt.Println("用户登录状态未存储或主动注销")
+			}
+			// 给前端返回信息
 			c.JSON(errors.ErrTokenExpire.HttpCode,gin.H{
 				"code":errors.ErrTokenExpire.Code,
 				"message":errors.ErrTokenExpire.Message,

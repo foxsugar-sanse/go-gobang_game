@@ -11,7 +11,7 @@ import (
 var Db *gorm.DB
 
 
-func Init() {
+func (sd * SetData)MySqlInit() *gorm.DB {
 	var con config.ConFig = &config.Config{}
 	cond :=  con.InitConfig()
 	// 初始化数据库连接
@@ -22,8 +22,9 @@ func Init() {
 	if err != nil {
 		panic(err)
 	}
+	return Db
 }
 
-func Close() error {
+func (sd * SetData)MySqlClose() error {
 	return Db.Close()
 }

@@ -21,6 +21,7 @@ func (r *Route)Run(c *gin.Engine)  {
 	v1 := c.Group("/v1")
 	v1.Use(middleware.JwtMiddlewareOAuth())
 	{
+		v1.GET("/user/sign")								// 查询用户是否登录
 		v1.GET("/user/:name",user_op.UserInfoGet) 			// 主要获取用户信息
 		v1.PUT("/user",user_op.UserInfoUpdate) 			// 更新用户信息，需要鉴权
 		v1.DELETE("/user/sign") 							// 注销登录用户
@@ -42,12 +43,13 @@ func (r *Route)Run(c *gin.Engine)  {
 	}
 	// 公共接口不需要鉴权
 	v1Pub := c.Group("/v1")
+	v1Pub.Use(middleware.TimeMatch())
 	{
-		v1Pub.POST("/user",user_op.LoginPost) 				// 提交一个新用户
-		v1Pub.GET("/user/login")              				// 获取注册所需的一些参数
-		v1Pub.POST("/user/login")             				// 注册用户
-		v1Pub.GET("/user/sign")               				// 获取登录所需的一些参数
-		v1Pub.POST("/user/sign")              				// 创建用户登录
+		//v1Pub.POST("/user",user_op.LoginPost) 				// 提交一个新用户
+		//v1Pub.GET("/user/login")              				// 获取注册所需的一些参数
+		v1Pub.POST("/user/login",user_op.LoginPost)             				// 注册用户
+		//v1Pub.GET("/user/sign")               				// 获取登录所需的一些参数
+		v1Pub.POST("/user/sign",user_op.SignPost)              				// 创建用户登录
 	}
 
 }

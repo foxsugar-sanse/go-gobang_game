@@ -33,13 +33,15 @@ var (
 	ErrTokenNotFound   = &Errno{Code: 200004, Message: "用户 token 不存在", HttpCode: http.StatusUnauthorized}
 	ErrTokenExpire     = &Errno{Code: 200005, Message: "用户 token 过期", HttpCode: http.StatusForbidden}
 	ErrTokenValidation = &Errno{Code: 200005, Message: "用户 token 无效", HttpCode: http.StatusForbidden}
+	ErrTimeNoSwitch	   = &Errno{Code: 200006, Message: "提交时间不正确",HttpCode: http.StatusForbidden}
 
 	// User模块错误
 	ErrUserNotFound       = &Errno{Code: 200104, Message: "用户不存在", HttpCode: http.StatusBadRequest}
 	ErrPasswordIncorrect  = &Errno{Code: 200105, Message: "密码错误", HttpCode: http.StatusBadRequest}
 	ErrUserRegisterAgain  = &Errno{Code: 200107, Message: "重复注册", HttpCode: http.StatusBadRequest}
-	ErrUsernameValidation = &Errno{Code: 200107, Message: "用户名不合法", HttpCode: http.StatusBadRequest}
-	ErrPasswordValidation = &Errno{Code: 200107, Message: "密码不合法", HttpCode: http.StatusBadRequest}
+	ErrUserNameExist	  = &Errno{Code: 200108, Message: "用户名已存在", HttpCode: http.StatusBadRequest}
+	ErrUsernameValidation = &Errno{Code: 200109, Message: "用户名不合法", HttpCode: http.StatusBadRequest}
+	ErrPasswordValidation = &Errno{Code: 200110, Message: "密码不合法", HttpCode: http.StatusBadRequest}
 
 	// Group模块错误
 )
