@@ -23,10 +23,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/controller/base.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/controller/base.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/model/user_database_model.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/model/user_database_model.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/config/config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/errors/errno.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/errors/errno.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/conf/dev/app.conf.toml" beforeDir="false" afterPath="$PROJECT_DIR$/conf/dev/app.conf.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/router/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/router/router.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/model/user_state_redis.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/model/user_state_redis.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,7 +62,7 @@
     <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
     <property name="go.vendoring.notification.had.been.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="go.sdk" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RunManager" selected="Go 构建.go build github.com/foxsuagr-sanse/go-gobang_game/go_micro_test (1)">
     <configuration name="go build github.com/foxsuagr-sanse/go-gobang_game/go_micro_test (1)" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
@@ -137,10 +134,18 @@
       <screen x="33" y="23" width="1887" height="1057" />
     </state>
     <state x="777" y="392" key="#Go_模块/33.23.1887.1057@33.23.1887.1057" timestamp="1611988109499" />
+    <state x="631" y="356" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1612537569766">
+      <screen x="33" y="23" width="1887" height="1057" />
+    </state>
+    <state x="631" y="356" key="#com.intellij.fileTypes.FileTypeChooser/33.23.1887.1057@33.23.1887.1057" timestamp="1612537569766" />
     <state x="764" y="262" key="#com.intellij.ide.util.MemberChooser" timestamp="1612340183587">
       <screen x="33" y="23" width="1887" height="1057" />
     </state>
     <state x="764" y="262" key="#com.intellij.ide.util.MemberChooser/33.23.1887.1057@33.23.1887.1057" timestamp="1612340183587" />
+    <state x="589" y="152" key="#com.intellij.openapi.keymap.impl.ui.EditKeymapsDialog" timestamp="1612538065453">
+      <screen x="33" y="23" width="1887" height="1057" />
+    </state>
+    <state x="589" y="152" key="#com.intellij.openapi.keymap.impl.ui.EditKeymapsDialog/33.23.1887.1057@33.23.1887.1057" timestamp="1612538065453" />
     <state width="1847" height="473" key="GridCell.Tab.0.bottom" timestamp="1612343512682">
       <screen x="33" y="23" width="1887" height="1057" />
     </state>
@@ -177,10 +182,14 @@
       <screen x="33" y="23" width="1887" height="1057" />
     </state>
     <state width="1846" height="355" key="GridCell.Tab.1.right/33.23.1887.1057@33.23.1887.1057" timestamp="1612097735126" />
-    <state x="508" y="190" key="SettingsEditor" timestamp="1611989514843">
+    <state x="508" y="190" key="SettingsEditor" timestamp="1612537992471">
       <screen x="33" y="23" width="1887" height="1057" />
     </state>
-    <state x="508" y="190" key="SettingsEditor/33.23.1887.1057@33.23.1887.1057" timestamp="1611989514843" />
+    <state x="508" y="190" key="SettingsEditor/33.23.1887.1057@33.23.1887.1057" timestamp="1612537992471" />
+    <state x="664" y="315" width="624" height="472" key="find.popup" timestamp="1612538119752">
+      <screen x="33" y="23" width="1887" height="1057" />
+    </state>
+    <state x="664" y="315" width="624" height="472" key="find.popup/33.23.1887.1057@33.23.1887.1057" timestamp="1612538119752" />
     <state x="642" y="258" width="670" height="676" key="search.everywhere.popup" timestamp="1612103926683">
       <screen x="33" y="23" width="1887" height="1057" />
     </state>

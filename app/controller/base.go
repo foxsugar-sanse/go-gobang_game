@@ -8,8 +8,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"strconv"
 	"strings"
-	//"time"
-	//"github.com/foxsuagr-sanse/go-gobang_game/common/errors"
 )
 
 const SALT string = "0x23&&%%GWGwyn12"
@@ -221,7 +219,7 @@ func (u *UserRouter) UserOtherOperations(c *gin.Context) {
 			if userList,bl := d.UserSearchSignUser(json.UserBindJsonOtherOperaDataEntity.UserName); bl {
 				userMap := make(map[int]int64)
 				for i := 1;i <= len(userList);i++ {
-					userMap[1] = userList[i-1]
+					userMap[i-1] = userList[i-1]
 				}
 				// 返回用户数据
 				c.JSON(errors.OK.HttpCode,gin.H{

@@ -55,7 +55,8 @@ func (o OperationRedis) UserSearchSignUser(user interface{}) ([]int64, bool) {
 		if userList,bl := us.SearchUser(user); bl {
 			for i := 0;i < len(userList); i++ {
 				if _,err := dblink.Get(strconv.FormatInt(userList[i], 10)).Result();err != redis.Nil {
-					newUsers[i] = userList[i]
+					// 正确的结果在newUsers数组后面接着存储
+					newUsers[len(newUsers) - 1] = userList[i]
 				}
 			}
 			return newUsers,true
