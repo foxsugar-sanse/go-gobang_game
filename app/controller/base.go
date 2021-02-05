@@ -3,13 +3,18 @@ package controller
 import (
 	"github.com/foxsuagr-sanse/go-gobang_game/app/model"
 	"github.com/foxsuagr-sanse/go-gobang_game/common/auth"
+	"github.com/foxsuagr-sanse/go-gobang_game/common/config"
+	"github.com/foxsuagr-sanse/go-gobang_game/common/errors"
 	"github.com/gin-gonic/gin"
 	"strconv"
 	"strings"
-	"github.com/foxsuagr-sanse/go-gobang_game/common/errors"
 	//"time"
 	//"github.com/foxsuagr-sanse/go-gobang_game/common/errors"
 )
+
+const SALT string = "0x23&&%%GWGwyn12"
+
+const GODETIME int64 = 1612428719
 
 type RouterRequest interface {
 	LoginPost			(c * gin.Context)
@@ -18,6 +23,20 @@ type RouterRequest interface {
 	UserDelete			(c * gin.Context)
 	UserOtherOperations	(c * gin.Context)
 	SignPost			(c * gin.Context)
+	UserDeleteSignState	(c * gin.Context)
+	UserGetSignState	(c * gin.Context)
+
+}
+
+type UserBindJsonOtherOpera struct {
+	Opera			string `json:"opera"`
+	UserBindJsonOtherOperaDataEntity `json:"data"`
+}
+
+type UserBindJsonOtherOperaDataEntity struct {
+	Uid 			int64  `json:"uid"`
+	UserName		string `json:"user_name"`
+	UserNickName	string `json:"user_nick_name"`
 }
 
 type UserJsonBindLogin struct {
@@ -143,7 +162,76 @@ func (u *UserRouter) UserDelete(c *gin.Context) {
 }
 
 func (u *UserRouter) UserOtherOperations(c *gin.Context) {
-	panic("implement me")
+	json := &UserBindJsonOtherOpera{}
+	_ = c.BindJSON(&UserBindJsonOtherOpera{})
+
+	switch json.Opera {
+	case "search_u":
+		// 搜索一个用户
+		if json.UserBindJsonOtherOperaDataEntity.Uid != 0 {
+			var d model.User = &model.Operations{}
+			userList,bl := d.SearchUser(json.UserBindJsonOtherOperaDataEntity.Uid)
+			if bl {
+				c.JSON(errors.OK.HttpCode,gin.H{
+					"code":errors.OK.Code,
+					"message":errors.OK.Message,
+					"data":userList[0],
+				})
+			} else {
+				c.JSON(errors.ErrUserNotFound.HttpCode,gin.H{
+					"code":errors.ErrUserNotFound.Code,
+					"message":errors.ErrUserNotFound.Message,
+				})
+			}
+		} else if json.UserBindJsonOtherOperaDataEntity.UserName != "" {
+			// 昵称或者用户名搜索
+			var d model.User = &model.Operations{}
+			userList,bl := d.SearchUser(json.UserBindJsonOtherOperaDataEntity.UserName)
+			userMap := make(map[int]int64)
+			if bl {
+				for i := 1;i <= len(userList);i++ {
+					userMap[1] = userList[i-1]
+				}
+				// 返回用户数据
+				c.JSON(errors.OK.HttpCode,gin.H{
+					"code":errors.OK.Code,
+					"message":errors.OK.Message,
+					"data":userMap,
+				})
+			} else {
+				c.JSON(errors.ErrUserNotFound.HttpCode,gin.H{
+					"code":errors.ErrUserNotFound.Code,
+					"message":errors.ErrUserNotFound.Message,
+				})
+			}
+		}
+	case "search_p":
+		// 搜索一个在线用户
+		if json.UserBindJsonOtherOperaDataEntity.Uid != 0 {
+			var d model.UserState = &model.OperationRedis{}
+			if userList,bl := d.UserSearchSignUser(json.UserBindJsonOtherOperaDataEntity.Uid); bl {
+				c.JSON(errors.OK.HttpCode,gin.H{
+					"code":errors.OK.Code,
+					"message":errors.OK.Message,
+					"data":userList[0],
+				})
+			}
+		} else if json.UserBindJsonOtherOperaDataEntity.UserName != "" {
+			var d model.UserState = &model.OperationRedis{}
+			if userList,bl := d.UserSearchSignUser(json.UserBindJsonOtherOperaDataEntity.UserName); bl {
+				userMap := make(map[int]int64)
+				for i := 1;i <= len(userList);i++ {
+					userMap[1] = userList[i-1]
+				}
+				// 返回用户数据
+				c.JSON(errors.OK.HttpCode,gin.H{
+					"code":errors.OK.Code,
+					"message":errors.OK.Message,
+					"data":userMap,
+				})
+			}
+		}
+	}
 }
 
 func (u *UserRouter) SignPost(c *gin.Context) {
@@ -176,6 +264,55 @@ func (u *UserRouter) SignPost(c *gin.Context) {
 	}
 }
 
+func (u *UserRouter) UserDeleteSignState(c *gin.Context) {
+	// 读取配置文件
+	var con config.ConFig = &config.Config{}
+	cond :=  con.InitConfig()
+	if cond.ConfData.Operation.JwtStateSave == true {
+		tokenHead := c.Request.Header.Get("Authorization")
+		tokenHeadInfo := strings.SplitN(tokenHead," ",2)
+		Claims,_ := func() (*auth.MyClaims,bool){
+			var t auth.JwtAPI = &auth.JWT{}
+			t.Init()
+			return t.MatchToken(tokenHeadInfo[1])
+		}()
+		var d model.UserState = &model.OperationRedis{}
+		// 删除操作成功或者失败
+		if d.UserDelSignState(Claims.Uid) {
+			c.JSON(errors.DelSignOK.HttpCode,gin.H{
+				"code":errors.DelSignOK.Code,
+				"message":errors.DelSignOK.Message,
+			})
+		} else {
+			c.JSON(errors.ErrUserNotFound.HttpCode,gin.H{
+				"code":errors.ErrUserNotFound.Code,
+				"message":errors.ErrUserNotFound.Message,
+			})
+		}
+	}
+}
+
+func (u *UserRouter) UserGetSignState(c *gin.Context) {
+	// 读取配置文件
+	var con config.ConFig = &config.Config{}
+	cond :=  con.InitConfig()
+	if cond.ConfData.Operation.JwtStateSave == true {
+		uid := c.Query("uid")
+		// 鉴权接口，不做验证
+		var d model.UserState = &model.OperationRedis{}
+		if d.UserGetSignState(uid) {
+			c.JSON(errors.UserSignOk.HttpCode,gin.H{
+				"code":errors.UserSignOk.Code,
+				"message":errors.UserSignOk.Message,
+			})
+		} else {
+			c.JSON(errors.ErrUserSignNotFound.HttpCode,gin.H{
+				"code":errors.ErrUserSignNotFound.Code,
+				"message":errors.ErrUserSignNotFound.Message,
+			})
+		}
+	}
+}
 
 
 

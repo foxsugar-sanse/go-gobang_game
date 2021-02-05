@@ -21,10 +21,10 @@ func (r *Route)Run(c *gin.Engine)  {
 	v1 := c.Group("/v1")
 	v1.Use(middleware.JwtMiddlewareOAuth())
 	{
-		v1.GET("/user/sign")								// 查询用户是否登录
+		v1.GET("/user/sign",user_op.UserGetSignState)		// 查询用户是否登录,?uid=
 		v1.GET("/user/:name",user_op.UserInfoGet) 			// 主要获取用户信息
 		v1.PUT("/user",user_op.UserInfoUpdate) 			// 更新用户信息，需要鉴权
-		v1.DELETE("/user/sign") 							// 注销登录用户
+		v1.DELETE("/user/sign",user_op.UserDeleteSignState) 							// 注销登录用户
 		v1.DELETE("/user",user_op.UserDelete) 				// 软删除用户
 		v1.OPTIONS("/user",user_op.UserOtherOperations) 	// 用户接口的其他操作,比如search一个用户
 

@@ -3,9 +3,11 @@
     port = ":8080"
     mode = "debug"
 
-database = "mysql"
+[operation]
+    database = "mysql"
+    oauth = "jwt"
+    jwt_state_save = true
 
-ouath = "jwt"
 
 [mysql]
     maxidle = 5
