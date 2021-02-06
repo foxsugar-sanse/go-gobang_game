@@ -15,15 +15,24 @@ const SALT string = "0x23&&%%GWGwyn12"
 const GODETIME int64 = 1612428719
 
 type RouterRequest interface {
-	LoginPost			(c * gin.Context)
-	UserInfoGet			(c * gin.Context)
-	UserInfoUpdate		(c * gin.Context)
-	UserDelete			(c * gin.Context)
-	UserOtherOperations	(c * gin.Context)
-	SignPost			(c * gin.Context)
-	UserDeleteSignState	(c * gin.Context)
-	UserGetSignState	(c * gin.Context)
+	LoginPost				(c * gin.Context)
+	UserInfoGet				(c * gin.Context)
+	UserInfoUpdate			(c * gin.Context)
+	UserDelete				(c * gin.Context)
+	UserOtherOperations		(c * gin.Context)
+	SignPost				(c * gin.Context)
+	UserDeleteSignState		(c * gin.Context)
+	UserGetSignState		(c * gin.Context)
 
+	GetUserForFriend		(c * gin.Context)
+	AddUserForFriend		(c * gin.Context)
+	DeleteUserForFriend		(c * gin.Context)
+	ModifyFriendInfo		(c * gin.Context)
+	OtherUserFriendInterface(c * gin.Context)
+	RefuseUserFriendRequest	(c * gin.Context)
+	ConsentUserFriendRequest(c * gin.Context)
+	GetUserFriendRequest	(c * gin.Context)
+	CreateUserFriendRequest	(c * gin.Context)
 }
 
 type UserBindJsonOtherOpera struct {

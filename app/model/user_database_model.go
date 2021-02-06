@@ -23,7 +23,7 @@ type User interface {
 	SearchUser(userSearch interface{}) ([]int64,bool)
 }
 
-// 数据库表映射
+// 数据库表映射 {user}
 type Users struct {
 	Id				int
 	Uid 			int64
@@ -36,6 +36,14 @@ type Users struct {
 	UserContact		string
 }
 
+// 数据库表映射 {user_friend}
+type UserFriend struct {
+	Id 				int
+	MainUid			int64
+	FriendUid		int64
+	FriendNote		string
+	UserGroup 		string
+}
 
 type Operations struct {
 

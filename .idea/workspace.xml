@@ -20,10 +20,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b1a6f5dc-f627-4784-aa1c-4012ecc2474a" name="默认的" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/controller/base.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/controller/base.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/model/user_database_model.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/model/user_database_model.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/model/user_state_redis.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/model/user_state_redis.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/errors/errno.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/errors/errno.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/router/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/router/router.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -182,10 +185,10 @@
       <screen x="33" y="23" width="1887" height="1057" />
     </state>
     <state width="1846" height="355" key="GridCell.Tab.1.right/33.23.1887.1057@33.23.1887.1057" timestamp="1612097735126" />
-    <state x="508" y="190" key="SettingsEditor" timestamp="1612537992471">
+    <state x="508" y="190" key="SettingsEditor" timestamp="1612587364862">
       <screen x="33" y="23" width="1887" height="1057" />
     </state>
-    <state x="508" y="190" key="SettingsEditor/33.23.1887.1057@33.23.1887.1057" timestamp="1612537992471" />
+    <state x="508" y="190" key="SettingsEditor/33.23.1887.1057@33.23.1887.1057" timestamp="1612587364862" />
     <state x="664" y="315" width="624" height="472" key="find.popup" timestamp="1612538119752">
       <screen x="33" y="23" width="1887" height="1057" />
     </state>

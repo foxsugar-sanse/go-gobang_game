@@ -69,3 +69,4 @@ func (o OperationRedis) UserSearchSignUser(user interface{}) ([]int64, bool) {
 	}
 	return nil, false
 }
+
