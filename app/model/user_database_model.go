@@ -3,10 +3,6 @@ package model
 import (
 	"crypto/md5"
 	"encoding/hex"
-	"github.com/foxsuagr-sanse/go-gobang_game/app/controller"
-	_ "github.com/go-sql-driver/mysql"
-	_ "github.com/jinzhu/gorm"
-	//"github.com/foxsuagr-sanse/go-gobang_game/common/config"
 	"github.com/foxsuagr-sanse/go-gobang_game/common/db"
 	"github.com/foxsuagr-sanse/go-gobang_game/common/errors"
 	"reflect"
@@ -21,6 +17,10 @@ type User interface {
 	GetUserInfo(uid int64) *Users
 	DeleteUser(uid int64) *errors.Errno
 	SearchUser(userSearch interface{}) ([]int64,bool)
+	AddUserFriend(uid int64,fid int64) bool
+	SetUserFriendInfo(uid int64,fid int64,note string,group string) bool
+	DeleteUserFriend(uid int64,fid int64) bool
+	QueryUserFriend(uid int64) ([]*UserFriend,bool)
 }
 
 // 数据库表映射 {user}
@@ -30,7 +30,7 @@ type Users struct {
 	UserName 		string
 	PassWord		string
 	UserNickName 	string
-	UserAge			string
+	UserAge			int
 	UserSex			string
 	UserBrief		string
 	UserContact		string
@@ -58,8 +58,8 @@ func (op *Operations) Login(user map[string]string) (bool,*errors.Errno) {
 	var User1 []*Users
 	dblink.Find(&User1)
 	pwd := md5.New()
-	pwd.Write([]byte(controller.SALT + func() string {
-		s := strconv.FormatInt(controller.GODETIME + int64(len(User1)),10)
+	pwd.Write([]byte(user["UserPassWord"] + db.SALT + func() string {
+		s := strconv.FormatInt(db.GODETIME + int64(len(User1) + 1),10)
 		return s
 	}()))
 	user["UserPassWord"] = hex.EncodeToString(pwd.Sum(nil))
@@ -70,7 +70,7 @@ func (op *Operations) Login(user map[string]string) (bool,*errors.Errno) {
 		return false,errors.ErrUserNameExist
 	} else {
 		dblink.Create(&Users{
-			Uid: 60014,
+			Uid: int64(2000 + len(User1) + 1),
 			UserName: user["UserName"],
 			PassWord: user["UserPassWord"],
 		})
@@ -87,8 +87,8 @@ func (op *Operations) Sign(user map[string]string) (int64,string,*errors.Errno){
 	dblink.Where("user_name = ?",user["UserName"]).First(&User1)
 	if len(User1) > 0 {
 		pwd := md5.New()
-		pwd.Write([]byte(controller.SALT + func() string {
-			s := strconv.FormatInt(controller.GODETIME + int64(User1[0].Id),10)
+		pwd.Write([]byte(user["UserPassWord"] + db.SALT + func() string {
+			s := strconv.FormatInt(db.GODETIME + int64(User1[0].Id),10)
 			return s
 		}()))
 		user["UserPassWord"] = hex.EncodeToString(pwd.Sum(nil))
@@ -97,8 +97,8 @@ func (op *Operations) Sign(user map[string]string) (int64,string,*errors.Errno){
 	}
 	// 查询数据库
 	var User []*Users
-	dblink.Where("user_name = ? and user_password = ?",user["UserName"],user["UserPassWord"]).First(&User)
-	if len(User) > 1 {
+	dblink.Where("user_name = ? and pass_word = ?",user["UserName"],user["UserPassWord"]).First(&User)
+	if len(User) > 0 {
 		// 生成并返回token
 		return User[0].Uid,User[0].UserName,errors.OK
 	} else {
@@ -187,4 +187,69 @@ func (op *Operations) SearchUser(userSearch interface{}) ([]int64,bool) {
 		}
 	}
 	return nil, false
+}
+
+func (op *Operations) AddUserFriend(uid int64, fid int64) bool {
+	var d db.DB = &db.SetData{}
+	dblink := d.MySqlInit()
+	defer dblink.Close()
+	var UserF []*UserFriend
+	// 查询有没有重复的好友关系
+	dblink.Where("main_uid = ? and friend_uid = ?",uid,fid).First(&UserF)
+	if len(UserF) > 0 {
+		return false
+	} else {
+		dblink.Create(UserFriend{
+			MainUid:   uid,
+			FriendUid: fid,
+		})
+		return true
+	}
+}
+
+func (op *Operations) SetUserFriendInfo(uid int64, fid int64, note string, group string) bool {
+	var d db.DB = &db.SetData{}
+	dblink := d.MySqlInit()
+	defer dblink.Close()
+	var UserF []*UserFriend
+	// 查询是否为好友
+	dblink.Where("main_uid = ? and friend_uid = ?",uid,fid).First(&UserF)
+	if len(UserF) > 0 {
+		dblink.Model(&UserF).Updates(map[string]string{
+			"note": note,
+			"group": group,
+		})
+		return true
+	} else {
+		return false
+	}
+}
+
+func (op *Operations) DeleteUserFriend(uid int64, fid int64) bool {
+	var d db.DB = &db.SetData{}
+	dblink := d.MySqlInit()
+	defer dblink.Close()
+	var UserF []*UserFriend
+	// 查询要删除的用户
+	dblink.Where("main_uid = ? and friend_uid = ?",uid,fid).First(&UserF)
+	if len(UserF) > 0 {
+		dblink.Where("main_uid = ? and friend_uid = ?",uid,fid).Delete(&UserF)
+		return true
+	} else {
+		return false
+	}
+}
+
+func (op *Operations) QueryUserFriend(uid int64) ([]*UserFriend,bool) {
+	var d db.DB = &db.SetData{}
+	dblink := d.MySqlInit()
+	defer dblink.Close()
+	var UserF []*UserFriend
+	// 查询好友关系
+	dblink.Where("main_uid = ?",uid).Find(&UserF)
+	if len(UserF) > 0 {
+		return UserF, true
+	} else {
+		return nil, false
+	}
 }

@@ -13,9 +13,9 @@ import (
 
 // jwt中间件认证
 func JwtMiddlewareOAuth() gin.HandlerFunc {
-	var tk auth.JwtAPI = &auth.JWT{}
-	tk.Init()
 	return func(c *gin.Context){
+		var tk auth.JwtAPI = &auth.JWT{}
+		tk.Init()
 		headOauth :=c.Request.Header.Get("Authorization")
 		tokenInfo := strings.SplitN(headOauth," ",2)
 		// 验证信息为空则未登录
@@ -54,10 +54,7 @@ func JwtMiddlewareOAuth() gin.HandlerFunc {
 				"message":errors.ErrTokenExpire.Message,
 			})
 		} else {
-			c.JSON(errors.OK.HttpCode,gin.H{
-				"code":errors.OK.Code,
-				"message":errors.OK.Message,
-			})
+			c.Next()
 		}
 	}
 

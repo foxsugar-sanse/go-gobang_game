@@ -60,7 +60,7 @@ func (j *JWT)NewToken(username string,uid string,op string) string {
 		UserName:       username,
 		Uid:            uid,
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Unix() + 600,
+			ExpiresAt: time.Now().Unix() + 604800,
 			Issuer: op,
 		},
 	}

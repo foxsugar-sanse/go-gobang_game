@@ -6,6 +6,7 @@ import (
 	"github.com/foxsuagr-sanse/go-gobang_game/common/config"
 	"github.com/foxsuagr-sanse/go-gobang_game/common/errors"
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
 	"strconv"
 	"strings"
 )
@@ -53,8 +54,9 @@ type UserJsonBindLogin struct {
 }
 
 type UserJsonBindSign struct {
+	TimeSlices 		int64  `json:"t_s"`
 	UserName		string `json:"user_name"`
-	UserPassWord	string `json:"user_pass_word"`
+	UserPassWord	string `json:"user_password"`
 }
 
 type UserJsonBindUpdate struct {
@@ -71,8 +73,11 @@ type UserRouter struct {
 }
 
 func (u *UserRouter) LoginPost(c *gin.Context) {
-	json := &UserJsonBindLogin{}
-	_ = c.BindJSON(&UserJsonBindLogin{})
+	json := UserJsonBindLogin{}
+	err := c.ShouldBindBodyWith(&json,binding.JSON)
+	if err != nil {
+		panic(err)
+	}
 
 	var md model.User = &model.Operations{}
 	_, Opcode := md.Login(map[string]string{
@@ -86,31 +91,24 @@ func (u *UserRouter) LoginPost(c *gin.Context) {
 }
 
 func (u *UserRouter) UserInfoGet(c *gin.Context) {
-	// 鉴权通过，获取用户token，得知id返回对应信息
-	tokenHead := c.Request.Header.Get("Authorization")
-	tokenHeadInfo := strings.SplitN(tokenHead," ",2)
-	var jwt auth.JwtAPI = &auth.JWT{}
-	jwt.Init()
-	MyClaims,Op := jwt.MatchToken(tokenHeadInfo[1])
-	if Op == true {
-		// token解密成功
-		var md model.User = &model.Operations{}
-		uid,_ := strconv.ParseInt(MyClaims.Uid,10,64)
-		users := md.GetUserInfo(uid)
-		c.JSON(errors.OK.HttpCode,gin.H{
-			"code":errors.OK.Code,
-			"message":errors.OK.Message,
-			"data":map[string]interface{}{
-				"uid":            users.Uid,
-				"user_name":      users.UserName,
-				"user_nick_name": users.UserNickName,
-				"user_brief":     users.UserBrief,
-				"user_age":       users.UserAge,
-				"user_sex":       users.UserSex,
-				"user_contact":   users.UserContact,
-			},
-		})
-	}
+	// 根据参数获取用户信息
+	var md model.User = &model.Operations{}
+	idArgs, _ := c.Params.Get("uid")
+	uid,_ := strconv.ParseInt(idArgs,10,64)
+	users := md.GetUserInfo(uid)
+	c.JSON(errors.OK.HttpCode,gin.H{
+		"code":errors.OK.Code,
+		"message":errors.OK.Message,
+		"data":map[string]interface{}{
+			"uid":            users.Uid,
+			"user_name":      users.UserName,
+			"user_nick_name": users.UserNickName,
+			"user_brief":     users.UserBrief,
+			"user_age":       users.UserAge,
+			"user_sex":       users.UserSex,
+			"user_contact":   users.UserContact,
+		},
+	})
 }
 
 func (u *UserRouter) UserInfoUpdate(c *gin.Context) {
@@ -242,8 +240,8 @@ func (u *UserRouter) UserOtherOperations(c *gin.Context) {
 }
 
 func (u *UserRouter) SignPost(c *gin.Context) {
-	json := &UserJsonBindSign{}
-	_ = c.BindJSON(&UserJsonBindSign{})
+	json := UserJsonBindSign{}
+	_ = c.ShouldBindBodyWith(&json,binding.JSON)
 	var md model.User = &model.Operations{}
 	uid,username,msg_stu := md.Sign(map[string]string{
 		"UserName":json.UserName,

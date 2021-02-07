@@ -4,7 +4,6 @@ import (
 	"github.com/foxsuagr-sanse/go-gobang_game/common/config"
 	"github.com/foxsuagr-sanse/go-gobang_game/router"
 	"github.com/gin-gonic/gin"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
 func main() {

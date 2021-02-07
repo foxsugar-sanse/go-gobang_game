@@ -21,8 +21,8 @@ func (r *Route)Run(c *gin.Engine)  {
 	v1 := c.Group("/v1")
 	v1.Use(middleware.JwtMiddlewareOAuth())
 	{
+		v1.GET("/user", userOp.UserInfoGet)           		        // 主要获取用户信息,?uid=
 		v1.GET("/user/sign", userOp.UserGetSignState)       		// 查询用户是否登录,?uid=
-		v1.GET("/user/:name", userOp.UserInfoGet)           		// 主要获取用户信息
 		v1.PUT("/user", userOp.UserInfoUpdate)              		// 更新用户信息，需要鉴权
 		v1.DELETE("/user/sign", userOp.UserDeleteSignState) 		// 注销登录用户
 		v1.DELETE("/user", userOp.UserDelete)               		// 软删除用户
@@ -46,7 +46,7 @@ func (r *Route)Run(c *gin.Engine)  {
 		v1.DELETE("/history/:history_id") 							// 鉴权接口，删除指定的历史记录
 	}
 	// 公共接口不需要鉴权
-	v1Pub := c.Group("/v1")
+	v1Pub := c.Group("/v2")
 	v1Pub.Use(middleware.TimeMatch())
 	{
 		//v1Pub.POST("/user",userOp.LoginPost) 									// 提交一个新用户

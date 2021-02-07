@@ -46,6 +46,7 @@ var (
 	ErrUserSignNotFound	  = &Errno{Code: 200111, Message: "该用户为登录", HttpCode: http.StatusBadRequest}
 	ErrUserFriendRequest  = &Errno{Code: 200112, Message: "好友申请创建失败",HttpCode: http.StatusInternalServerError}
 	ErrUserFriendRequestFailed	= &Errno{Code: 200113, Message:"没有该用户的好友申请",HttpCode: http.StatusBadRequest}
+	ErrUserFriendNotFound	= &Errno{Code: 200114, Message: "该好友不存在",HttpCode: http.StatusBadRequest}
 	// Group模块错误
 )
 

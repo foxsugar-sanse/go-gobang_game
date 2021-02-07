@@ -6,6 +6,10 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+const SALT string = "0x23&&%%GWGwyn12"
+
+const GODETIME int64 = 1612428719
+
 type DB interface {
 	MySqlInit() *gorm.DB
 	MySqlClose() error
