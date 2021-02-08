@@ -59,7 +59,7 @@ func (op *Operations) Login(user map[string]string) (bool,*errors.Errno) {
 	dblink.Find(&User1)
 	pwd := md5.New()
 	pwd.Write([]byte(user["UserPassWord"] + db.SALT + func() string {
-		s := strconv.FormatInt(db.GODETIME + int64(len(User1) + 1),10)
+		s := strconv.FormatInt(db.GODETIME + int64(User1[len(User1) - 1].Id + 1),10)
 		return s
 	}()))
 	user["UserPassWord"] = hex.EncodeToString(pwd.Sum(nil))
@@ -114,9 +114,9 @@ func (op *Operations)SetInfo(uid int64,user map[string]interface{}) *errors.Errn
 
 	// 根据uid查询具体要设置的用户信息
 	var User []*Users
-	dblink.Where("uid = ?",uid).First(&User)
+	dblink.Where("uid = ?",uid).Find(&User)
 	if len(User) > 0 {
-		dblink.Model(&User).Updates(map[string]interface{}{
+		dblink.Model(&Users{}).Where("uid = ?",uid).Updates(map[string]interface{}{
 			"user_nick_name":user["UserNickName"],
 			"user_brief":user["UserBrief"],
 			"user_age":user["UserAge"],
@@ -174,13 +174,56 @@ func (op *Operations) SearchUser(userSearch interface{}) ([]int64,bool) {
 	case "string":
 		// 根据用户名和昵称进行查询
 		var User2 []*Users
+		var User3 []*Users
 		dblink.Where("user_name = ?",userSearch).First(&User2)
-		dblink.Where("user_nick_name = ?",userSearch).Find(&User2)
+		dblink.Where("user_nick_name = ?",userSearch).Find(&User3)
 		if len(User2) > 0 {
-			var userSlice = []int64{1}
-			for i := 0;i < len(User2);i++ {
-				userSlice[i] = User2[i].Uid
+			var userSlice = make([]int64,1)
+			userSlice[0] = User2[0].Uid
+			// 去重
+			for i := 0; i < len(User3); i++ {
+				if User2[0].Uid == User3[i].Uid{
+					// 重复不做任何操作
+				} else {
+					// 不重复则对切片{userSlice}扩容
+					userSlice = append(userSlice,User3[i].Uid)
+				}
 			}
+			//for i := 0;i < len(User2);i++ {
+			//	userSlice[i] = User2[i].Uid
+			//}
+			//var j = 0
+			//var k = len(User2)
+			//for i := len(User2) ;i < len(User2) + len(User3);i++ {
+			//	// 去重
+			//	if userSlice[len(User2) - 1] != User3[j].Uid {
+			//		userSlice[k] = User3[j].Uid
+			//		k++
+			//	}
+			//	j++
+			//}
+			//// 整理切片
+			//var n = 0
+			//for i := 0;i < len(userSlice);i++ {
+			//	if userSlice[i] == 0 {
+			//
+			//	} else{
+			//		n++
+			//	}
+			//}
+			//var SliceT = make([]int,len(userSlice)- n)
+			//newUserSlice := make([]int64,n)
+			//for i := 0;i < n;i++ {
+			//	if userSlice[i] != 0 {
+			//		newUserSlice[i] = userSlice[i]
+			//	} else{
+			//		i--
+			//	}
+			//}
+			//var r = 0
+			//for i := 0;i < len(userSlice);i++ {
+			//	if newUserSlice[r]
+			//}
 			return userSlice,true
 		} else {
 			return nil, false

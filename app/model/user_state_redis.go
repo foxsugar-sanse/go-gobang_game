@@ -7,9 +7,15 @@ import (
 	"strconv"
 )
 
+/*
+	1数据库存储连接状态
+	2数据库存储好友申请
+*/
+
 type UserState interface {
 	UserDelSignState(uid string) bool
 	UserGetSignState(uid string) bool
+	UserCreateSignState(uid string) bool
 	UserSearchSignUser(user interface{}) ([]int64,bool)
 }
 
@@ -23,7 +29,7 @@ func (o OperationRedis) UserDelSignState(uid string) bool {
 	dblink := d.RedisInit(1)
 	defer dblink.Close()
 	_,err := dblink.Del(uid).Result()
-	return err == redis.Nil
+	return err != redis.Nil
 }
 
 func (o OperationRedis) UserGetSignState(uid string) bool {
@@ -33,7 +39,7 @@ func (o OperationRedis) UserGetSignState(uid string) bool {
 	defer dblink.Close()
 	_,err := dblink.Get(uid).Result()
 	// 返回成功/失败
-	return err == redis.Nil
+	return err != redis.Nil
 }
 
 func (o OperationRedis) UserSearchSignUser(user interface{}) ([]int64, bool) {
@@ -50,13 +56,16 @@ func (o OperationRedis) UserSearchSignUser(user interface{}) ([]int64, bool) {
 	switch reflect.TypeOf(user).Name() {
 	case "string":
 		// 根据用户名和昵称查询
-		var newUsers = []int64{1}
+		var newUsers = make([]int64,0)
 		var us User = &Operations{}
 		if userList,bl := us.SearchUser(user); bl {
 			for i := 0;i < len(userList); i++ {
-				if _,err := dblink.Get(strconv.FormatInt(userList[i], 10)).Result();err != redis.Nil {
+				if val,err := dblink.Get(strconv.FormatInt(userList[i], 10)).Result();err != redis.Nil {
 					// 正确的结果在newUsers数组后面接着存储
-					newUsers[len(newUsers) - 1] = userList[i]
+					//newUsers[len(newUsers) - 1] = userList[i]
+					if val != "1" {
+						newUsers = append(newUsers, userList[i])
+					}
 				}
 			}
 			return newUsers,true
@@ -70,3 +79,11 @@ func (o OperationRedis) UserSearchSignUser(user interface{}) ([]int64, bool) {
 	return nil, false
 }
 
+func (o OperationRedis) UserCreateSignState(uid string) bool {
+	// 初始化redis连接
+	var d db.DB = &db.SetData{}
+	dblink := d.RedisInit(1)
+	defer dblink.Close()
+	err := dblink.Set(uid,"0",0).Err()
+	return err == nil
+}

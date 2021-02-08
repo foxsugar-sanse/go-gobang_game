@@ -11,9 +11,6 @@ import (
 	"strings"
 )
 
-const SALT string = "0x23&&%%GWGwyn12"
-
-const GODETIME int64 = 1612428719
 
 type RouterRequest interface {
 	LoginPost				(c * gin.Context)
@@ -63,7 +60,7 @@ type UserJsonBindUpdate struct {
 	UserNickName	string `json:"user_nick_name"`
 	UserBrief		string `json:"user_brief"`
 	UserSex			string `json:"user_sex"`
-	UserAge			string `json:"user_age"`
+	UserAge			int    `json:"user_age"`
 	UserContact		string `json:"user_contact"`
 }
 
@@ -93,7 +90,7 @@ func (u *UserRouter) LoginPost(c *gin.Context) {
 func (u *UserRouter) UserInfoGet(c *gin.Context) {
 	// 根据参数获取用户信息
 	var md model.User = &model.Operations{}
-	idArgs, _ := c.Params.Get("uid")
+	idArgs:= c.Query("uid")
 	uid,_ := strconv.ParseInt(idArgs,10,64)
 	users := md.GetUserInfo(uid)
 	c.JSON(errors.OK.HttpCode,gin.H{
@@ -114,7 +111,7 @@ func (u *UserRouter) UserInfoGet(c *gin.Context) {
 func (u *UserRouter) UserInfoUpdate(c *gin.Context) {
 	// 绑定提交json
 	json := UserJsonBindUpdate{}
-	_ = c.BindJSON(&UserJsonBindUpdate{})
+	_ = c.BindJSON(&json)
 	// 鉴权通过，获取token信息
 	tokenHead := c.Request.Header.Get("Authorization")
 	tokenHeadInfo := strings.SplitN(tokenHead," ",2)
@@ -167,8 +164,8 @@ func (u *UserRouter) UserDelete(c *gin.Context) {
 }
 
 func (u *UserRouter) UserOtherOperations(c *gin.Context) {
-	json := &UserBindJsonOtherOpera{}
-	_ = c.BindJSON(&UserBindJsonOtherOpera{})
+	json := UserBindJsonOtherOpera{}
+	_ = c.BindJSON(&json)
 
 	switch json.Opera {
 	case "search_u":
@@ -195,7 +192,7 @@ func (u *UserRouter) UserOtherOperations(c *gin.Context) {
 			userMap := make(map[int]int64)
 			if bl {
 				for i := 1;i <= len(userList);i++ {
-					userMap[1] = userList[i-1]
+					userMap[i] = userList[i-1]
 				}
 				// 返回用户数据
 				c.JSON(errors.OK.HttpCode,gin.H{
@@ -243,29 +240,35 @@ func (u *UserRouter) SignPost(c *gin.Context) {
 	json := UserJsonBindSign{}
 	_ = c.ShouldBindBodyWith(&json,binding.JSON)
 	var md model.User = &model.Operations{}
-	uid,username,msg_stu := md.Sign(map[string]string{
+	uid,username, msgStu := md.Sign(map[string]string{
 		"UserName":json.UserName,
 		"UserPassWord":json.UserPassWord,
 	})
 	if uid == 0 {
-		c.JSON(msg_stu.HttpCode,gin.H{
-			"code":msg_stu.Code,
-			"message":msg_stu.Message,
+		c.JSON(msgStu.HttpCode,gin.H{
+			"code":    msgStu.Code,
+			"message": msgStu.Message,
 		})
 	} else {
 		var jwt auth.JwtAPI = &auth.JWT{}
 		jwt.Init()
 		token := jwt.NewToken(username, strconv.FormatInt(uid, 10),"")
 		// 查询结果不为0则登录成功
-		c.JSON(msg_stu.HttpCode,gin.H{
-			"code":msg_stu.Code,
-			"message":msg_stu.Message,
-			"data":map[string]interface{}{
-				"userdata":      uid,
-				"username": username,
-				"token":    token,
-			},
-		})
+		// 向redis写入登录状态
+		var md model.UserState = &model.OperationRedis{}
+		if md.UserCreateSignState(strconv.FormatInt(uid, 10)) {
+			c.JSON(msgStu.HttpCode, gin.H{
+				"code":    msgStu.Code,
+				"message": msgStu.Message,
+				"data": map[string]interface{}{
+					"userdata": uid,
+					"username": username,
+					"token":    token,
+				},
+			})
+		} else {
+
+		}
 	}
 }
 

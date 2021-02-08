@@ -10,7 +10,7 @@ func main() {
 	// 读取配置文件
 	var con config.ConFig = &config.Config{}
 	cond :=  con.InitConfig()
-	r := gin.New()
+	r := gin.Default()
 	// 初始化路由
 	var x router.Router = &router.Route{}
 	x.Run(r)

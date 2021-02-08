@@ -24,6 +24,18 @@ func main()  {
 	}
 	fmt.Println("key",val)
 
+	_ = client.HMSet("2009",map[string]interface{}{
+		"main_uid": 2009,
+		"friend_uid": 2008,
+		"note": "我是你爸爸",
+		"state":0,
+	}).Err()
+	maps,err5 := client.HGetAll("2009").Result()
+	if err5 != nil {
+		panic(err5)
+	}
+	println(maps["main_uid"])
+
 	val2, err := client.Get("key2").Result()
 	if err == redis.Nil {
 		fmt.Println("key2 does not exists")

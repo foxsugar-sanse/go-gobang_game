@@ -23,7 +23,7 @@ func TimeMatch() gin.HandlerFunc {
 			})
 			c.Abort()
 		} else {
-			c.Next()
+
 		}
 	}
 }

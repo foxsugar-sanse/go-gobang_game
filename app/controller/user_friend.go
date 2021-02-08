@@ -10,7 +10,6 @@ import (
 )
 
 type CreateUserFriendBindJson struct {
-	SponSorId		int64 `json:"ss_id"`
 	ReceiveId		int64 `json:"receive_id"`
 	NoteInfo 		string `json:"note_info"`
 }
@@ -192,7 +191,7 @@ func (u *UserRouter) GetUserFriendRequest(c *gin.Context) {
 	// 解密token
 	if claims,err := jwt.MatchToken(tokenInfo[1]);err {
 		var md model.UserForFriend = &model.OperationRedisForUf{}
-		fid, _ := strconv.ParseInt(claims.Id,10,64)
+		fid, _ := strconv.ParseInt(claims.Uid,10,64)
 		// 获取好友申请
 		if reFriendMap,err :=md.UserFriendRequestGet(fid);err {
 			c.JSON(errors.OK.HttpCode,gin.H{
@@ -215,18 +214,29 @@ func (u *UserRouter) GetUserFriendRequest(c *gin.Context) {
 }
 
 func (u *UserRouter) CreateUserFriendRequest(c *gin.Context) {
-	json := &CreateUserFriendBindJson{}
-	_ = c.BindJSON(&CreateUserFriendBindJson{})
-	var md model.UserForFriend = &model.OperationRedisForUf{}
-	if md.UserFriendRequestCreate(json.SponSorId,json.ReceiveId,json.NoteInfo) {
-		c.JSON(errors.OK.HttpCode,gin.H{
-			"code":errors.OK.Code,
-			"message":errors.OK.Message,
-		})
-	} else {
-		c.JSON(errors.ErrUserFriendRequest.HttpCode,gin.H{
-			"code":errors.ErrUserFriendRequest.Code,
-			"message":errors.ErrUserFriendRequest.Message,
-		})
+	json := CreateUserFriendBindJson{}
+	_ = c.BindJSON(&json)
+	// 解密token获得提交用户的uid
+	tokenHeader := c.Request.Header.Get("Authorization")
+	tokenInfo := strings.SplitN(tokenHeader, " ", 2)
+	if tokenInfo[0] == "Bearer" && tokenInfo[1] != "" {
+		var jwt auth.JwtAPI = &auth.JWT{}
+		jwt.Init()
+		if claims,bl := jwt.MatchToken(tokenInfo[1]);bl {
+			var md model.UserForFriend = &model.OperationRedisForUf{}
+			uid,_ := strconv.ParseInt(claims.Uid,10,64)
+			if md.UserFriendRequestCreate(uid,json.ReceiveId,json.NoteInfo) {
+				c.JSON(errors.OK.HttpCode,gin.H{
+					"code":errors.OK.Code,
+					"message":errors.OK.Message,
+				})
+			} else {
+				c.JSON(errors.ErrUserFriendRequest.HttpCode,gin.H{
+					"code":errors.ErrUserFriendRequest.Code,
+					"message":errors.ErrUserFriendRequest.Message,
+				})
+			}
+		}
 	}
+
 }

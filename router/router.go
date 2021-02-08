@@ -31,9 +31,9 @@ func (r *Route)Run(c *gin.Engine)  {
 		v1.GET("/rankles") 										// 根据name获取指定的排行榜，比如胜场榜，有num和page参数，num代表依次传回多少个用户，默认为10,page为分页
 
 		v1.GET("/friend_request",userOp.GetUserFriendRequest)		// 获取好友申请
-		v1.POST("/friend_request",userOp.ConsentUserFriendRequest) // 同意好友申请
+		v1.PUT("/friend_request",userOp.ConsentUserFriendRequest)  // 同意好友申请
 		v1.DELETE("/friend_request",userOp.RefuseUserFriendRequest)// 拒绝好友申请
-		v1.PUT("/friend_request",userOp.CreateUserFriendRequest)   // 创建好友申请
+		v1.POST("/friend_request",userOp.CreateUserFriendRequest)  // 创建好友申请
 		v1.GET("/linkman",userOp.GetUserForFriend) 				// 获取联系人列表，有num参数，代表一次返回多少个用户，默认为10
 		//v1.POST("/linkman/:name",userOp.AddUserForFriend) 			// 有鉴权，将指定用户添加到联系人中，需要指定用户同意
 		v1.DELETE("linkman/:name",userOp.DeleteUserForFriend) 		// 鉴权，将指定用户重联系人中删除

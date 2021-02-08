@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"fmt"
+	"github.com/foxsuagr-sanse/go-gobang_game/app/model"
 	"github.com/foxsuagr-sanse/go-gobang_game/common/auth"
 	"github.com/foxsuagr-sanse/go-gobang_game/common/db"
 	"github.com/foxsuagr-sanse/go-gobang_game/common/errors"
@@ -27,22 +28,23 @@ func JwtMiddlewareOAuth() gin.HandlerFunc {
 			c.Abort()
 		}
 		token,code := tk.MatchToken(tokenInfo[1])
-		if code == true {
+		var md model.UserState = &model.OperationRedis{}
+		bl := md.UserGetSignState(token.Uid)
+		if code == true && bl == true{
 			goto DecodeTokenOk
-		} else if code == false && token == nil{
+		} else if code == false && token == nil && bl == false{
 			c.JSON(errors.ErrTokenValidation.HttpCode,gin.H{
 				"code":errors.ErrTokenValidation.Code,
 				"message":errors.ErrTokenValidation.Message,
 			})
-			c.Abort()
-			panic(errors.ErrTokenValidation.Message)
+			//panic(errors.ErrTokenValidation.Message)
 		}
 		// 对比新时间与原始时间
 		DecodeTokenOk:
 		if time.Now().Unix() > token.ExpiresAt {
 			// 获取redis中用户登录的状态并删除
 			var d db.DB = &db.SetData{}
-			dblink := d.RedisInit(0)
+			dblink := d.RedisInit(1)
 			_,err3 := dblink.Do("DEL",token.Uid).Result()
 			if err3 == redis.Nil {
 				// TODO : 未做日志

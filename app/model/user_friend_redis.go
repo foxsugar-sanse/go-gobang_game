@@ -20,7 +20,7 @@ type OperationRedisForUf struct {
 
 func (o OperationRedisForUf) UserFriendRequestCreate(mainUid int64, friendUid int64, note string) bool{
 	var d db.DB = &db.SetData{}
-	dblink := d.RedisInit(2)
+	dblink := d.RedisInit(0)
 	defer dblink.Close()
 	// key格式"friendUid"
 	err := dblink.HMSet(strconv.FormatInt(friendUid, 10), map[string]interface{}{
@@ -29,12 +29,12 @@ func (o OperationRedisForUf) UserFriendRequestCreate(mainUid int64, friendUid in
 		"note": note,
 		"state":0,
 	}).Err()
-	return err != nil
+	return err == nil
 }
 
 func (o OperationRedisForUf) UserFriendRequestGet(friendUid int64) (map[string]string,bool) {
 	var d db.DB = &db.SetData{}
-	dblink := d.RedisInit(2)
+	dblink := d.RedisInit(0)
 	defer dblink.Close()
 	if requestMap, err := dblink.HGetAll(strconv.FormatInt(friendUid, 10)).Result();err == nil {
 		return requestMap,true
