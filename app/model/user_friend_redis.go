@@ -46,7 +46,7 @@ func (o OperationRedisForUf) UserFriendRequestGet(friendUid int64) (map[string]s
 func (o OperationRedisForUf) UserFriendRequestConsent(friendUid int64) bool {
 	// 同意请求则将好友存入数据库
 	var d db.DB = &db.SetData{}
-	dblink := d.RedisInit(2)
+	dblink := d.RedisInit(0)
 	defer func() {
 		dblink.Close()
 	}()
@@ -66,7 +66,7 @@ func (o OperationRedisForUf) UserFriendRequestConsent(friendUid int64) bool {
 func (o OperationRedisForUf) UserFriendRequestRefuse(friendUid int64) bool {
 	// 拒绝申请直接从Redis数据库中删除申请
 	var d db.DB = &db.SetData{}
-	dblink := d.RedisInit(2)
+	dblink := d.RedisInit(0)
 	defer func() {
 		dblink.Close()
 	}()

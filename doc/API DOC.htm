@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Gobang-Game-Myblog_项目接口文档</title>
+    <!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="keywords" content="接口文档,ApiPost">
+    <meta name="description" content="本文档由可直接生成文档的API调试、管理工具ApiPost生成">
+    <meta name="author" content="https://www.apipost.cn/">
+<!--    <link rel="stylesheet" type="text/css" href="https://img.cdn.apipost.cn/statics/bootstrap.css">-->
+    <link rel="stylesheet" href="https://docs.apipost.cn/statics/css/editor-preview.css">
+    <link rel="stylesheet" href="https://docs.apipost.cn/statics/highlight/github.min.css">
+    <link rel="stylesheet" type="text/css" href="https://docs.apipost.cn/statics/css/style.css?v=0603" />
+    <link rel="stylesheet" type="text/css" href="https://img.cdn.apipost.cn/statics/build-in/font-awesome/css/font-awesome.min.css" />
+    <link rel="shortcut icon" href="https://docs.apipost.cn/statics/images/favicon.ico" />
+</head>
+<body>
+
+<!--顶部导航-->
+<div class="page-title-fixed">
+    <div class="apt-container">
+        <h1 class="logo">
+            <a href="https://docs.apipost.cn/view/474703db72d3f768">
+                <span class="logo-name">Gobang-Game-Myblog</span>
+            </a>
+        </h1>
+        <ul class="page-menus">
+            <li>
+                <span class="a-doc-btn" href="javascript:;" data-target_id="-1">
+                    环境变量说明
+                    <div class="apt-envs-desc">
+                        <script type="text" id="template-apt-envs-desc-tpl">
+                        {{if list && list.length > 0}}
+                        {{each list item i}}
+                        <h4>{{item.name}}</h4>
+                        <table cellpadding="0" cellspacing="0">
+                            <tr>
+                                <th>变量</th><th>变量值</th>
+                            </tr>
+                            {{each item.list val key}}
+                            <tr>
+                                <td>{{key}}</td><td>{{val.value}}</td>
+                            </tr>
+                            {{/each}}
+                        </table>
+                        {{/each}}
+                        {{else}}
+                        <p class="apt-none">哎呀，开发小哥哥还没用到变量</p>
+                        {{/if}}
+                        </script>
+                    </div>
+                </span>
+            </li>
+            <li>
+                <a href="https://docs.apipost.cn/view/474703db72d3f768" class="active">使用文档</a>
+            </li>
+            <li>
+                <a href="javascript:;">导出离线</a>
+                <ul class="page-menus-btns">
+                    <li><a target="_blank" href="https://docs.apipost.cn/html/474703db72d3f768" class="page-export-btn" data-target="html">导出HTML</a></li>
+                    <li><a target="_blank" href="https://docs.apipost.cn/markdown/474703db72d3f768" class="page-export-btn" data-target="markdown">导出MarkDown</a></li>
+                    <li><a target="_blank" href="https://docs.apipost.cn/word/474703db72d3f768" class="page-export-btn" data-target="markdown">导出Word文档 <span style="color: red; font-size:10px;margin-left: 18px">new ~</span> </a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+<!--内容-->
+<div class="wrapper">
+    <div class="apt-container">
+        <div class="sidebar-wrapper fixed">
+            <div class="apt-search-div">
+                <input type="search" name="apt_kw" autocorrect="off" autocapitalize="off" autocomplete="new-password" data-toggle="dropdown" placeholder="支持接口名称/拼音/URL搜索" class="apt-search-input-txt">
+                <ul class="apt-search-div-dropdown apt-search-result">
+                    <script type="text" id="template-apt-search-result-tpl">
+                    {{if list && list.length > 0}}
+                    {{each list item i}}
+                    <li>
+                        <a class="a-target-btn" data-target_id="{{item.target_id}}" href="javascript:;">
+                            <h4><small class="{{item.method}}">{{item.method}}</small> {{item.name}}</h4>
+                            <div class="apt-url-text">{{item.url}}</div>
+                        </a>
+                    </li>
+                    {{/each}}
+                    {{/if}}
+                    </script>
+                </ul>
+            </div>
+            <div class="sidebar apt-left-menu">
+                <script type="text" id="template-apt-left-menu-tpl">
+                {{if menu && menu.length > 0}}
+                <ul class="menu-group">
+                    {{each menu item i}}
+                    <li class="menu-item active">
+                        {{if item.target_type == 'folder'}}
+                        <a class="a-folder-btn sub-title"  data-{{item.target_type}}_id="{{item.target_id}}" href="javascript:;"><i class="fa fa-folder-o" aria-hidden="true"></i> {{item.name}}</a>
+                        {{if item.menu.length > 0}}
+                        <ul class="menu-group">
+                            {{each item.menu item2 i2}}
+                            <li class="menu-item active">
+                                {{if item2.target_type == 'folder'}}
+                                <a class="a-folder-btn sub-title"  data-{{item2.target_type}}_id="{{item2.target_id}}" href="javascript:;"><i class="fa fa-folder-o" aria-hidden="true"></i> {{item2.name}}</a>
+                                {{include 'template-apt-left-menu-tpl' item2}}
+                                {{else}}
+                                <a class="a-target-btn sub-title {{item2.mark}}"  data-target_id="{{item2.target_id}}" href="javascript:;">{{item2.name}}</a>
+                                {{/if}}
+                            </li>
+                            {{/each}}
+                        </ul>
+                        {{/if}}
+                        {{else}}
+                        <a class="a-target-btn sub-title {{item.mark}}"  data-target_id="{{item.target_id}}" href="javascript:;">{{item.name}}</a>
+                        {{/if}}
+                    </li>
+                    {{/each}}
+                </ul>
+                {{/if}}
+                </script>
+            </div>
+        </div>
+
+        <div class="main-container">
+
+            <div class="breadcrumb">
+
+                <div class="breadcrumb-anchor">
+
+                    <div class="anchor-toc">
+                        <div class="dropdown-toc">
+                            <div class="dropdown-trigger">
+                                <span class="toc-current">本页导航</span>
+                                <span class="icon-down"></span>
+                            </div>
+                            <div class="dropdown-body">
+                                <ul>
+                                    <li>
+                                        <a href="javascript:;">基本信息</a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;">请求参数</a>
+                                    </li>
+                                    <li class="toc-item-2">
+                                        <a href="javascript:;">Query参数</a>
+                                    </li>
+                                    <li class="toc-item-2">
+                                        <a href="javascript:;">Header参数</a>
+                                    </li>
+                                    <li class="toc-item-2">
+                                        <a href="javascript:;">Body参数</a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;">响应示例</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="markdown apt-target">
+                <script type="text" id="template-apt-target-tpl">
+                <h2>
+                    <em class="{{target.mark}}">[
+                        {{if target.mark == 'modifying'}}
+                        待修改
+                        {{else if target.mark == 'complated'}}
+                        已完成
+                        {{else}}
+                        开发中
+                        {{/if}}]
+                    </em>
+                    {{target.name}}<span class="metadata">更新时间：{{target.update_dtime}}</span>
+                </h2>
+                {{if target.request.description}}
+                <div class="editor-preview">
+                {{@target.request.description}}
+                </div>
+                {{/if}}
+                {{if target.target_type == 'api'}}
+                <h3 class="title"><a href="#mao1" class="maodian" id="mao1"></a> 基本信息</h3>
+                <ul>
+                    <li>
+                        <strong>接口状态：</strong> <span class="{{target.mark}}">
+                        {{if target.mark == 'modifying'}}
+                        待修改
+                        {{else if target.mark == 'complated'}}
+                        已完成
+                        {{else}}
+                        开发中
+                        {{/if}}
+                        </span>
+                    </li>
+                    <li>
+                        <strong>接口URL：</strong> <code class="span">{{target.request.url}}</code>
+                    </li>
+                    <li>
+                        <strong>请求方式：</strong> <code class="span">{{target.method}}</code>
+                    </li>
+                    {{if target.method != 'GET'}}
+                    <li>
+                        <strong>Content-Type：</strong> <code class="span">{{target.request.body.mode_text}}</code>
+                    </li>
+                    {{/if}}
+                </ul>
+                {{if target.request}}
+                <h3 class="title"><a  href="#mao2" class="maodian" id="mao2"></a> 请求参数</h3>
+                <p>接口请求参数见下表：
+                {{if (target.request.query && target.request.query.parameter.length > 0) || global_paras.query.length > 0}}
+                <h4><a  href="#mao3" class="maodian" id="mao3"></a> Query参数说明</h4>
+                <div>
+                    <table>
+
+                        <tbody>
+                        <tr>
+                            <th>
+                                <div><strong>参数名</strong></div>
+                            </th>
+                            <th>
+                                <div><strong>示例值</strong></div>
+                            </th>
+                            <th>
+                                <div><strong>是否必填</strong></div>
+                            </th>
+                            <th>
+                                <div><strong>参数描述</strong></div>
+                            </th>
+                        </tr>
+                        {{if global_paras.query}}
+                        {{each global_paras.query query i}}
+                        {{if query.key != ''}}
+                        <tr class="apt-global_paras">
+                            <td>
+                                <div>[全局参数] {{query.key}}</div>
+                            </td>
+                            <td>
+                                <div>{{query.value}}</div>
+                            </td>
+                            <td>
+                                <div>必填</div>
+                            </td>
+                            <td>
+                                <div><pre>{{query.description}}</pre></div>
+                            </td>
+                        </tr>
+                        {{/if}}
+                        {{/each}}
+                        {{/if}}
+
+                        {{each target.request.query.parameter query i}}
+                        {{if query.key != ''}}
+                        <tr>
+                            <td>
+                                <div>{{query.key}}</div>
+                            </td>
+                            <td>
+                                <div>{{query.value}}</div>
+                            </td>
+                            <td>
+                                <div>{{(query.not_null && query.not_null > 0) ?  '必填' : '选填'}}</div>
+                            </td>
+                            <td>
+                                <div><pre>{{query.description}}</pre></div>
+                            </td>
+                        </tr>
+                        {{/if}}
+                        {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+                {{/if}}
+                {{if target.request.resful && target.request.resful.parameter.length > 0}}
+                <h4><a  href="#mao12" class="maodian" id="mao12"></a> 路径参数</h4>
+                <div>
+                    <table>
+
+                        <tbody>
+                        <tr>
+                            <th>
+                                <div><strong>参数名</strong></div>
+                            </th>
+                            <th>
+                                <div><strong>示例值</strong></div>
+                            </th>
+                            <th>
+                                <div><strong>参数描述</strong></div>
+                            </th>
+                        </tr>
+                        {{each target.request.resful.parameter resful i}}
+                        {{if resful.key != ''}}
+                        <tr>
+                            <td>
+                                <div>{{resful.key}}</div>
+                            </td>
+                            <td>
+                                <div>{{resful.value}}</div>
+                            </td>
+                            <td>
+                                <div><pre>{{resful.description}}</pre></div>
+                            </td>
+                        </tr>
+                        {{/if}}
+                        {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+                {{/if}}
+                {{if (target.request.header && target.request.header.parameter.length > 0) || global_paras.header.length > 0}}
+                <h4><a  href="#mao4" class="maodian" id="mao4"></a> Header参数说明</h4>
+                <div>
+                    <table>
+
+                        <tbody>
+                        <tr>
+                            <th>
+                                <div><strong>参数名</strong></div>
+                            </th>
+                            <th>
+                                <div><strong>示例值</strong></div>
+                            </th>
+                            <th>
+                                <div><strong>是否必填</strong></div>
+                            </th>
+                            <th>
+                                <div><strong>参数描述</strong></div>
+                            </th>
+                        </tr>
+                        {{if global_paras.header}}
+                        {{each global_paras.header header i}}
+                        {{if header.key != ''}}
+                        <tr class="apt-global_paras">
+                            <td>
+                                <div>[全局参数] {{header.key}}</div>
+                            </td>
+                            <td>
+                                <div>{{header.value}}</div>
+                            </td>
+                            <td>
+                                <div>必填</div>
+                            </td>
+                            <td>
+                                <div><pre>{{header.description}}</pre></div>
+                            </td>
+                        </tr>
+                        {{/if}}
+                        {{/each}}
+                        {{/if}}
+
+                        {{each target.request.header.parameter header i}}
+                        {{if header.key != ''}}
+                        <tr>
+                            <td>
+                                <div>{{header.key}}</div>
+                            </td>
+                            <td>
+                                <div>{{header.value}}</div>
+                            </td>
+                            <td>
+                                <div>{{header.not_null && header.not_null > 0 ?  '必填' : '选填'}}</div>
+                            </td>
+                            <td>
+                                <div><pre>{{header.description}}</pre></div>
+                            </td>
+                        </tr>
+                        {{/if}}
+                        {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+                {{/if}}
+                {{if target.request.body}}
+                {{if target.request.body.mode == 'form-data' || target.request.body.mode == 'urlencoded'}}
+                {{if target.request.body.parameter.length > 0 || global_paras.body.length > 0}}
+                <h4><a  href="#mao5" class="maodian" id="mao5"></a> Body参数说明 ({{target.request.body.mode_text}})</h4>
+                <div>
+                    <table>
+
+                        <tbody>
+                        <tr>
+                            <th>
+                                <div><strong>参数名</strong></div>
+                            </th>
+                            <th>
+                                <div><strong>示例值</strong></div>
+                            </th>
+                            <th>
+                                <div><strong>是否必填</strong></div>
+                            </th>
+                            <th>
+                                <div><strong>参数描述</strong></div>
+                            </th>
+                        </tr>
+                        {{if global_paras.body}}
+                        {{each global_paras.body body i}}
+                        {{if body.key != ''}}
+                        <tr class="apt-global_paras">
+                            <td>
+                                <div>[全局参数] {{body.key}}</div>
+                            </td>
+                            <td>
+                                <div>{{body.value}}</div>
+                            </td>
+                            <td>
+                                <div>必填</div>
+                            </td>
+                            <td>
+                                <div><pre>{{body.description}}</pre></div>
+                            </td>
+                        </tr>
+                        {{/if}}
+                        {{/each}}
+                        {{/if}}
+
+                        {{each target.request.body.parameter body i}}
+                        {{if body.key != ''}}
+                        <tr>
+                            <td>
+                                <div>{{body.key}}</div>
+                            </td>
+                            <td>
+                                <div>{{body.value}}</div>
+                            </td>
+                            <td>
+                                <div>{{body.not_null && body.not_null > 0 ? '必填' : '选填'}}</div>
+                            </td>
+                            <td>
+                                <div><pre>{{body.description}}</pre></div>
+                            </td>
+                        </tr>
+                        {{/if}}
+                        {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+                {{/if}}
+                {{else}}
+                {{if target.request.body.raw}}
+                <h4><a  href="#mao5" class="maodian" id="mao5"></a> Body参数 ({{target.request.body.mode_text}})</h4>
+                <div class="editor-preview">
+                <pre><code>{{target.request.body.raw}}</code></pre>
+                </div>
+                {{if target.request.body && target.request.body.raw_para && target.request.body.raw_para.length > 0}}
+                <h4><a  href="#mao10" class="maodian" id="mao10"></a> 参数说明</h4>
+                <div>
+                    <table>
+
+                        <tbody>
+                        <tr>
+                            <th>
+                                <div><strong>参数名</strong></div>
+                            </th>
+                            <th>
+                                <div><strong>示例值</strong></div>
+                            </th>
+                            <th>
+                                <div><strong>是否必填</strong></div>
+                            </th>
+                            <th>
+                                <div><strong>参数描述</strong></div>
+                            </th>
+                        </tr>
+                        {{each target.request.body.raw_para body i}}
+                        {{if body.key != ''}}
+                        <tr>
+                            <td>
+                                <div>{{body.key}}</div>
+                            </td>
+                            <td>
+                                <div>{{body.value}}</div>
+                            </td>
+                            <td>
+                                <div>{{body.not_null && body.not_null > 0 ? '必填' : '选填'}}</div>
+                            </td>
+                            <td>
+                                <div><pre>{{body.description}}</pre></div>
+                            </td>
+                        </tr>
+                        {{/if}}
+                        {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+                {{/if}}
+                {{/if}}
+                {{/if}}
+                {{/if}}
+                {{/if}}
+                {{if target.response}}
+                <h3 class="title"><a  href="#mao6" class="maodian" id="mao6"></a> 响应示例</h3>
+                {{if target.response && target.response.success && target.response.success.raw}}
+                <h4><a  href="#mao7" class="maodian" id="mao7"></a> 正确响应示例</h4>
+                <div class="editor-preview">
+                <pre><code>{{target.response.success.raw}}</code></pre>
+                </div>
+                {{if target.response.success.parameter.length > 0}}
+                <h4><a  href="#mao8" class="maodian" id="mao8"></a> 参数说明</h4>
+                <div>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <th>
+                                <div><strong>参数名</strong></div>
+                            </th>
+                            <th>
+                                <div><strong>示例值</strong></div>
+                            </th>
+                            <th>
+                                <div><strong>参数描述</strong></div>
+                            </th>
+                        </tr>
+                        {{each target.response.success.parameter item i}}
+                        {{if item.key != ''}}
+                        <tr>
+                            <td>
+                                <div>{{item.key}}</div>
+                            </td>
+                            <td>
+                                <div>{{item.value}}</div>
+                            </td>
+                            <td>
+                                <div><pre>{{item.description}}</pre></div>
+                            </td>
+                        </tr>
+                        {{/if}}
+                        {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+                {{/if}}
+                {{/if}}
+                {{if target.response && target.response.error && target.response.error.raw}}
+                <h4><a  href="#mao8" class="maodian" id="mao8"></a> 错误响应示例</h4>
+                <div class="editor-preview">
+                <pre><code>{{target.response.error.raw}}</code></pre>
+                </div>
+                {{if target.response.error.parameter.length > 0}}
+                <h4><a  href="#mao9" class="maodian" id="mao9"></a> 参数说明</h4>
+                <div>
+                    <table>
+
+                        <tbody>
+                        <tr>
+                            <th>
+                                <div><strong>参数名</strong></div>
+                            </th>
+                            <th>
+                                <div><strong>示例值</strong></div>
+                            </th>
+                            <th>
+                                <div><strong>参数描述</strong></div>
+                            </th>
+                        </tr>
+                        {{each target.response.error.parameter item i}}
+                        {{if item.key != ''}}
+                        <tr>
+                            <td>
+                                <div>{{item.key}}</div>
+                            </td>
+                            <td>
+                                <div>{{item.value}}</div>
+                            </td>
+                            <td>
+                                <div><pre>{{item.description}}</pre></div>
+                            </td>
+                        </tr>
+                        {{/if}}
+                        {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+                {{/if}}
+                {{/if}}
+                {{/if}}
+                {{/if}}
+                <footer>本文档由<a href="https://docs.apipost.cn/" target="_blank">APIPOST接口调试与管理工具</a>生成</footer>
+                </script>
+            </div>
+        </div>
+    </div>
+
+    <!--图片弹窗-->
+    <div class="imgtc">
+        <img src=""/>
+    </div>
+</div>
+
+<!-- 下载自行编辑时，以下代码可去掉 -->
+<!-- <style type="text/css">
+	.apt1111{position: fixed;left: 17px;bottom: 50px;width: 261px;height: 145px;clear: both;z-index: 99999;}
+	.apt1111 img{border-radius: 5px;width: 261px; height: 145px; border: 0; float: left;}
+	.apt1111 em{position: absolute;right: 4px;top: -18px;font-size: 19px;background: #e96900;width: 22px;height: 22px;line-height: 20px;text-align: center;border-radius: 50%;color: #fff;padding-top: -8px;cursor: pointer;display: inline-block;}
+</style>
+<div class="apt1111">
+	<a href="https://www.apipost.cn/1111/?fr=doc" target="_blank" title="ApiPost 双11特惠，开通团队版立减"><img src="https://img.cdn.apipost.cn/statics/apt_1111.gif" /></a>
+	<em class="close-btn">x</em>
+</div> -->
+<!-- 下载自行编辑时，以上代码可去掉 -->
+
+<script src="https://img.cdn.apipost.cn/statics/build-in/jquery/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://docs.apipost.cn/statics/marked/marked.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://docs.apipost.cn/statics/highlight/highlight.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://img.cdn.apipost.cn/cdn/art-template@4.13.2/template-web.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://docs.apipost.cn/statics/apt.min-1.0.0.js?v=0803" type="text/javascript" charset="utf-8"></script>
+<script src="https://img.cdn.apipost.cn/statics/libs/crypto-js/crypto-js.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    $(function() {
+                                let _menu = [{"project_id":"276173","parent_id":"3846778","target_id":"3847401","name":"\u8bbe\u7f6e\u7528\u6237\u4fe1\u606f","method":"PUT","mark":"developing","target_type":"api","url":"http:\/\/127.0.0.1:8080\/v1\/user","pinyin":"shezhiyonghuxinxi","menu":[]},{"project_id":"276173","parent_id":"3846778","target_id":"3850857","name":"\u641c\u7d22\u5728\u7ebf\u7528\u6237","method":"OPTIONS","mark":"developing","target_type":"api","url":"http:\/\/127.0.0.1:8080\/v1\/user","pinyin":"sousuozaixianyonghu","menu":[]},{"project_id":"276173","parent_id":"3846778","target_id":"3851056","name":"\u65b0\u5efa\u597d\u53cb\u7533\u8bf7","method":"POST","mark":"developing","target_type":"api","url":"http:\/\/127.0.0.1:8080\/v1\/friend_request","pinyin":"xinjianhaoyoushenqing","menu":[]},{"project_id":"276173","parent_id":"3846778","target_id":"3851078","name":"\u83b7\u53d6\u597d\u53cb\u7533\u8bf7","method":"GET","mark":"developing","target_type":"api","url":"http:\/\/127.0.0.1:8080\/v1\/friend_request","pinyin":"huoquhaoyoushenqing","menu":[]},{"project_id":"276173","parent_id":"3846778","target_id":"3847430","name":"\u67e5\u8be2\u7528\u6237\u662f\u5426\u767b\u5f55","method":"GET","mark":"developing","target_type":"api","url":"http:\/\/127.0.0.1:8080\/v1\/user\/sign?uid=2009","pinyin":"chaxunyonghushifoudenglu","menu":[]},{"project_id":"276173","parent_id":"3846778","target_id":"3847253","name":"\u767b\u5f55","method":"POST","mark":"developing","target_type":"api","url":"http:\/\/127.0.0.1:8080\/v2\/user\/sign","pinyin":"denglu","menu":[]},{"project_id":"276173","parent_id":"3846778","target_id":"3850425","name":"\u641c\u7d22\u7528\u6237","method":"OPTIONS","mark":"developing","target_type":"api","url":"http:\/\/127.0.0.1:8080\/v1\/user","pinyin":"sousuoyonghu","menu":[]},{"project_id":"276173","parent_id":"3846778","target_id":"3847398","name":"\u83b7\u53d6\u7528\u6237\u4fe1\u606f","method":"GET","mark":"developing","target_type":"api","url":"http:\/\/127.0.0.1:8080\/v1\/user?uid=2008","pinyin":"huoquyonghuxinxi","menu":[]},{"project_id":"276173","parent_id":"3846778","target_id":"3847428","name":"\u6ce8\u518c","method":"POST","mark":"developing","target_type":"api","url":"http:\/\/127.0.0.1:8080\/v2\/user\/login","pinyin":"zhuce","menu":[]}];
+        let _l1313567525 = {"3847401":{"project_id":"276173","parent_id":"3846778","target_id":"3847401","name":"\u8bbe\u7f6e\u7528\u6237\u4fe1\u606f","method":"PUT","mark":"developing","target_type":"api","update_day":"1612627200","update_dtime":"2021-02-07 23:15:22","sort":"0","request":{"target_id":3847401,"auth":{"type":"bearer","kv":{"key":"","value":""},"bearer":{"key":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyTmFtZSI6Im11c2U0IiwiVWlkIjoiMjAwOCIsImV4cCI6MTYxMzMxMDA1OX0.MaarnYfT-h4EPdha1AiuzOcK4GC7pyrw_fncUiQnAjU"},"basic":{"username":"","password":""}},"body":{"mode":"json","parameter":[],"raw":"{\r\n\t\"user_nick_name\": \"\u5c0f\u8f89\",\r\n\t\"user_brief\": \"\u6ca1\u6709\u7b80\u4ecb\",\r\n\t\"user_sex\": \"\u5973\",\r\n\t\"user_age\": 25,\r\n\t\"user_contact\": \"13427233822\"\r\n}","raw_para":[]},"description":"","event":{"pre_script":"","test":""},"header":{"parameter":[]},"query":{"parameter":[]},"resful":{"parameter":[]},"url":"http:\/\/127.0.0.1:8080\/v1\/user"},"response":{"success":{"raw":"{\r\n\t\"code\": 0,\r\n\t\"message\": \"OK\"\r\n}","parameter":[]}}},"3850857":{"project_id":"276173","parent_id":"3846778","target_id":"3850857","name":"\u641c\u7d22\u5728\u7ebf\u7528\u6237","method":"OPTIONS","mark":"developing","target_type":"api","update_day":"1612713600","update_dtime":"2021-02-08 20:56:53","sort":"0","request":{"target_id":3850857,"auth":{"type":"bearer","kv":{"key":"","value":""},"bearer":{"key":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyTmFtZSI6Im11c2U1IiwiVWlkIjoiMjAwOSIsImV4cCI6MTYxMzM4MDQzM30.XhM57lSUNnVEpU5nxgZn6JS4HnA0EGQz58ZOEy9Kf4s"},"basic":{"username":"","password":""}},"body":{"mode":"json","parameter":[],"raw":"{\r\n\t\"opera\": \"search_p\",\r\n\t\"data\": {\r\n\t\t\"uid\": 0,\r\n\t\t\"user_name\": \"xiaoli\",\r\n\t\t\"user_nick_name\": \"\"\r\n\t}\r\n}","raw_para":[]},"description":"","event":{"pre_script":"","test":""},"header":{"parameter":[]},"query":{"parameter":[]},"resful":{"parameter":[]},"url":"http:\/\/127.0.0.1:8080\/v1\/user"},"response":null},"3851056":{"project_id":"276173","parent_id":"3846778","target_id":"3851056","name":"\u65b0\u5efa\u597d\u53cb\u7533\u8bf7","method":"POST","mark":"developing","target_type":"api","update_day":"1612713600","update_dtime":"2021-02-08 22:59:15","sort":"0","request":{"target_id":3851056,"auth":{"type":"bearer","kv":{"key":"","value":""},"bearer":{"key":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyTmFtZSI6Im11c2U1IiwiVWlkIjoiMjAwOSIsImV4cCI6MTYxMzM4MDQzM30.XhM57lSUNnVEpU5nxgZn6JS4HnA0EGQz58ZOEy9Kf4s"},"basic":{"username":"","password":""}},"body":{"mode":"json","parameter":[],"raw":"{\r\n\t\"receive_id\": 2008,\r\n\t\"note_info\": \"\u6211\u662f\u4f60\u7238!\"\r\n}","raw_para":[]},"description":"","event":{"pre_script":"","test":""},"header":{"parameter":[]},"query":{"parameter":[]},"resful":{"parameter":[]},"url":"http:\/\/127.0.0.1:8080\/v1\/friend_request"},"response":{"error":{"raw":"{\r\n\t\"code\": 200112,\r\n\t\"message\": \"\u597d\u53cb\u7533\u8bf7\u521b\u5efa\u5931\u8d25\"\r\n}","parameter":[]},"success":{"raw":"{\r\n\t\"code\": 0,\r\n\t\"message\": \"OK\"\r\n}","parameter":[]}}},"3851078":{"project_id":"276173","parent_id":"3846778","target_id":"3851078","name":"\u83b7\u53d6\u597d\u53cb\u7533\u8bf7","method":"GET","mark":"developing","target_type":"api","update_day":"1612713600","update_dtime":"2021-02-08 23:29:56","sort":"0","request":{"target_id":3851078,"auth":{"type":"bearer","kv":{"key":"","value":""},"bearer":{"key":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyTmFtZSI6Im11c2U1IiwiVWlkIjoiMjAwOSIsImV4cCI6MTYxMzM4MDQzM30.XhM57lSUNnVEpU5nxgZn6JS4HnA0EGQz58ZOEy9Kf4s"},"basic":{"username":"","password":""}},"body":{"mode":"form-data","parameter":[],"raw":"","raw_para":[]},"description":"","event":{"pre_script":"","test":""},"header":{"parameter":[]},"query":{"parameter":[]},"resful":{"parameter":[]},"url":"http:\/\/127.0.0.1:8080\/v1\/friend_request"},"response":{"success":{"raw":"{\r\n\t\"code\": 0,\r\n\t\"data\": {\r\n\t\t\"friend_uid\": \"2008\",\r\n\t\t\"main_uid\": \"2009\",\r\n\t\t\"note\": \"\u6211\u662f\u4f60\u7238\u7238\",\r\n\t\t\"state\": \"0\"\r\n\t},\r\n\t\"message\": \"OK\"\r\n}","parameter":[]}}},"3701892":{"project_id":"276173","parent_id":"0","target_id":"3701892","name":"\u521b\u5efa\u7528\u6237","method":"POST","mark":"developing","target_type":"api","update_day":"1611072000","update_dtime":"2021-01-20 23:55:20","sort":"1","request":{"target_id":3701892,"auth":{"type":"noauth","kv":{"key":"","value":""},"bearer":{"key":""},"basic":{"username":"","password":""}},"body":{"mode":"json","parameter":[{"is_checked":1,"type":"Text","key":"username","value":"pp","not_null":1,"field_type":"","description":""},{"is_checked":1,"type":"Text","key":"password","value":"cc","not_null":1,"field_type":"","description":""}],"raw":"{\r\n\t\"username\": \"Ubus\",\r\n\t\"password\": \"200110181617\",\r\n\t\"user_vc_code\": \"uZSyyN\"\r\n}","raw_para":[]},"description":"","event":{"pre_script":"","test":""},"header":{"parameter":[]},"query":{"parameter":[]},"resful":{"parameter":[]},"url":"127.0.0.1:8080\/v1\/user\/new"},"response":{"success":{"raw":"{\r\n\t\"status\": \"ok\",\r\n\t\"username\": \"xialin\"\r\n}","parameter":[]}}},"3847430":{"project_id":"276173","parent_id":"3846778","target_id":"3847430","name":"\u67e5\u8be2\u7528\u6237\u662f\u5426\u767b\u5f55","method":"GET","mark":"developing","target_type":"api","update_day":"1612713600","update_dtime":"2021-02-08 20:58:03","sort":"1","request":{"target_id":3847430,"auth":{"type":"bearer","kv":{"key":"","value":""},"bearer":{"key":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyTmFtZSI6Im11c2U1IiwiVWlkIjoiMjAwOSIsImV4cCI6MTYxMzM4MDQzM30.XhM57lSUNnVEpU5nxgZn6JS4HnA0EGQz58ZOEy9Kf4s"},"basic":{"username":"","password":""}},"body":{"mode":"form-data","parameter":[],"raw":"","raw_para":[]},"description":"","event":{"pre_script":"","test":""},"header":{"parameter":[]},"query":{"parameter":[{"is_checked":1,"type":"Text","key":"uid","value":"2000","not_null":1,"field_type":"","description":""}]},"resful":{"parameter":[]},"url":"http:\/\/127.0.0.1:8080\/v1\/user\/sign?uid=2009"},"response":{"success":{"raw":"{\r\n\t\"code\": 2,\r\n\t\"message\": \"USER SIGN OK\"\r\n}","parameter":[]},"error":{"raw":"{\r\n\t\"code\": 200111,\r\n\t\"message\": \"\u8be5\u7528\u6237\u4e3a\u767b\u5f55\"\r\n}","parameter":[]}}},"3705905":{"project_id":"276173","parent_id":"0","target_id":"3705905","name":"\u83b7\u53d6\u9a8c\u8bc1\u7801","method":"GET","mark":"developing","target_type":"api","update_day":"1610985600","update_dtime":"2021-01-19 21:28:10","sort":"2","request":{"target_id":3705905,"auth":{"type":"noauth","kv":{"key":"","value":""},"bearer":{"key":""},"basic":{"username":"","password":""}},"body":{"mode":"json","parameter":[{"is_checked":1,"type":"Text","key":"math","value":"","not_null":1,"field_type":"","description":""}],"raw":"{\r\n\t\"math\": \"math\"\r\n}","raw_para":[]},"description":"","event":{"pre_script":"","test":""},"header":{"parameter":[]},"query":{"parameter":[]},"resful":{"parameter":[]},"url":"http:\/\/127.0.0.1:8080\/resources\/user_vc_code"},"response":{"success":{"raw":"{\r\n\t\"body\": \"data:image\/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPAAAABYCAIAAABEeO1GAAA8fUlEQVR4nMxdB1QTz\/PfhFAvgFJFEZQmgqJgBVHAihVFQbFXbNixF7BgRWyoCHawKyiCIKiIIiodRKqCFCnSBBI65P9iYspl73IJ+P39P8\/3PPb29jZ7n5ubnZ2ZpZS30cB\/DsOdSNYJeufb2aGDnMzjttMWTaVY0R6N\/3R1JXg5b2Tn23\/rcOPNLMqd6Kj2jg4AwLRhI44uWqIgKydSIxGrL028sk7sPiw\/nHZ9v4nYl+OD2iGNX4FGbuYc3\/puvkT3oxh3KZpwpnfkFqyzE55FR9pZ8ZZ4PXTbOuM0kBGHmaTyNlq6v\/WARW95Sx01kIelXUA4HCie0K7dWQA91c8EyU7Du3t+JrVvf\/ivVd+BlJ9kXtvHAvkR29mfsPPW9Qcx73hLLMq63QzylKJQAAAzbsQFLxtOpJ1p6khIObwzUd3KbH73wL98RdXqa8pXCPZZI+PTXr1lLlKZOHXy\/YcNXJCG3w4vlf97mM9CZtNyXSN7inohiVdCs95Xgr+klt5RVd\/e1MyQkADycmT1bhQJsqh3x4TfzjurTizAqfDQqMgxo3dX3c7udO6zbfoAAOdNhb7ntFiFLxIT1vl4C1ZeIiNx8MK1rro1AGBtD+RymfB3L1CSYt\/aRqTBLXPqdLWiXLzsBE8drpp0ovtboS0IcmDhvvyAI305f0rL3W1umE+kM0Lx4+ykPptfdklTcEKzQCM3T033CR2whrd2UUVbeDz9bVpD+o\/m6vp23lMUCZKOhuRQfZkJZoj1IDmKBOYt198PuDhvoWB5YKOSvWx1Z36MrSYSXkxIKmttQAovwGs+8nR3cHUHAPTftq6xrkGwgrysbILXeWmKZGe6ioORcaGfhk\/9Fy0LVTCgVD45\/UePNe6Lp94EABxamH0goB+rfNva3Cvd5tKOJRG8+\/J1FdcvqUJPRQXMsVn4mGA7+OAK1Rme33lPUDuko402KeseZP2ZkNO0+GSpxeaCQ3cq331pQLGZqb+2M3KKW+5G1S07XTp8Q8FZH1d6E4Nzdl+5Pef44ryF3ROpAICQe3y0xmHzyKN8o1y5DK6S8rL59IAOzvHuN0yCJmgmc0qw2AwAcHB13\/TscnxuDpTNAID6xsaYjAzoqdm121gH64YiWO0LxafhU1OjmKRp3DceANDwGE4CfGzvz9cBaoc0EXUZ+nHe8bzP4qk3t\/rfBgBw2Mwc4cv6+9VdnjgHDOrBvJf3sav47WOxGQCAYnNkRXdotTGLhI8qpoTmoKq+fav\/z+CPImvoFPmm80u1p4+ksv70c7u26uAKURvpKuw2Qo5liKBSu98LuPnmFdbZuZZjPMA+ypISTsnB8XVurxQAABta7S5IPgMAMEKopGn\/gwm3IHCozGLwQdd3bp5jOnOLfv5V2YuUO9NCV4EpoU\/Y5WOdjsttHL03Tww2M2V2vcy6C+Xb\/SqaW5mimiCb98yqFCx0nVs553ICtL6qlwqRZkViM1PYJyfinH2VmiKx+CdvCYvNAAAWm5mi4n\/H5gQrtsDDEcw0cnOadijruJNsBgAQZLOHsnAR+7BVCVq+ehPchIACk9A7n\/Wt0n4k+NEJS6JNP\/qjtKYV62IJMkmtG0VeDm8yeP9t3aITpQ3NDCK9AQAcDWISNCxPh7fQ84HK47VDofUrtlYqbyRkaiCO1B95ZTU1OBWq6uuS8r6L1GZMLtuUQdY9DwB4pvmL4IWnVUTWXoZGz8GnMo3crJX6SadoPKukJJ0q6i3EQ89ZD4TWcZSEa55XzmnjXLVtO1ufZHNRucCBc471g1+l0RafL2ppgxBRQVbCYNyHiOO982\/rJF7UzvDrm3lV56KLuqFxHPRmHzMbJ65NhjaFhck6ecQrV52Pe17KtniMf\/qe+IVYeJHA9zXQVIZ8BCJTuBr5rMNFnGOkHEKObTYSlvplrOOO7xsBAHbFaqg6lzcGQzuzrZKuXSOcBxzgU\/nDS0PWceGgkUzJahHAfECDW5LT0P35F1h2dRrBmu9ec5cRfD\/PEVr\/9ClT1gGb0PPt+cRAdnHL0gvFbe0QCo4fRI0\/pfd56aphveRJJLBvAnPmRJUl7d6oHrnHydtFXVYaIrALmhW3+1UQ\/DFiYLoGm1KvZo7mFLaNPiD0wv3y7B+u+4Y7zwtL4hJaUQ6J8jghyOmIFK5OErSfa0Ckq0M0jdNR7Dn0JAtMcbv2\/IzPaZrQUwXd5wr9IUKpzPr2DpqcylveL5Y5L5\/d1mJqAvliLNcRf2rLgayJe+ybIaJeNWbcJ86x84jHtFLMb8jhV7t4\/2ST724gPbxXMeu4oZmx6kwZvalD8OLJZvL3tmipKbJtctQO6bMv2RPSr\/H0XhsRO3Pq7R0aUE4HxtRff1lL5MeEV8MnuUydvkGEjyPl\/aHuTtPx6xyuZ+vW38caOc1kPr95a1MKK7hPd6KpmaSEhPVA9FpdXlnZ97JSAEC1M3xu8GTOC8HCl7H0+lu6vCUtJdxfNMKkmPdUw4iTWN1WqOYbB3wjBo3c3P8s5Gmi8IVnktPWymz\/eh49b9kuwZoHEjYIbY2FXBu\/xjR3bUYhwfpYoGpgTkj2jz\/O+yfbyrE88N51eydW0dYrFY\/e1Qle2a+X9NvDOjKSJGi7vMr301jahovlgnWkJUmhRzT7aUqJ8lv+a3g9Czof8ozz563N26yMB75OS11x4Qyq5k57h7WT8QzG739RR6sJnxoOXYkkXBV5UVPneWHedC18Y1xnVvvqzD0VPrqKfXnXYtR+xofDcOKhwBal1+2drs17x5y7pDdC2UwCpPMuam3SLVgNsYTEsrOxAICZFtQZ5hBR2tzK2H0dbcQgHYLP9lAomOtGpBoA4MTmN6iSXP0woVclB1qwDvj0DQSx7G\/MHFDD\/tKS6JWUl7iWEADAaDWabY270FvjsNknfDXWqV9T9fGlMj6bs26Pxu8VL5tTji\/BryweEvMgJFlkANFzPhwm7Z9A6J3n6gYr7o\/pYIADtyFWMwDAgnEKRlpSQkfq0UYb1ijvdVKWokBeqfjsxsAPfEKLcYBNoKreT3A6qv3g4LXa\/gR+Edh5diyqRD938pd8IbqKqX1syRO9\/PLy3BKuPc7WdIgEmTlEMlJSIwwMUZek5OdV1kFefl6Ed0cT2irjNoEfwcYaW7QLB0twdIbKLBgufr9pMJM6G23hkq\/1LXfEBu+6RbzPUNRXQsZ\/iA7t45llqEL\/HLp7o7Vg5cORQhT6uBk3+Aj9R82l5f6EyGAJMmnTLKZe29LM7hb+qFE7pA26I\/NsFKBnvZ5Ud8AMHspFs\/F7vEIRz+GGKVRImKwd2Jf5FvWWgwzK41EprIOes7+9SIznPTVtGNcgaCOgRv8xSCcLFj703o3TyWijxThnoVi3MZ\/Iah9BKnNwLoUp886HMxpfQMZN0ror7ejyKvDWzLfcGHmsCVXoLvuW+bgH4DG48ATaYDI8eFnF7N18hPYOhhtfJ5jJ9ejOnAjKqfl4n+TKDPwRXD0WvuRRUN5KcKWmG\/8UsJ+XEO+nOgat48RgSE\/uPmQdFDVAPltzPnAvCefRN7pTqRaGRpw\/x5oMErw2IgXiyeDocgy\/n8Qh0\/8oAOD2WcMuofL4qqPQctkpNJP6S53oJhzfnblKS95bjel2XIK28Vi+P+2WAQBcfL0KAGBdxp2oXEuH6xjevicAAFo7Q7YzxqFOqT45xqXIh4zG7yVwFZmzfN1Wu9BlB1qrwxpNI03pfr3gj+FWJMTc0cuN\/YPvprG9Y3\/L8fE+e2vH2KlCvjvknSnTu7PrDB\/LPrgy3xEAsExDyLUl1dVfCn5w\/rQ1Y+sbLGirqvWlyaAuicn42tCMySRbpLNmL8rXg10olV8p7+meAv+Ipcmj3WOGHkW764iENcHXdH09j\/y1iupYlz5\/Rq\/5xb47ZQD7yT7bewoAoFH\/aP04v0OWzW97sN2m5y2gYLXs4ryTdXCK9FrwLPeBPXmPKTXNjWSF\/gDoyFoZw59oQk6TiSklL4rP2\/XnQXrxyckAgPkm0czvTgXECP8mlPnWHg\/dg9OT5zV062s5TKXqDd8rfoPfw\/vYQD6HQL8D11H6xtShI1AtW89ELxG3tLW9Tf\/C+fNxOJ\/WFE4nNI8p1EA7jfAqyq3NLZG3Hp9fs9tzyRZ\/d6\/vyV9ZdTgDnrVhK6vkqoZw\/92awbQ7W29infV+uo1zXFqpMCMyUGiDu6pnQct9ZqwAAOz7axVdmHSa+dETsPnYeWxn3kveYX3QtQMx3Ff3\/h1CjrKCYJvt2jvAwNX59Q0Qa6WGEiXuAnvVsW77TIVTT4U2yhEqTz7WrbxUDK2z3UFp40yuvXngqyRF62cxlIME+31tQLWj3E35uK1YFQbPQlKChPDpXRt1DIU7xHNOeCR8y2UdK8jJvTl8nFdCAwBiszLWX0F\/mmeOMD+7kvvVosm\/oNZPIfgrOBjuVxK3qqegIxHtd+2lDQfK8ot4C21WzLFZgTnfeBg\/1nEY2s7DnI7fmjpsSSjWVeE7TtieZEq+uiiqgs0\/8UK588XqevGB15PRegILLeeNpTZ+5S1xHSVjOfDyTB\/0rBEfbEJ\/zmqac\/gntIaFkeyDvSIHDtzKH7FeOyUpr2mcG3wRe4SBXPj+PiihnlZFNVEmNJreIytcPongV\/nQezevajtvAQUlAyrqaoe7bmYwRFifZ0FBTi7J6wJFAtsBnACgegWDwbi80e1bcrrgqRk7Vg6dCWGG3vcX33Sn1O6Zpng0RPDs3u9LPHTZ9oqmI6Nk9n3gnJo3EbHKaF5bLKZcJA65nhcaSjYwZeg9ZQmnKpyaK93SKbWIz9m+IrXPlEAXAnd8ymzEqtFHXRxP9iV9P0t7KqtpYPIj4VtjcysDZYTCYfMwL75TLp9USUkirBqiJmr377TF7tnJWxKelCgGm5kiraHB6CLcExALThO5mhiO7SL6wXMom5m9Pe\/f8LtesPybLvPjwGLzNQO+Eftm+tBD95b7tAoAQGoulZfNzAGJoDdGzsDp86dlXsVDbwj7ZcLBYjMAQMKpqnYJppWdqUEdHCAqm9mE3mB\/Mi0fc2LRpwea0IM\/Co\/hAQBU7SjphpAVEbjoau9gfC3i3lSoTSp+K5q+DDP2A5OFWZ0U3gmhu8XRE7x\/8to3RMUC9e9TOzYSr38vgi7UnNza3PL6NqZhvqWp+cNdiAzmxYoc7ggsifHWS2bOjN1DmJ+1Qfq0fG2+qCfX8Yyt\/dEac\/dh3MjWkTe2aiaI9vUXCsVbRAMlebH+jdfdcZhhMmwdEWp+ZkFDCT3fTDG3Dn0znvPnvFl4c3lNVczpanoh2gAp9DFD0TiFdmHob1Rh3RjapFImZfW6Czc11DbQP2VniXRTXkQmJ4WSz2Odne0fzTkm+ANp5OaPr6PodRAZzMHXqM+c46xMvLf3rl7VLUsXVGHfgkm8f3q+giyv1MSfAQAUX4AsczxuxHND3782FedsJ3Fx7Nb5r82Yz3354gFB30a\/4pswsHVo3SV5WO6d17dpTDATLXCfg3XTSKXDihNy0MRlYftM1T2zhevBRMxShcnUxt\/K\/WwKvmrGGhdbEO+hqRaSXEh\/+OH9jpvcuNfRxgMcR2GuDO+\/4\/+bjlaNXhw4ZNRbC+sS4q8o58f6O4\/LTRfi0ukScEpNB+6gBwAYYI+kB7KnxU25VBn9LpjqfTm+cOCuAMHy9xuOjb7AXk6K0U63LBjQyRulGUdc2V6n1ifOzZrtobW3F+LxEzLLl8uhNvAoV0zxWVPfgeOsLCtFyCkEikshjPnHMW1JP6rhTE1M\/lxQmG9jNbF7NyVeNuAwW8uU\/ZOIsNnqQXL0XLb7bHIhXVDfcBw1evowtM2Og5D4OEEvjojkJBShRfrOGPehfC7kPq0mWsP3LA0AhFiCM9\/F4xCaw2YAQJewGQAAZTNTBFzgLo6KweYNGa4XjDx5S0y+TrzI\/H\/OoTN3D2yZDwDw+EnP7hnTr8QSdS2HzS9bqJOkaEy20ZvxfAtlpYkS2rL4smAhgn05vamDRm52DL7Oy9SXr0LWbVp84rTbqnXzUPU532viXImqhXyLOWxmd6O5KSaDazAikUhjjJmPJHWar+C1dWsWWQ0YKFj+8o97tBg9ZJmTPxfSTxXbcgqz3id2tAlf18iMjid4l07iXmEXZ7qxjnjN1Jr2r2L9ecHIM3ybJ7TmgS3zd\/xiu4MLspkXk6RoFbFUCssJDqce1LmZFyMnI5\/CmMIgRnMtb\/l2x8pTD1WospiXN\/55ka7PXMCRvnJtkpd9vVhni4oLfv+u6dYN7huNttcKCG9VyvWKtuU2isIl06vUlJY2rrlqUJ++in9cPgaFONcfGit\/gE9FU\/DxH19bu8cfvTaRWVRUU1FHVSZqSRTs8HbNcM5xxlt47A8KJdn59RU18qroIfKrGbiq+xeCPSECJ6005z2ZvkeFOIelnnYatO0ekQbfThzH\/C4d9uOU2J5Gu6oGBjiyDkYCEAjYxy9eooMXr\/pzxaiqBQ1zxsaFMFsWi82Sngatrjm85aceqgQsCWkfgRnwRyYzhffW6\/deza1KQ5izlhfRIaVlXHN4ewfR1VdBiVjRtpzgtSh9Y4wxVwCj2MyWwfJqxpraX4vRMZthqYnOY23x70VkPtDa1Pw9DpXWiEQikxgdkA9pVkzisFnjUYUcNv9+0rPb7BKhdyQCFJujJgbbRHDNfGvqF86zd7SOvBcu2WLbyvV3fzA8a26cIQCgsqrs5esnmdkpLa3NWpp6DrNWqqv2BACc93HX7WuYmv65+GcuAwAZSZKKokQfdQpKjOLzmBcUlt89zi9pbBEe7MB8DPxsZmHhrWnRZ8qwLpH5o517LWcHFjAYjNs3+HrZQG7JeTrIfKY4U2aCH\/2m1tbodD5hNqm\/qdBrbYxMBAkdjk1ogu4WK52rrvoqZ39Ibm3mMzpNWDuvWw+VR24XBC\/JfBf\/8qXiPp9h0Aa7zS4ZUXXhszJmgInvgRvOh9jGuEeZwxz6E9Vh7CaurwNcQvvIB4Tb7HaJyPdu3cRbbW6cYXXNr\/vu679ItLS3s8XT79q4nNz4UcYy+WWtP8rb0jO5AoXezqA3tRWUtTMaujGaueoiFn0FQfmTCghPqWgkHLDNgVVMSLQl2xODjn25An+4eERYcMEP9LLiQPs4GmCzQVRzHhG8Sk\/h9S5SkJMbpmsg9CoLg\/7eEc9RhR9yMmob6Ip\/PVShJK7+SFUyh2hB\/j8HLeqVetWXKYcyotH6xqBJo6QROTJFQlCxzk\/M2BW+GaerUDYH1arPUiwHAHDYDAAgzmbmXMK1KHhu4IwH3PxBtnuOCb7NIS\/vhb580A7aUPPbphbG27TGdqwPMIlBQmpWrV05fIgV6gwtgkqdiKdGkv\/EZZBlpLA13RY4IwdfRpt+OYi2nCb3168KGpvIQn4V11uqvr7uqs9ZnI5y5k+iev3iIyghlvdPK8MBZJLwSXA\/jV6Che0dHc\/S4\/B7qGROc179K30h37LlwhqXRb3YX6H21rbcWD4f694D9BXUlKURWa2BkDetva0tJzYFp6v3FSGFYxavvDcb4qrGi6Uh\/pzjtmWQNHYzHtjrJnwSLA8McGT9u3xhdvCLO+3t8OV0TDb\/xZ2HF+kNfJb4pEERDzyYgxO0Gx0ON12fLUfYOrSmCuUbhu8orRHOyJS13XSelOXNhmfObPjrV1X9Ox0APWiduRbsgLz29vaTHvuqq\/FW9tG94meMeMK7sr4uLIVPgbbuT2g63wNjqhqWmGA\/Uojd0PeKGgB8EQAB3b1nnP4WvI05SrmfU5sb+Mz2A8aZsw70Rw7+kQwJcch8Fz9wvDnW7ebB4pKVn3mcjP7ghNvPm9MWcY4pN+5C63wfOpIzdROEJAUABgmQ8L7wfbUNDA0GNTc3pWcm\/qrgU\/cbmxrex4bbjnfoeZ1RspwpZcxSJyrlUwGgzTqGTs77PJdto2QTul9vKSxCF1diOqxgsZkXFfUGAMBfifcfIueMtm9ra\/U4uCs2htByOgr205DAEDovvxeWugZoeBKkuNeLIF77BgBAR13IL2LfSAqQSCRB34+oL6nlv2vUMeiOAxabmewUsG8MGMvOUGFgMTjyMsSGkPsxpaO9nUzAO0reQ79+L9udMNlq1Krkw36m+0XqJw59oVM3v9sXGxrpJWWFF0\/vbaDwDTWZTF7o6GJpPrH\/q7TMaSZtba0XXRd9ZfCpEy9uJdqOd2CxmYU+fWk5uhEG3ydi9YFN6EE60qGf4arJj3LMzEmz+yNPMrnW+++vtHTH8wWsV9W1Y6kcUhTS6e32CXEfz3t5\/CyGh7kXFebX1rKDaJSUVBQUu6EqsNjMiwANT8V+B2uz3YSqJeFJib5vwlGFOVUlpmTu92TaLKRhVN4bV3VUtcKKX1BPprb29lNBTzyXrcS\/NRY62juyYvi8FLRM+nGscuq6WgpqSnW\/0ImFmumNP5IydYYJX87gsJkFFJslflPbu\/FxQFT6QqduiJy8vo6xat8+BUXfeMtnTl1kac7kZeZ4k81PfM\/OdnY5HbDLfVltHTdsqk0tm3N8tL\/MnkzmtwuHzVxCm\/fHdOH\/UYZJaF42AwB0xxdW2xyvlFIweMkOf8B5GYb1kz15ZNfrSEjyCg62uHBNbyQSad3GHfYOeEmjWajNFh4ffiE02OtZkGC5X0S4vfkoyb\/SLiSIDgCazc1trXv8MYNGH8fGaKmqbZwG91x7TFOfQ2UnePBr0lslw\/eM8xPTG+v4KDVgHN8+BAYjBycEQ3ydM9\/FEyE0Ph6FTAEAk8GC9BXJ+ICChARlvPVMzp9nZzuzCg30BsYncTPMt7W1Nrc06ZTE\/Owzfk9m0+LQgNtTIYmYecEm9IcZHSpWEpW1EEU9rwzTb0kQSlG7eFPt5ZdhqitDtarCfPDYjAKDwfC95GVnP1dCAm47V72gWLGh1mI6Evuc\/ZpteHTjggPEQWxvwK070VHQRr6VlrjaXjwXiek619DcPNfz+JcfmOkt\/2T2CKyh09zmQiZSc6jllKWz224+mfzo\/QmD34A\/TPG6321evYFEIhnbsFfgj9hW7AtX1bcwhRP6fUJNHX3hQbQHEg5Elb6doa8gZGRkKRTJPp5IwI99ljwxxdJS6CC35uamn33YhnYom3VI3nkM7g9nk2P9V9mfN6j+ryAziMra9uLKNk0VOI0YxVSSJleovLy1aNIS7uw4PhvuZk0ikaaYq4RfgaihOJCWliGTmU\/cwTvpkYsZpzw1S2GQYV3FBmbnY5\/T3yQbjTXNYIphh2WjFJEPtXyfkV+1tVhsZuGFXppN4vCZQ+BrdS8S4\/HZzMLN15GuM+0RafTjYUqdm0+Y00eH0QBU7ktffWTAFabUWLi\/r\/8hxVIar3zWHmwor8LWN\/aFqzK\/gUMHQI13db+q5zuhw2Tm7il5cJQdmdFV9H1tFVmYb7WssGtSBf1wpaPmxzAwTnRHdtbQv7wwGTgFso0GL5u5hGYKj9HyUEIzWfK10dFKHnqKl80AgElL\/HsNQH7+jdeN+QontOUAWSPdHpu27b3qc45Gw3OS5EBJWWXbTnfSH5saL5uZEwBDvuQYLDazgGIzAEBFQcGyv\/GHrAzouyRFoUwdOnzmEMzc3UP19LXV1At+QfJC8YBsYWgIZTMKLDYzxUzA4YKULFo13\/hz7Bvc7snJaJsY5id9FWwq66lDz11slykWfecagUCYKxEWfW98tls24hl+h8dFTyjZsvQ343E30n+XLHhnDf2aZseKYiGbwrDAJbSZnrSpnkzyN4ir59OPNCxC8+KZr4uds\/fPdPqll2vWTfLxcPhYKAV3gFxpqwgAmD7TcfpMR9YC0toVc79\/Q681Pnj6qnt3ZZZEJ5MJ7eDyy2GX2qPjOBXIJFLA1u2cP4uPT9XcFQoAmDgRiYiAeCeSJm5mRHAN5H3U1KM9ThDpCUFsbpt6lhIq6L9BIpOHH3oD7Ceg6htYDIYS+vMH\/d8wMSxU+ko4Lm5\/eBsAIJTNLPQ8cxMAzDBbAEC1UphS9WQiTRFBVK2enXzVVw15AAhFHPMpEtVhPYD+D8FK77805JW1PjLutrMK3mjc1Vn3nj44E+I99FFWgoPhukk+AICKsbogBiJ9jbSlxw7mOlhLYNubJMgSOGehwGezIALVLK8W3kvTcoKymfnBixCy3NNJLHDXB0fAnwVCvoW6PoP7A+99gvULKm8DABmTxipSSz14FSuy7tv+8LbKtLmVISJk7MVHWeQiJQDPvyUGovfF2N0EXvFEc\/9RfN8ucrZma70xcRKzDspA\/fE9H1VfqpI8ZknbHQNxyBy+MmgIogxAVYIDO19Wzs9WVMovDnbP68q9C8bdS+wY+zZKfZsY1za+oW5cTmNNAGUbqI1yYn5GC6qp2kq0OI81w\/f6oE6RW6gdUnjNDjtydvyzd7f0e9WW85HgZ+Z3T7v1jQ2Ci02YX6qPL6igmzhTN4JsLlcLV\/8lxPuKKbCGdBmbAQDuF\/BWBlLUUgf\/4ptZk52t\/YtGclXGI0tVSbC13+efaAETXuyOob6y5\/54Zyo3uokVwbv9IDvc6KB\/JVRJnTAEsTaR9fDkrjypjl6F1d17xpir0Ap\/4whfOw0Rj81MEo+lPXy28M4XKya5xWUzc\/amxLxWkM0AgA4pmv4pvCUe5BP1ld0YQX\/RlsamuorqVjpJ8B9WU4O0+hBk8\/5TQbLXRF79Uf9lizwQHpg8WFLM9Dq3XAll\/VPtc4h7r1\/odFbsEKxe85Cf95lSPSeT+iS18NJzSE6wXiqSD5aP0B5Uyls4bRASksr3OVgbfHWEjOP+W5D05t2oEu9Hj+22kO2BFHjomP0B5iT3vUWEv4GvoA79ODiqu5Ky1qousxZhodCPz5Nb\/0F57ly0+RkLYwu832gLsZft8Hp+cis6UzWv5SHzDrm5VvzIIBZIZPKuF1dkFYRz7r8fUg\/PzbwLKwgif+YoZNXz9r3zMZ8ieEs8j\/gryKPfPYdV7Z8OvSjSYA+poqdmrWsxAMBreD1JcGvktnYw0\/1nah5E8RjWTzZgp4YcRhBK27hdlNfHwxPoa8+XQ7P\/X3RRh6bZBQBYjrORbkZ\/XvP0l7RTRA5nLPRb24UPDPVgUEgc\/WTI+9lW65DoS0KUPBzDWWMVyH7QqbQeHNjvXzd4MjsasmsHoZOtmcvEKJK5NhwsQl+csTu1L583L5TQgjhyxXffaufD\/RAIoQEApdXt5q4\/2mGLxyY60mfWqBv0giTr6GAA39DfJx5WQ9m8Zlq3vU7KWAOtlfdQJELj8wwLVW+ppndOiXEhzt1\/+ZmprUJH1Ytk95WvbpKvgccRi4oCBZWo3kbiXSvSkI49U\/JmCzz90JePvQeaF6EKu1ZCozBjHBL8mt856axD2uZHbEez2U\/CnsyeHHKg91yPkroGtA0\/La\/Zdk\/RTAt5O3OqkbaUqqJEUyujpLItMon+6F19djHGsqJE2ZU3EVcgi1zCgRrovf0Qj2wxN\/FWtqbt0hu9ThO9sZCo4oe\/\/ioQd\/msFeZiDdRwxmt8uLhoR3kNHwPGrnKQlUfadqRQTkKSqe6\/F9OLVt27HrJbVE9ajQSjo50kxMRZ6LfWbWLdwQi+fMcP5ChzG4RnTjqsi+z\/Tn+zpWfaIwsTh1jBCgPNi1QmLK6MvP04a8gcQyE54YmDLPeoo8EBeorDZvTGmyxQR22mfTgrgwQkZjhOd\/vR2or3NZQgk9qh2Z55QSkhSX3Fj+WCSmiWDi1Y2UgOyYAlxsXCw8kxjmF48ZXSdsuan\/GlBer893piE99CAO90zexZepLdgO0pW08N9qoqKj03ly9Dn4KakuvTi\/g96V1fNa4QYo0GALzSMi6W5xs0QdHrqSPrmse35lW2bGOPG5ipRXDwQTl\/VJWQ\/EYMBmOX+7Ka31zrB4Uiee74A0lJ9IrjhSvuXzL4HHrddnr36tlHsE2zEUjSZ9i6QXkbLbZnpkUJN2LswoLPWxlnWu\/eZ23uvWxFTra82KEiDCCZS5KE2LZZ4Iy189I5WJNC1vH+LZ8Pn8FMLeCZOt91ENxnlyBe3ps7yQliveIoD5ujbTrTPgcoer33D0Y5heZ2U\/\/Qqx9+I5Id7U5ZsWSYHWnIdBu73c5Cu6EdXFIwA6IzbFNDTv\/CFBY7Cxef0BJhBwIWgp7fCnv1CFU4auSERXM38K6XxSVGX\/P3RBnH9HUHbHB2k5ERnv+WBSah8aURA5BBqw5o7YNjAYWDXA+kMkh\/pgJC9TMcQo+bibx+yhxiHSck7x7mWKct9TC5uZd478IobW+Ttp4w4RNLYvg8RMh0KsR\/Wl6ySiPf8lO0Zv98ReHR4welq6BLhlQlxR0hPswBsQm4fTTL0\/yI0KbKyqk9eHajk+p3siV7B7jaC6yE5O+c8vbJC2t07tOX8UPqlj92+IIW1bV1Ndf8PbNy4FGhfbT0Vy3ZoaqisTjp6LgsuQ+f4XtRKyupLV+4TV\/XmLdwZsfap2QIb+GTQuZ8+cGrwLnccOJwjeyYY8qP3tc3YIdUcTCgj\/SyiYo9NqeMSRayMw0HQiU0PjQWIKV3RFasxaAvC8QXLxhHzUh7MBOx1ZZXnZ6FMvmR1o2i9TgF34STFx8fhIWdgwtLZ7\/DmsbwKCGmEmxbuT9chfkuKSMhf5Z+zYyRpK8ijJ62C1LgDam\/WxI51spXfvW2Z1wiXuiGvq7x9o0nwiIfBYXgbeMCnURevXJo5Wq+rShHVZ3BTGPAy2YAgG1pP1sA9jgpR6c1RKU2ZBS05PxsaeTJUNNLRdKgl+SwfrITzOQMe\/\/RjXjYLL9\/YP1heKaIK64PV3viEQsF6Cb4pXfoDfIhcvV4G5X+B\/RlYdZSqaCb7MkxFpvTHU\/nWv\/soYx21dA01pXbhQ6Yg8LAYjAWoTOj47EIrTLFaX84mxkhVXRtdaSgnI7D5lZfHUlndORygTf94AiG22e09RbF5j8yWC8x5X07RvwgmUzuq81Urnr36islJdPSgmnq0dGG6GAoNv9R6LcwJbS\/U+Sie+iRJYLmVgatsUOSQpKXFR5aqr0eKbjI\/MF3Kg0WqPAJ42NTSvLVNhKX0AVmAdpJQhy9\/zP6QqGoc7Q2D2+bARbWDDqihvCpDRlTBz\/ey83z+00hUa8OcxtWr9kbf5dCFrBUtDQ23vfi\/Elva6puZmo1tXQjRYTriihBIveU445Da0dbeeNvBv\/cXZYirSIN2fzJa0Xsl8HtNzawZdZCNSQAW\/PGQYz6N8tyvcRFp4f4i7nciwKmyiGIoTORhKfsTk9o3Rkp2ZVOZzgqh7K7XpX7N\/zLO0\/fc3VDB10dZr1VZDY\/vLrFcSUhmcoL103p7m69T01fi5oDrfRx1zIRMiPkIPDw5ZSwd9BTG++dVtFmzvkqm+tGPttAb4ULv8X6E04MZweMTX25N6kSMs43rFxtNYfZbWx5dh5tlNCRQfKa6L1mID+DxTSkcjv8a8l5NbTWYXv+e\/hGXWh9\/SFIbiLkpgQyJ\/2FSdOl5X9dU3oDo+WAffvr4Z3dlfGH+fUmgy8AwG0pVe7fEMvN9Biu19u\/kL6bFBLAVtAyy0UqyJu3vLWMKtnjbyLqAmqjNvr9J8LmL1u2DTxzmnV8z6jEKaOn57kBJ33tGAy+ZSMZqlzvAfpYjWzJX32mL19CZXXd3liVM98ljF40AwAgSZKgkDANr7wSurs0xEOYRCJRJZmdFGQzACCviUmpn8H0rM2bDM+ew7oLL2KS9SxNv0Uf32i1i286Lshm5sxto65eeO43W8iYQNmMJ6E9dr\/ce2wSqvChWqPjL1kAwHJb4TsxikR0HAn9v1UexIa6I1L+EE9u+a7aX\/yVTyIaWQ+fd3QLAECpgFot8OYIIudDUsB2+MKnprGes99h1nFiZe78qKN1LQ2oOo46VufMuZtf1bTQpobvza\/nZrpSlEIuW25afsAi3098ARx6YdPUDWyuN+n7yuRyTYqt540kN2aI3TIUXELvjDp4wsZtqBsl4aAIG23svnf5mBPXJCc20aGEXrZYT06O7xvy\/5a+UHR8oJJHsYf3LILMLiL1VmL\/WZKd77MMrWRPc10+\/K9Hvx8FWdUmhEZFX3L8VmNGBG99cr6bhioAYH3tghn1W5ZG81HfsJvWqyknJPjXFNOq8yeFcXerfzn5uImSCJtCFA65rZXI3VZ0WvNWA7cFPtqTG9b+YpU8qdWYrVhKvEEcOI5CbB33L9+E3lufT0JLJlNbTWn9diPZx+BDGSzFmNGCnv1JX9ZoXiukl1hEn7aQvS\/T\/Uf5VVVo3xFNTTNJSUyLOorB91KsnQaLk9yjM7CVQuw0GtYWEI2MbDK8LJPFfP9vbTr6PR5t9lnoucPAwpT43UtzflxeihmTZ7lw+sR17EDdPOdtTlNbCmm\/OGfn6lqfHQlZHDALWlvaUA0AkKINeptU0feKyNMDXizsjQQU8XEprYVqwu8g\/mTEl9mfIRmKsTBfH7n7N61MaRtVg8LXGp\/8a\/2TNhyLzdOVkectdMlv1FY9viaEspkjlfGVB0G0VGpLarCfgVAB\/N+zmanktcDHakXS0WtmECsHi80xd54LsvnPhtjwnXyxUFWEN\/JxjyNGOtgqqCoxZ2++p0d+vMRL6IY2+DTxd00ray6zz2qwou8P+\/e3A0eLvJczByw2H9v2evfpcTa7OqKOk00Ewh1EYjMA4G4ufVhiaPyQqR5n\/PduQbcG16GnzUBCCMxbH\/b+7VjETv6y7tS7S9v59qUUSfctKUlrbkbHa8lIaKvJ2pMEVijFm4YumSV9K6gLkuIVLNmpfQti4el5GCnZL2TQOtrbw875f378Enq2l6GO87Uji0dR\/WPZ7VQemqxyIAxaubW5xc\/5QFkuOgkqLyoldE+H7mJ5SN\/5\/sb1E3dOOfC3dMR6tBmbARh97i9s+ZON7t10L32FXnL3qQ3zRAt90LBBSqO44yA9dVVzKDsP9Ax9JDi3s\/YQHPx02I8mtLdZrUuS4h3nxwt854jUlthTNwCAy5anYaHLXr2EbOtkYGj8mTp4gzHy7G4CA7RJk3tQJTFfaBTRTQJz0+wxjQZYGBL5OXEC12nEapNs9Dl07PqlYZXr4tm75ni4vtnrORbdyr5R4MgHVFkTreH+njN5CfCd2lgY5+xotXSW4lVq7Uo8Gs2WbZm08DBqTgmFipbGIq9d3XuqZdcWW4dwbb3dpanTtZVODONTrAtov0Y+28B8tRCVhJkXUU1J2K1qf+Yn9I4AgAzVBKOKoURqioewRf6T\/dmp9zxqbfYqRp3XBxv\/pIUSwQ7Ni87QF6o8RL4MOX5Y+EoEAMDz\/FVTM24S9S60t2TcHWU0H81CLLh8POJtDgliheLCwMYNX2T9t53I\/YiXKZQVdbL2xtEe+tq8hWdnZMcUmj1OYcs2BoPhs2xPaQ6myxcKqn16bbjryQAMw0fLeW0dcTO9v034YhPLfRtDCj+veu\/F1N90bbxGrok2TLLKMiN4l\/85qlc4K13zZerQp89d2baJuwXiBNqBSOohVO3QE7un7jwG5bEY9GW+EhF29hO5cfM24ybd8PMuLxOebl6SwhdbgEVWXqJDSS94IXE2Mz9lhNkMANjwRTbBxa0oB75LNC8YHR0FqVkoQm8O7rfFxYoB2ImmmuobiLMZAFDx4+foi1nv1xuOVOsfUcx1UI6vyLaPHas\/GMn9+6p8+sU2oo3vxeTxf8DmCWvkIn3Q9kQxcOzk3d3XfEWT0CsCnl5byM1HtnIRZI4sdOq2Ynv+tVNwS1BO1tctLsubmjD3tGXqZ1paAcI2nMRBl5vPObjW0meFlBCSxQQEv70R1NKI6bFApkgodm9xvun34vUmhzk3tfIiC3XgLgmhp2\/EB77pYAg3sEpKSxlZD5\/ttr5xyOmAu0YHErgpNez7Wl604EuHbhG8Kb++jNQukeN0jYptXyKC6wtfLw+Ab+v9TyGmyjG+J\/KqBK7dX9SWWF\/QDgAoDNPSmgxPK4qF\/LzcY4f3fM\/NFjylq2cwzc5hmp0DNOPM4uB7I64br39qAgDQT4rJNbM08K\/OWaRE8L5iEz0pq7uZYQ1DNojUOIvgvYTiE6Xi3oKOc49iQANkh\/pwzSLbYvgC4eUz57Tdlk+pw0wJ9K2uZPRzbmZlRSnk65yrHFN0fn2ZRfAmAMAodePH49F+P0Tw8KehYy\/u\/qVfZ543fvonSUQNtfYjRXHKbwCAz7hva15jegIyJ44mSMrzJ4XaePkSwq8tt11xHXqKTWg9feQb7vSzx+eMshFiBquJipSk+NSUhMqKcmlpmW7dldTUepgNHaGiKiQMW2M4UhrXqRn0x2aquTTf6y2U6ByWX9h3f8MR9D50q+4\/7FYufWqTXWd6JR7K5u7q8QCSc2fEsw28xru7Y\/fYaLAzAZxJf3Iy9SEA4NCQJasM0ZnyOg8rGyQ6itADMj9B\/7gTWbe84tJ1oruKcYApoX1\/jHbug469+88QGz3YwkrI\/AkflQ47VB6dJF4\/KHL6rAnobVNoVkeo0Whdmbg4D6tWcrRaf8bUeuXtcU1Ttsu8YJsUoirkbVS5NkonO+TeM7wnPW4q8jqUfkO\/flkuU\/pW51GVdIR\/V08H7d02y4N5+e8jr7uxf4Vb0m3fzFBOHTttCx9L9jY\/5sGbfvxZ946feVETwdv5mIN9mSuP9EfnAdwUc+ScJaEJRkBzzwGWPoPj8TbN50XYsd2Tdx9DFdo\/jAx05CpmYqocgjB1QpKxw0n+JzCrvJKkAtnvP8wsaXKSmZUVEh3dZR1etzetKTFZaLXr4Usa3WxkD7Ijas+rIxvL\/9NBi6vItovgqhMUskScnbeGnFLkz6TFb08AAAYr64bZHiXYmuml38nruFnoza\/\/+LgcEv+HwmX7pLWB3Onmi8DZU+wxt+mHwqDgaY72TN6StP1rTA778BF6r\/d9Dxf0R5Mg\/O7sjM9e6HtItCWfzqCondpb4p8nwHz9vfc4XXY8dvz7\/sNGQ7Y44SB5YKTpF7453PtIc\/Ugi+N5QmK0iExDn9i+mx0+BqdC4zuq7BjmgJjOQJKxF8UYgGEauLa8kbskOU1rpPcolynhezNqCgAAh4cuXdmvy1ItonDo1e4D49EitvNYOQa5+o4+\/\/eGu90udJmEhmLk8cZPu7iT5Yd1vRwVIGFq4sFuQ+uzC5D0IPiYcK7g5IUi02\/oIHDT8UjyKwgPplojoW9FFqIbTkVd2G6TEWRmNAsesUJcb\/H6sHLrKOZnPYdONUDwHpblu5cxY9gOkqqPqRVz4JVRWgcAAJGUYTlMS5IpyfaXlf949D9EyI50QltU8mKzU3V\/\/eDVh5aKeiEKP98q9bKG5Glg4dN3pZG68LP\/ltC8uFI0anVvtqHXjTz8YEfcn6AJajvPPjHzzqTc3wLJREEE3aOoNTaQ3xKbpWFhyPZ5+KXzSC3P4evRhcZ7uJmTXb1CPbdOxWl5auP2UNkuSE+Dg2NXvXevdBFpGjpnJPL4kzjqyvf6Ustg+NaG8\/XGnh7BVdKe3lw9c+kVUdu\/t+i5kz867xmzw8OQx3+SiK69FH55nS3zkXn2rHFlrzxcnx+1\/C5fXL2in3ztqno9C8Rg+\/MXs9BrsYusEH+YxigaoRVbqbWS4rwAS26G31rKNsSY7yN\/PMJ99R0O5z\/aT9RH8apz6EpfPPJhwatk3NaeQnbmg8Iq9H301NEfj64z33NJjMvxkdZMNflrVzHSQTLy4ATtKvO53y+zVWrML8byd6fDitDpISlkidgZ53ojIhsWBGE9AKm5\/jx1OJqF0jL3m5vYaq3OSCTvE91z+WfX65jZKQAA\/XYh1TNIFRZEWSec0H69GauKuC6jx739drlg5gvFQc3idd1vwzlx2vfsNmeIzIjedtjqtGj7jgnFPO\/4+y7wjYQ7CcuVSMzV\/3SGJzbR8+pLx4Zub27n29Jpo\/HM3YPx9i7sGZtZYtGfFkelDhdOr2zH4\/0esp2V73nvc3I5wiTxWiTvsshD9LGSaq4iCqEfrb\/lcBHz\/ZZMoEZse\/JhXeq+uTssjJDYDPq3Sqoe9g2ki6nNml2gxmTdHm24GNNuWDPgavd0+O5pTyOmz5yINsDxYqwd8gbbTCZzzLBpd5ZIXdU8ixRvZjao0Eitk+X+dvWg2gcr662rNEVqjSBGWyHvMaw0Qomu3WHXzydly0fusu5QVYPA8W6SZEIheQ\/C5s6dTDRB+v3wufNsHyjpHK7OY8qmzHZqf+zZfGsRVbI3+my3WOrvrpLQIWmm00ySXZumesqEvra\/Py6QzwwS0ePnxDLIJsFuWz4ePIO5tylxUG4ptS3h6v6LljX73+DGHe4sWHJCm\/nktrdNPEWJQF0763x60Ea8nc78TCtWJbM\/r0Pvfk+YDw\/G5EXZB2qPUf92ytGjIqRMdRrzqzWudNtrDfzKK9SRa4StfoIsL9UuzR2U04Q09SjQMIo3orRSOhMeOsSnMnEN3HqtbLOiKuoakUbelHcbqw7ZctsgKi3HhmssUrVaURF9zSAyI2cCerEPTegzSsiWanG+m2ULXHvc8SRSc68m4lEs5qc5TS3Z5BckpkPXBvlObBWKIORvUOuXQbg753zq443oJNtdi+6vqTXjOvvaBA\/KmJHKfNgV1VRVJXhrZv2QpGw6Qb1laN25BIVNnezVv0NeFlXHkMYl9HQ95Pk3NiEUj\/Wt3Q3ZuWx6y+bnUnwbjgwcgnzBCL7Fx+JJyO2XYvLvhkXeslgd3pJPdOpImD2rQDJVu1V88j285+zo5Cu0mnvGMnejG2LfhRfvtDLHFLKTDD476m63x71LmgUADBiKpCdABnzWi6dBU2ZCLyFub\/mnmH3m65MtxkKrBSwO7aEXM\/7AMa6EvlpvuFJeNN3xv8Ec38+PnfEmwl2IB1e3zl3p9d\/c61\/j+tkTyzdzc9bMGI0Ev6e3L58ncf2+2G3+O3dF5nwdLLn\/NzdGturnfhUj1o9ELv41TVoWXonRgqz7chAbNLY2ck5n7dA+5cPXqMdty1l32qCzVi1jOeQr4SS50msnNV+GBzLxYnbuiSf6O1GFEzpcI8mEtKP\/P+hIpZIHMZ\/URVLf9QzMnT8Hxb9OHdaVTpvr8zZe1BGeZldscZ474Kl+OvcT0b5okYQ\/ewsrxLMP3fWH7TAknPAWWP\/pwgoRrLkc7rNW+D5LLBCcesY0Uy35fegCzTL9tv8Oc+qCaet\/Cb0RyAf6ZfX0xdt\/LjrVy7+rmt1++dGptQ4AAIkCajssGUjw5Y0z1oqTOvrfiXOJMmp7DzhvRSb0h3rqKHn0JVeXRobfvP8YYM5kDcyRnI\/\/j1yX0kzCTNKEeCz43N6\/ZvHhAxsSDl1Ah8epjlhf8RkdcgcAsJmMRIWJ8DPtXgY9m8R2pO4hg5Q1Cb+237eQ3ZPHLM2F5JvjxRbv4DMuEC+2\/t2RrT3KVmXy+Uyf\/7B046ibRjerMpZ2wY57T4ZmzE7A8zT+p3oLl9C7FhYdD0B7jh9RQ\/YRS8I3\/EZhyputLf6Pzdykkg4S2u9+TmDoY3txlv2IwOr5h+jpo7qkqbYoKgW2qC4S7lqnzn87yPWNh+dYQkmsrTYg0Rf+lQj4VUlVI7ZU8TzGerqlyPkhEt\/3GzKaHaWxq3jBcc07RK7CIrpI5P4fqBwT7ZCIv+saL13OT\/Jm7XwJ7OcjgXe75hEqjnWufYNnoJj+7v7zMURdCz2CDu+dxbdgOX418uqKmF19njBy+tBPRGrOWCobfBMvIK2TkDZ1a04+2FWtpXxVGmwMdxiqUn+uXA7x7hCEtX\/620V4qwdCQQYAaP\/mTnt7uMF3TVRWFSGDztEjXPdW9w60qhrBs0rHYTNTtcVgM9nwtGChw3cP3j83jeHLeojPZiarCLMZAIBiMwDg1RX6yyvirP8z3yUMNj9It0CV4LD5hjc7Lz\/lKjqQ5\/6ae5vdCL0wXchmAIAgm7evZ3vbEmQzAKCTbBYiob+cnTNw82PibfXzImdvhTgcOmz9\/cirG9ZVFXFU1T++ATeGFi9LQK8ST4x8ETFBzHAgo\/dxGaOHowpNlyHJN+Bvzte9q409uM5lYU3UyTL\/j2bM\/wKvI63GTYj+X\/eiK4EOOH1fzd0YUyQ2AwCyt3bEukJ8iVhsTmmGb7mpOpyWs4sp7ZYlaL4+sgN1NmLCFEd3dHKgU3oyRPojyGYAABabAQDGHle+fuSu5OOwWcYWzyBKEEMzRRvefwEOm7foc7\/Mpu6QzLmdRGODkP1tR974AQBYbyPmtsoc8EvoxU7gNmQ7RBReMqiTSNyrVt95dGUBfAO5fwSpT9SWkXiyc6EJEpDGJK7uUeT7nn8ytfpyb\/RAJ0zfqRT31YPdRfYk\/ndo9TKR3JpGvP5AD8kve1s7c8csndeGef8P0hgohVKrJgESpcs+tTrTkbzn4lNqiCOSiJtlWSje+s+xXtQpWajwkVpnTpvSHXlRg9kT0y1I8pn\/jV3S1SXT07v\/P71Fvc5t+TzMlI2REWMnTBRrT1UMvG2nWhOLr3tjlDw2g8+3h0\/lGL0UqZ5K6xI2Gz5lr2blPadPbhV\/+wzx2Kzpw81Z30k2AwDqzGn9vwXjsJmpyZyhD84OZB0PUezsdxOFPo8hG6lw4OndP8USvQtg10I+b\/E2B8zMqBMmvolDREvAgg+CbAYAjM0wXXOIb7Pa\/wsAAP\/\/e3lV33tcxAAAAAAASUVORK5CYII=\",\r\n\t\"status\": \"ok\",\r\n\t\"test\": \"base64\/image\"\r\n}","parameter":[]}}},"3847253":{"project_id":"276173","parent_id":"3846778","target_id":"3847253","name":"\u767b\u5f55","method":"POST","mark":"developing","target_type":"api","update_day":"1612713600","update_dtime":"2021-02-08 20:57:59","sort":"2","request":{"target_id":3847253,"auth":{"type":"noauth","kv":{"key":"","value":""},"bearer":{"key":""},"basic":{"username":"","password":""}},"body":{"mode":"json","parameter":[],"raw":"{\r\n\t\"t_s\": 1612775625,\r\n\t\"user_name\": \"muse5\",\r\n\t\"user_password\": \"cok774\"\r\n}","raw_para":[]},"description":"","event":{"pre_script":"","test":""},"header":{"parameter":[]},"query":{"parameter":[]},"resful":{"parameter":[]},"url":"http:\/\/127.0.0.1:8080\/v2\/user\/sign"},"response":{"success":{"raw":"{\r\n\t\"code\": 0,\r\n\t\"data\": {\r\n\t\t\"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyTmFtZSI6Im11c2U0IiwiVWlkIjoiMjAwOCIsImV4cCI6MTYxMjcwNDk2N30.jKw0KNIjKiYwmREm_57xoFHqf4A4gXaeQ3KgDew3z1Q\",\r\n\t\t\"userdata\": 2008,\r\n\t\t\"username\": \"muse4\"\r\n\t},\r\n\t\"message\": \"OK\"\r\n}","parameter":[]}}},"3706059":{"project_id":"276173","parent_id":"0","target_id":"3706059","name":"\u767b\u5f55","method":"POST","mark":"developing","target_type":"api","update_day":"1611072000","update_dtime":"2021-01-20 23:55:18","sort":"3","request":{"target_id":3706059,"auth":{"type":"noauth","kv":{"key":"","value":""},"bearer":{"key":""},"basic":{"username":"","password":""}},"body":{"mode":"json","parameter":[],"raw":"{\r\n\t\"username\": \"xiaomi\",\r\n\t\"password\": \"cok774..\",\r\n\t\"user_vc_code\": \"GbRJNf\"\r\n}","raw_para":[]},"description":"","event":{"pre_script":"","test":""},"header":{"parameter":[]},"query":{"parameter":[]},"resful":{"parameter":[]},"url":"http:\/\/127.0.0.1:8080\/v1\/user\/signs"},"response":{"success":{"raw":"{\r\n\t\"info\": \"\u767b\u5f55\u6210\u529f\",\r\n\t\"status\": \"ok\"\r\n}","parameter":[]},"error":{"raw":"{\r\n\t\"code\": \"\",\r\n\t\"info\": \"\u9a8c\u8bc1\u7801\u672a\u4e0a\u4f20\",\r\n\t\"status\": \"no\"\r\n}","parameter":[]}}},"3850425":{"project_id":"276173","parent_id":"3846778","target_id":"3850425","name":"\u641c\u7d22\u7528\u6237","method":"OPTIONS","mark":"developing","target_type":"api","update_day":"1612713600","update_dtime":"2021-02-08 20:58:06","sort":"3","request":{"target_id":3850425,"auth":{"type":"bearer","kv":{"key":"","value":""},"bearer":{"key":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyTmFtZSI6Im11c2U1IiwiVWlkIjoiMjAwOSIsImV4cCI6MTYxMzM4MDQzM30.XhM57lSUNnVEpU5nxgZn6JS4HnA0EGQz58ZOEy9Kf4s"},"basic":{"username":"","password":""}},"body":{"mode":"json","parameter":[],"raw":"{\r\n\t\"opera\": \"search_p\",\r\n\t\"data\": {\r\n\t\t\"uid\": 0,\r\n\t\t\"user_name\": \"xiaoli\",\r\n\t\t\"user_nick_name\": \"\"\r\n\t}\r\n}","raw_para":[]},"description":"Token\u8ba4\u8bc1\u63a5\u53e3,\u53c2\u6570\u89e3\u6790:\n```json\n{\n\t\"opera\": \"search_u\",\n\t\"data\": {\n\t\t\"uid\": 0,\n\t\t\"user_name\": \"xiaoli\",\n\t\t\"user_nick_name\": \"\"\n\t}\n}\n```\n`opera`\u6709\u53ef\u4ee5\u63d0\u4ea4\u4e24\u4e2a\u53c2\u6570`search_u`--\u641c\u7d22\u7528\u6237,`search_p`---\u641c\u7d22\u5728\u7ebf\u7528\u6237\n`data`\u53c2\u6570\u662f\u5b50`Json`,\u53c2\u6570\u4e0d\u4e3a\u9ed8\u8ba4\u503c\u5219\u4ee3\u8868\u4f7f\u7528\u8be5\u53c2\u6570,\u6bd4\u5982\u4ee5\u4e0a\u53c2\u6570\u662f\u4ee3\u8868\u641c\u7d22\u7528\u6237\u540d\u548c\u6635\u79f0\u4e3a`xiaoli`\u7684\u7528\u6237,`id`\u53ef\u9009","event":{"pre_script":"","test":""},"header":{"parameter":[]},"query":{"parameter":[]},"resful":{"parameter":[]},"url":"http:\/\/127.0.0.1:8080\/v1\/user"},"response":{"success":{"raw":"{\r\n\t\"code\": 0,\r\n\t\"data\": {\r\n\t\t\"1\": 2004\r\n\t},\r\n\t\"message\": \"OK\"\r\n}","parameter":[]}}},"3706063":{"project_id":"276173","parent_id":"0","target_id":"3706063","name":"\u767b\u5f55(\u540c\u65f6)","method":"POST","mark":"developing","target_type":"api","update_day":"1611072000","update_dtime":"2021-01-20 23:55:16","sort":"4","request":{"target_id":3706063,"auth":{"type":"noauth","kv":{"key":"","value":""},"bearer":{"key":""},"basic":{"username":"","password":""}},"body":{"mode":"json","parameter":[],"raw":"{\r\n\t\"username\": \"xiaohui\",\r\n\t\"password\": \"cok774..\",\r\n\t\"user_vc_code\": \"\"\r\n}","raw_para":[]},"description":"","event":{"pre_script":"","test":""},"header":{"parameter":[]},"query":{"parameter":[]},"resful":{"parameter":[]},"url":"http:\/\/127.0.0.1:8080\/v1\/user\/signs"},"response":{"success":{"raw":"","parameter":[]}}},"3847398":{"project_id":"276173","parent_id":"3846778","target_id":"3847398","name":"\u83b7\u53d6\u7528\u6237\u4fe1\u606f","method":"GET","mark":"developing","target_type":"api","update_day":"1612713600","update_dtime":"2021-02-08 20:57:56","sort":"4","request":{"target_id":3847398,"auth":{"type":"bearer","kv":{"key":"","value":""},"bearer":{"key":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyTmFtZSI6Im11c2U0IiwiVWlkIjoiMjAwOCIsImV4cCI6MTYxMzMxMDA1OX0.MaarnYfT-h4EPdha1AiuzOcK4GC7pyrw_fncUiQnAjU"},"basic":{"username":"","password":""}},"body":{"mode":"form-data","parameter":[],"raw":"","raw_para":[]},"description":"","event":{"pre_script":"","test":""},"header":{"parameter":[]},"query":{"parameter":[{"is_checked":1,"type":"Text","key":"uid","value":"2001","not_null":1,"field_type":"","description":""}]},"resful":{"parameter":[]},"url":"http:\/\/127.0.0.1:8080\/v1\/user?uid=2008"},"response":{"success":{"raw":"{\r\n\t\"code\": 0,\r\n\t\"data\": {\r\n\t\t\"uid\": 2008,\r\n\t\t\"user_age\": 0,\r\n\t\t\"user_brief\": \"\",\r\n\t\t\"user_contact\": \"\",\r\n\t\t\"user_name\": \"muse4\",\r\n\t\t\"user_nick_name\": \"\",\r\n\t\t\"user_sex\": \"\"\r\n\t},\r\n\t\"message\": \"OK\"\r\n}","parameter":[]}}},"3713550":{"project_id":"276173","parent_id":"0","target_id":"3713550","name":"\u83b7\u53d6\u6ce8\u518c\u4f7f\u7528\u7684\u9a8c\u8bc1\u7801","method":"GET","mark":"developing","target_type":"api","update_day":"1611072000","update_dtime":"2021-01-20 16:51:24","sort":"5","request":{"target_id":3713550,"auth":{"type":"noauth","kv":{"key":"","value":""},"bearer":{"key":""},"basic":{"username":"","password":""}},"body":{"mode":"form-data","parameter":[],"raw":"","raw_para":[]},"description":"","event":{"pre_script":"","test":""},"header":{"parameter":[]},"query":{"parameter":[]},"resful":{"parameter":[]},"url":"http:\/\/127.0.0.1:8080\/resources\/new_user_vc_code"},"response":{"success":{"raw":"{\r\n\t\"body\": \"data:image\/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPAAAABYCAIAAABEeO1GAAA3UElEQVR4nNRdd1gTy9feNJLQu0gHAdmo2ABRFOy9IWJv2AUb2LBgw4K9IXqtYEERUfFaQVCaDRABBRSlNwHpLZDyPZjclM1kswnh\/u73PvljMzs7O7v77tkzZ845QyxpyIS6BkZj4KKoLNFy7dUrqy5e6qKT\/v\/Fp9nRA0JHYa8fNu+nW0gPlApffU\/38tuIUiEyc8ZY2gNp+iiEi9fDVru7QRCUfWmj9crTMrcjX+B5WxdtddGrKpydiLLXejyMKOGwGWeYiCgXx+ZXTuUQBOludxUs\/GRRW30A7alkrriD3u3\/IFJVSaKFCDZr7ZuK3ohbSI\/fz5xRKph4XSJtXIdSoTNshiCIw+aOR\/+fYbMQoTNTFgruWNsXSdBz4W9428+DjiH2Zr\/ImpUTIXoCdrFjd6P7WLoyOk4PgqCKw+GfY114hQN+qGvuQrtftMtziw9ux9L+v4kGn20oe\/vXt9878AS9hd97Ht9XtRYtrxwSzdvWmhjL2aBu8DDdy31ekfb1nA1lzcz20+ek73tXoXssTbRwlR6SZtihTrZUJ1siCnHiVA5e1Vp6jsynRIcnDJ\/PAugkPDQPfKmYMg57g9ctjd1zCjnbYUq97xOYofVi27cygr8XoZ1946Gq0zu05\/iq3PVrwN4HHkLYw+bh4l3N4PA8tLOgw2YMnB6VFXL96jz3ZRIrp6sQbBqYMp\/rX4DigJDI4qVDK1qlPXCG4wdESUzyAs4Ggp+SCc2D4JF7jeG9hVifk3oCrXYo4Cyj6++\/Up2JsREELqjCa0Bkxd0axl4Qj6WFmr4JGmlDeX+De+ku\/lohW2ekRWScy1C9U+h17k7vvTSzEYIgF6r\/wxYfCIJaC8tYrXRgZVa6m\/LMJInnTabSbFtkHDJdsTBf\/iNXtmMRUCqhNRlg6oYojwWpzAGPln2OwBnbsgCErg6dpDn7qSihEcdjxLasgCPwWnF79Qi0cqZQB1rOzqWu56vFw052i\/f+BTzWKT09zsYG\/ezdh5wqe+uFKFx288fyJ+WDQ4ciyg+uadx5QRm9QVEs0oFvVPJfrYVO8M04wJum8YlWM6DjSn+FPv+6fJfEZglK1EFJYRSj7py\/P3acKjx3S1xlkoaqQ+pDkpa6tJ2XI9Z9DDtn74axckK+01DTON7fuwefztk5ibMNJLEoj3mQIKHXZl8LsF5qvAquD2Kg96mWnnOFOmx5C0Acmi6E829mlZvk6BWA34oOnVuRZt3cVQYW4185hd0s2Zs24k7IZ7zynUyzokvo7aaMKyf6LO94J9k0Kk5s5fxjV3P3B2I56aCPYUqwOWf7y8KtFY+iUSo7fntO1pcwrAfimBt+SxiLs12RQdPtg3aZy1d1u\/IXWL50EliEMRCSVY7UPNv+ZsniJLTEFkWR3r3FpowqWDJxLfwsgC\/GnmnrTawqx3g62bDdAT78XnZdVhx+1NIs1LG+lh8TXe0dw1n0tu9e\/qU3AQNoHvAKJOuAXXpzJ\/NKWgtKPzrOZdQ1ilZW0Fa3Orld12W09N3n4thElS3PuOMER3U4sbZTN2riePjZC6wtyMxjccRDEjpiWuG0CGPBEtmY7VXtd0rTV3Cv+Ug4N4Z\/nYp+bs2+YegNhtROnqcuwRoAxJK4N0FOw2U4UFoobV420fBS2EYC56\/RWLgoMktr7tbfd46iH9iY8f3HjlPVbz4C9\/aLCNQcOQhRWPk4JmP+FsESghLVZONiI895BBWlzl0HGLltNHMFGb+iU716PD71U9xeufOYB4CExi\/zZV31E62KkdkYlWyLJ4o\/Jjej12Fs3Ug8+h+yccodOdtPFgXcRhTiyQrO5fE4IhFRzm5vf63pwPur4WxHu+xH7q4jw3kXH2kL3qYgU5eh2Bt7nBft42ynlPYdqJ\/G2+UaSA\/3IPP+HteFN1fwRZi0yjEC6LyqcojRfj9SyA7NA5DNnBZPDiqQeGKOdRDI\/qip33jbPyY3G8yTYIPEzubRWwEm2y7C3bGA7z46xqQlI0rq51z0KDtjcWCDci8LxC4Wva0iPEq0kfJ7L3jbSrD5iYjut\/fViTvj6mS0SZPgbQrbphhj7r4QeGyGIIjD5nHPSjh\/wz3IPkH8bw6HzTMcP3B+go08SBwUk7yA85N4xlp6jkQpyWEzV0KP0YajqqRWm+SoZEMQNKki\/KmuK0qFU4+DvaYuxty7\/xwKyLRpE9mfH\/Lvc+Cp6C37qSURCp8mrUJUppoaOHwKx5H4E4r00ooP9m48Hdo2+rqqvU3Hg2ygVakIfWOpX2nEGqgBZCeVAaHz8maHmMlwIFAeNyou+RgnwdjAg2wTIGLt0EBcr3V1Vw\/n\/f17feyUs87yZTYEQYNnwO8eyH8AhxGpq8P6X8RqfhKHTZl\/naAhaQpB0CIr+MZ3oUsLciLaGntXRCAtGBYHNuYdWe5c+sfwzIY+T1tT\/Zor\/AyWuvY8s0PsqfNOnzDb2NLtC\/VXb2m7PTv771DrKRKrZVbTaJpg2gB5\/CBxkNxJIg7SERoBNpPJaGhitdIJihSiqkrnO+2XFOBrxzVa5zfQTP+RPTev3Fy4fKG41m5S7Re2gEdX0iJYcdDi5g8uX6If9pbCTwiBbl9pv3pl1hTRNIww3Vt6cfn7Aa7MFqH5M6Kq8uD0CI5pueRy2Ddvf065gq6WQ+oDoirfXn7r3bYFg48spO662XJA5j5zcMdSd+6QdVCwr1RHiVOOZeYx3Sqe\/H1Yx\/vvoX8jsFSqzggR+nrMQfeRO3l\/1QZdCSXNGJ+gKXhAU\/bPyujE2nefGjJzWgr5J8MRicqWpmq2NmZT5+qNHYfDA7Rz9MvgwLowe6XFVu+2xxAEKafSGvtzu+c+Ab7+XLLYjrGvHvlRE8upO3T6bupjftViqVkK0fQhMDu3lh082n0nonAwFPoOmo2xGx1vr\/\/l3IMXEYW\/lmnNPR3Zklf80WE2s5lL997XD+nOBLsDwA1vs1SGYD8pDyTHG+2JiyAIStx93aK4tdu1NbxdDMcwYiL4eyVOGEuljoqTbpNPkZ94gadF0cEl9IPk1TNsL85aZXnvL2TrpoX5V5\/fH7VyU\/nDl\/mBN+s\/S5Y6VBLZ1G9j79U7cAQCxn4IXpXuI5pVj9CEPn0Qdc4Ve64zPC9YMrf1zB3KBkQ1VhwN74T1s2M5As55\/T9Tb3hg0ds+DHRtKRCSRjgCwT4x5IGnt0EKd9RFNDJ2ynz4P+ojF3Lk8aSglqdLqIjydVOsz\/2dLXP3+BK6LZOmQAPzoCYxOXvHsYav36VqWtm6R7\/gE4o9TDr\/vsqASIfase+lngr+duBgz11IcfvvoOrJm\/S5mxCFJC319t\/cbwiBShmUFEYx0UfUYb+n4Ry6as6Vhy6Vxzz0HAZ\/i++QL9e6wUt\/YRU0Y9TgqDpuZb5iAGYzi5Wz\/2zStBXSsrljSJv988PYhXVJ6RyzC0am8qx+6mTL9HcTRCsQD2P6lJ+eL9lASzyGtKv03LVzyxDZHRo7A+3Jw7VGIxUGHps7PpU+y3lsDsnjjyhwDpm5BIBn5kubduxnJ5V3tJBswD\/E9WILz+KGYHPW5hEci5s4+6wogBzo7Y281Rw2QxC09FfW9dlV4lqzuU8R\/DvWOZ+3LaRD+81V8L3TxvvLaqWnLdlc+SpBtEWisqL+nKnqg\/opaGu2FJQUXb9XnwZ+nyjddQfHhpI0hYSlVO80FrH9aMKv6c+7IQqfjy+a8MII\/cCioMVGS4JRKrgcVny4XcIEEL+yPfzwo1i5co\/pOIuADHcQRMuPwvd2bmwGwLClTOthlxgiOtuCHf2+Z3+24lrrfVRhfzGOtb3HwlZNQaLlMghjwQdnYw6n50qt2mm57H7kmzFsAEDL2uxJOH5eyFdW\/fjY2s2RYCuH8+O612PIKbPX1rxNEd2rPXJIn4sHBTnKZjLTl2399SQG2C2T1fN7HtgM3CXtDYIg6MDXKWstTkp7lCDqtH+qVaEFLw15V\/B2sElnTiEOL9r7jidxp9YGMR5+ILogKuybHjAs+rrogTzDMxbgDRNYxUhfQgiCvs8Pt7rN\/SiNOasUtb5JcG\/nLW48cHhs1\/o0iTJJ2mMRmPLq29+je2Ks7N5wsoPQPd3hb9eRb8\/nRd4Vz16LHvPD2MUjxRfC4RDljLr6uH6TGA2AWTSShtrw7GgcgTBoJvzhPv9Eh6\/GbF\/GneCR+a5xMNHH9Jl\/vrQt\/KcwxgmOistiNja\/7z+DXl4puIugSBny5QlJR6Mrzit3HkMQdP7dIc\/BO0K9380+ORj74T7qsL+IX5TPYiX\/4CbsjYAl9E\/\/wJ\/HL4uWq\/aj2T8LMlthUxAM+HxkbTpQFBwOPI1T6lOKEVf\/C\/qyfknvs8BqcRpqU5tl8YGUbSjpfvHX9dVIRUVaUK0jWrKnoVTY\/+LuQJMHk+B7Epuyf8B6P6Htve3M1sIyxC79JS7W59C8qHGfaOwBWIeGnXSrQECOMU2kRXvab3Cn1p2ZIbGEeR2afSPNVhnTpeV+pyEJnY6nGb4JSp4BmOXCkxXGHm1kzf8qrrmqVwmf5oCjMu2fXFN36I+lT6aucH44922RQUhgvL\/rp1nWq7OCgn+GOdHd4sgynEUcYkk0PacrPaPF2oPfOeYPTjQVtzd3b0D+CYDKgcPh7BJDlPtYdaZvnfFxQ2B56qbjtNWd6Ywokizr7XJUBUuu+r5f5ucgVSNIQjMbm19bTGYxakSrmnsvt9jhafxMtXBiPbAtFr0t0mA8HgIcO\/TDI8UeAK3UEh+VwxojsZeyMZuDrouJlA1HtOFtYjxn\/r7kpeLzltUO9nZQH9J\/wMsr4pqdvbxn6JVvwF1y5DHnZvoYwf5FWWtrDgdobN+6u\/rofqGZrJGGcEyx0AUa6MAllZhGhHnOCWaxAO0fO5CE\/r77ZH7gTdF6RBVlp7RnRFUV9OYKL97O3nUcUag9ynFAaIC4Q9Lureo76y\/BkgbzFJXcgeLqd4bcgvy+r2E5s6azXD+Pn+TJegpBkPECuPCW2Gdm4Qb\/CJPwRD820UhuQ2viuaNworIioxFpXelz86jOdExz8mciL8TuGyBaLgOPzayIqRnSGSgKLq0yWSn0TLsvXVV27S+Mh+ttnlV+XLKGBoQQoVvyixMcXIBmI7P17pa712NpMcfvbN656xA3qAfSnTSyd8C+NJz9QGxqEAenPhz1GrSV9\/cvj7xVgUifr04ym4P\/jvwuv\/Mkc+UezjZBiTrw1fXUCSvaa4UCzqkm+g6fHuAUAGk9OJCjcoxyZ1492zh64n\/UT12I0F\/X7y0JAYcGDUt5QjUxwNho26+q3Sm7NzRPVu1LU7Lk6otOD5viXJSUWLQmPJLZY63gyO9oMiBu9gen0EEdWs0De\/wMgB+SXMjNA3aWG66Eiy\/JYeacUdfwvr9LWyVXW+uxx9Nk89LiC3e\/b0XmP+Hs4v3lXPhIW0D8rHxJLC0m484\/YXtKe9TOmNCDI2dDEDT++5sXVkIxR8cOASy\/W3Yg1QE+oellFXH9JwHFs7ptH\/sXNwCnd9E9+PBfCv3n4anXq0mn0OLn5EtuQXCe97akoCN2S+Tb8jevwyVXuOl4qKYGDinhOAUSm8lMGjK3MVMokImoqDg26zOlu568ePw\/+Ua9T5vg0Pd5x3dpxl29B3MEd+F81rD9L4hjMAeiPOYfziN07onLPw6Do5EttnuYb1ohsZeqd3vXz\/kibu9e6ty9LXJO2\/XhzdxBwzvapPQJb80Axwd0Hb+lQi09R1xPapI\/vXEcwWazOX8H3b1hMGM6Z7sqLiFuNDID2zd1+yhj5BuFncddweCIdvtpJEwevDoLN1beBKsrsjEYgQ5CX1FyXN6UmDjYpSkHPDcx6OVNtYF8b3Gq6cuWfLSERu+NGQ6FgElaO094VeHn5X\/L00z25uDV4TvBWYWaf9AULZDqzX+E3zywWazXg51rU7nTh9rDHJ2inwtW+Dh\/SXEYMp7qvsWWckUz2QL9\/1MQR2LsDEaAK6GbfxYkDJoOrEGgkEfmJ+CIxKpPNG3MpntBLN6gHXxGrKOJVNAddqoiHpk4RhwYPeLxc2\/jD3D9jFmtNDzlP8fvnwEX07y5w18cDjcyKVHNhi87RtreUmqvXfBtH4kl5BysaW87PD4GQk7XciEDg1\/1bhv9RShstiWWRnWWvxMfihi+d+FpEmpyNhQ8WZY0+aodn9CFl+5k7wBH3qvb97N\/xjX1z\/dRu+0vNjCzM2C0txfnfK8oLmyorW1tbmK0tUE4iKRApigq6RgYGPSw1OymJ1vLUalzxvS\/22cbnHEEfLMmDoT3tcbbfdXmlfxrLG8t\/xXVa0B7A9eUYbZsSf8LZ0WV44EVLweXIwfrdjeuGs1x+y9LXw6wKBKRX2aO7d0xhHifMsVh4N9Ymv2qQOvVhnzftljBXEKnL9taHgGINIYgyGixK3xCQuoqJz+zON880XILLfjHb8nv3PfPKVF3btFbWlDq6BmbDJ3qYmyFjO7W+0Qrx\/bdmL9Z6\/bx31hqioPciZ60cGlRKHcsSFJVvWi4q4WIzEUWk7yA3d7+sm\/\/5h+FguVkfd3Bnx\/iqZQN5LVn6Egzv0K3xLZfjp3s3u1dsTH731zF7+GVPLBnzfgoIRZJLqowFtwJuDN37VxEIZfQCbZTmvOLgYf19PM2WSM2no+HzD55tAykqZjQQGOqSGBbzwsWWyvm1P3GpJMMmTTVYRxykETXSyOX98VyOA86NbRKDVm+pxcOvl2zcwgEQX\/Za636CHg9FE+Pb974QrRcnWwpKE0b965vH74gdQo\/2Cmx+4xUHb71huOuycPvyMQ0V+Q8gOnW5ea+HS28fLhjnMshE3W4QEzSo3PJfutspYgUbGijqYBSzIzdBEeeQJ5CBgb3T8tP7St2\/p+Dn820HopSP6MOQrPoba8MkHl6eOh77Vi3qQAzmdJF56bVsby\/RlpwEQZhzMOCIbD7z5JlV6H8yfWu12LG5r6gN7eQKGQyhUpUUGCzWY21tUCZPdl9hVV\/8DxiWvDGvoslG\/zZra31py8wqyRJaxwORyHjVZQJ+t0V4J4KfXpB4mc0pIXb4MS5OQfV6dw8cQ0kjZvW+++\/5XqAVB7y0tmBTE+aNn3t7+h3giV4EtE29qagg0dQzqollsgJue9PXa0mgZ3GONCrpJXrIKmzT2nWnqZ7EASNN4NfiGQElvtgDh0LE2Ij6tbUT8qs\/UhTt0djeQehUUaEEATZPw9St+PKP6vZ8PdQ\/rV5NO8PVNzN+6vWPbKubCxn27omKVvDTrQ1g2\/VJT2xBrEWfsuOvHOjvrpasFBVU3PZ7gM4PN6+9O0Qz\/mnHwqpOjbXddLd+b6X8dYtw7KRUWutr95UeSKDnSQCr6xMnThG1XMFQU+yg17ombuzN8yBIOjNstfDr47glXNm8kjM1jFFweb1\/JxD3dzG9bp2SLCFGz27W+6fO3j2yY7v0jb47ZGs0mvh2RsOIU5EMejW\/\/klqplh4d69xnv3QhD0MHK7y9jDiGqTB8BPPoHFzY9xry1ejijYcNbkDNpMsEQx7DMC9n+ddTp970abvYJ730U2JDyvZ\/2ZOY7+oTzKgu9grNOduGiTbvq8NwPCRryPaoh\/xq3Gg1a3jgoKZO7gd4gl\/DYna7Qx\/EoglTN54F16Ct+S3UHomsTkpGlizczhGmr1ArGu7ytK86olS+Le7rBmARQXg6xp\/VAp2wXp3ho4QWweDLYCgW6CDA1UKKrDtzI8ngulxntJpo2TlCCU22ZjY+Wi1W1fZRlQ4xWp6n67FCePl1hz1G6z6P0dL1uE75PgGH48mFldmlNpmEq70FtKUKLavr6hBJsPZ916g+da4gRvC57BMskoJTe1iZ6IScSXWek0anLT23k8D9vT6rmPcl6GqxMEdkVinxa8R\/jj\/HtAvNanYZxtb9e80nxAtzlYcHH7ZLsHEARtm5tf8B0Q5r3jvJGNgyIEQY92vJh+iH\/bg54dXzKR28NJuMCnbA\/OdgehKyPjUuchY6d5cEp77j5qvri9d7LF5njdERdyyGkecJfBEbhkWxYKjwXRZqDKUhT61hMrm4i1QlksEORufU+j\/BM3mj8w1TSF77l60gz2zsuCGIy60xcaLgNijXBkMnX4UJySErOisi01jdWE9BDC4fFa545RRgtNzAaciV67Aek2hPCsILLaJhRcNmkA+98q6GrZvg6mGHcXvS14Jss4o5TSKJYWEATV6SqXWeoIBl4g7olEYGdw1tNZ8CSszkOJLxrO+5axWGzRXX0GKW0\/Z4j\/Iy0TntUH+CK9wOscW\/8+aTNhCy3qFFbp00HoX49fpS3dIq7G8K9RCt20BUvmWot1+JqweOui7ZIXkRBHZRaZwKKSICKejYNwTDaOzsS3tjM0FZnqQkGRxJoWYhWSZ+Ke3xNNw8nVQuNd3RhaxcgOuld7bW9+Fim4q4nZ3eLNJYIhNxaB3dLScPVmQ8Al3jQeBwRdHb2XD3GKQsqMXWxVkrO2OPegiB3uhSV7v206AtzLQa2eSrkFILZXq7hWJ78a5UAOiuFujVrINKQotEZhsIkdddYYZIrDBcEltxZj9ecRRNanllNbS+trkF4VB2+a9KDxn+xmt\/ziXL6QXuClm01+dWsB9Jnu5nyLHbtAyOpOiLBhTksXPdcfQkdEpi0Tu8iNc\/pL9EzaKPwGym8gm5nKCgwtRbYCKI8Hiw3hhS+mrpVUAQ7LAT6\/bfnHjpgC3tjGm3drDwh5\/yhOHq954iCiWsOl63UnkHYxjX07lObwJ9tRovx5mOVTsu7uIsFAbkGw8bgyS516HcASAop1rYaZ5XgmC3ggBwwFQoGNfjsFMGwVvCdSDeaGxpYkOEvBYNsecPJPsCjN+tSyb0UhonDBRt3JCzVw+TS2aWZbK3uNY1YTxCXApAWaC7063m1iMY1hKIWt44\/K8SI2dYHYpdOGJj1WNJMQOy0IdH4D2IyD2nWVmapSzIejEFqqT23jrdBaP6HpJMUpEzSPiyTUam8vGzWF+Usozo86erjW+RNYeIzA58lv+z3hx7PETU3\/0g5O9ypfNA1DBlhgsUgc21S85YQh728Y3cmNHCdYof\/vhFQtvkv+3ZR1cwaCl966fOBX9EOhl1lJhXAy3ExNi7ArIL1Hk97Le1xnQ2ML8qHbJkSimIlQEJYda7y6RRnToNDh1W3VfoC0DxghyO9hZgD7Rlt3FZaydLmK0QmNndNYCQ1BNTv2N4ULzdWVEvT9NYTmm9B5LAj1bFqtdYfUuT6E2qI2GeNRPHCuDuMIRPRAuaCaSNNkcAWn+j6X2j38TANb91Yd3astekhzI8vbNa+2SkjxcBitsvGIftq7psNruWohkYQ7fMvEyIIv4IIfnl3sgmaBCdOwcqv5\/tCx1SWRQoQgiKyHlpOFXlH1bMHnibf6iatwaWv6yqOACPugwiVLjIM4Wke0tsY3O4Axm6FBAbCZxSbU0\/FtzMErFhZ8yy7Iltq6HjjBDf3hbTlWeGyLFAmSiYbdESXKLK75CQuP+zwiZUzn5nAZvdf41V7uFcnMZsENGeY16oszq7Jim38XQWy2oo6Jvu00ijr3Apn0pt857+sKM1prSlkMOlFRTUnbVNPSQdVQSKhx2Mxi0OuLM4vGzm6PusCgNxEUqFRNw\/0b7Tl1\/Hfl+hww5x2iqIxfuq3byS0lgu28f9Xw5nHd3fP8abUavV5GFkIpckTZPDLzYwyNe5bW3jFufyS7SyLln4mVltZXRmLDza0PbTVeOdfvcoLvio4vy\/prmWeXIgX2jfI5i\/TuimtBrDjB41rNNBD6Mb6VQSqtxzHZvAf24ub1zCShL7tECc2BKKd\/\/LVO46Ol1lXuDQJKaLP1D+qM+a8QR6mY3PR4bIvQ\/B\/RyEDv1WOJfZA7TIkxnvufcbaV4iXnn0dg4ZV9pSlPmiqEFmgjUpRgF1+CAqX0099VWfEsBsCcoqxnaeK0iKzKlX2Mlobyz8+qshNYTEB+Jq1CDSPfPXiS0FA+++Qua+8DJzaXJr0Wu+5jL1tF378w6bezXqfcGzEw4qXPtHH+vEKX4yTu1Hf8gEmCqUQFgcWXAx3iPo5MFXK7nvAYiMUm59fimKz4PP6g3sBCS99cSFexcRw2ejbSkojbt4S9B2CGQ+Ae3n4Wi+u5i6JyIJTjtXVnrNqFQlCpY0ZoBXRqVkwGnUFUD8bOaWUNoomNooo2eLJTRb9na215ezOa5xmBROkxzlNZz7ImL6Uw\/iazDW39TIqaruVEb5KS0BwC8dLoqhkvvGfmN4MWCFVUxh8LNdPSkyI71NDiuElbhm+\/0zFcHqsNR1b9s05h2tItvx6\/Ah6j2hd2iA4R16LCY1rb1I4W9t57sXcW3+7tdS3j1NI+6I+tXVeJqSb0EhPqW0m\/mjiSlad8ixIao4SWqDWKEjqZbHdDxR1R7W4AtWIOslDr3DHq2JGCJetM4HMFWM2lnWEzQpHA0pSaDsl6mApOJD2QtMATSXnFg0z0ANnhREFR14NdduIIyFco+kHd5YOARc889nd3mqQqsdmklRF2l8CJUEavhrmeUxoOgAhhDhoyvgHzIXHAYXMHoWcJTZ5JZHMHCEi\/LVw7i0fBO9nRnJ\/LGrHTOhIROMHNO+CHbMc+SBz0IHHQvRu6v9dvReyijnJGsBmCIIlsps7ez+uVtJ3xeB6mqzNgy47jomrx+kmS3209S0rn2fxHaW7HyOYO7ba2\/EwgQEqqagKMs4oqBIdRQjkFtP8CuE5AEGR3aVrGU\/CE3auL\/0jolvzieFuxaxHYXPHXmy7FmtsY8Sz4anaK0IK+A0eMcnZBPuzEpxEfXgoFcWCX0ByU3+yxX9tfsMQ6\/zttfo1Ty5uZTUIzXjgSUW2rl9KMyTgFBUZhcfPTlw3Xb7GFc+vXOlJ7XYjGkQF2xt\/rD2udxbqSvlzcLI8cTe2Zw5p+Wchbq2rEU+3XQknl6go+lyZHtLc0MOlNiEkiQTQ1a1k6DVXSMWWzGDW5n37nvEM5tbKehQ7sTNXUZ7a1VH17+\/v7W9E6JKpqn\/kd38BjhvCWP8k6GO1s7xl5FaUAzXvKIs35G4TsE\/GNvYYpi01sJIpsn7P8mMJ3zrPF5czVGTusfwg4eRcKJMohhrYiQ0Nosk1NS3up735E9v\/oeyFpCUK2T1EdGvvkjqByLEpodODIZLWNHspLZUnRwmOwDCM5iea2Q16V6tkeWJoikHAWtsoa+gA7qYp+T\/Mxqwkk\/hOp\/Pq66F0osB29fhP0badtexR1ZDo3T1BpckT55+eiNW3mHyVSOxQJ1icafkDmo2vVd89XAtvE43EHgo3NaRQsFyIOfEIX\/hWSvRMZNM+thMMNiQ9TskbL2NmBFBo0kNsalq8qS5HUZoDUmexGjx02dQbvb\/3v3+f9\/ch0IRkprYTueNf\/GWXStfgOazfW5CN0aBRQRzmr+XgRjaWYYxIVw51k89Hg51sXA3Jmc4BRk9HvSTXurYgopKjpWrvsopXmZhtbQxB0Zlb7hnsduu+3CP+mSmSkqYp+T8uJQoFwO8aZHXz+42vozrYm5DyoTohr6tboqeM7vpA1lYyNLnn0FtYfdZyhb6wkONcNQZCxJfnwLVOC8LBw5r3iSr8x\/ad+On0Q6TgpCj6hGfUNcX0nMBrARJFNSKODzWYHHdxbU4FcO9rcpNJu+hEVDY3SvNy4R+GNdch7ZGHTrzgcbeFrIAQtJxxc3rUSO6EpDnbqfjslEhpFkegK2cxDrmG5eTE3Sm37OPPDL3PFJQX+lfayJAmZcdnEebGWJcB0W5byd1nqU0Sh6XB3TQuA9b0w\/mbVN2QC7F5ue8lq3I6d310W\/5SbR27qEs2h41V95hewmEIq0BxPnelLARNwMXY1I5OQ+VePTyNvjqATF+5j3OSG1QglmhGXdJSD3uf99GcjJwLalx0gXeUa9eZ8iL07yFmqQQ9LidSmL3lgiwAOj\/9Zuj\/gHnc6qiSXZmCOtBwjwJn+8I2++8OTf4GObPp0SCiGgGRtSTI3o79PYlYDMvTh1dV0rgT0tKrLJfOfvURVOHBfksce8PhGNsCb4azj4AEoljsPlNDW03wUdQAhJJWZr4veIrWOttLeDrvXilYu+\/R32Sck+3mEzslo9V3CfaU1dIinH5mTKbi7AVWPrgtFWpAUcEdDzbobY42lsDeDP+ZlGTR8KVHpjSQ0s7E5cbBLaxk4dwwTr+QYeUniNLi0Q3iGJpWhhby\/CBCIRKZIBpwOxaOyCRI7wgEAIfBEzXafINIdnFLH28tuX26t356NDEFtUlKPmkRroYI9T7bsOF436oHNEu+ChcjPtAyWjW5q\/q53Jal5IpB4IjChp29X1AaI88rMN0VvkVNmVpO8Z+yfFnkhiz3zFO4+X\/co+\/Sk7BNybXYeoXcuKvj5las68ix07W3srbPzywqFpnLgAYp7LoO\/hHBrbN83GnfHi839jkzWiO5KqqClYfvokjKMXM0XI3SyaZXWgHnsXV7RWqz7wNE3gUgc4TqrorgoPTFedC+psolQi2beF4Ugp1EI\/cdpij2V3TIUQk6bFZnoJAznZhoAmiPisiY4wYDhERYkTU6yeyJPcS4KoMphPX277vLbjY+Q63mKI7Ryd0Bi36Oz3o8ei5zbCjp28+y3psGnqkxucSVxj16Ugzf4Lw\/QEW\/5jm6jXcWu+RRQsmatwQVEobkDnPv+j9nOQA8uKed\/wr547Cq9h\/xw8EBQpPQ6tVvPFTw0kdljJiR\/jOLL6fnZmSwmdw4JTyAQLekLZ\/uraWmX5P54cOFcO11oAMFkkjJ\/jqpr4HtZYHcPgiDI\/dfFc1Ea4mYKeYpE\/6Qf1plFiGPPQcpHvsViP1fXORJts4OPJCHVD\/TToUjohGj3oaOEslNLRWhxEjo4MC011qKmkvuN9TpqMGiU0AzxhT3lsU+EJinJVPyuQCNLG77FY21hQIAxQM9BAJDBn9nc8nHcooYstPkIdVsbsw3uWsMd8FQhIwurlV7\/ObMqOvF33IfWojKV3j2t9nkBJfrHF0vsxyPf5rbWloriosa6OjKVqmdiSlUSumygcjxaVer5Zx5XtpjGbiB7C+7KN+\/2bpiQToVnsha8LWjPFVIh0iDSLZyQKz1K5E5n2HzOs3jdeUNpD1c97+z\/RKwLO5DQGTF1i0MAidrQCW19yTR7Jf\/O+KSfnvURucSg4ag95\/3av6XxxyorduplUe6sncjPl54S13TMC5l0gKSAW+WrN3Qif4hVeWGJzhqx3g1LvdSunaoDL0lBL6\/8OH5xSzEyJAYBvAJJpU9Psq42SV21rbq2OP6DQgsdJ6w4MBSI+eID1rHIIRl8jrHg2KHNVtnFAz8IackcQiMUieYnL6o3CS1eiCMS9T9Ez7MVuxKFKL\/HZ8W\/gIdBEHTL3HBBrtDD0wkYXLkWbQpDBlS6B+pcB1ime6jAbxNOA1UOqXRoUQl9YV3udPdMhIT+nmsR82Fqfa0QJ5RUCL0UjlII3GE3m41Pr11a1w4mibHiG1PlV9g\/WWLX+lYcvjOyKaM5D\/m1lRYohEbvojgeM+FXhKzRHV+SNbsIFw50xi9ClNBgf+i29tKhY1l1QusWaJ08RJ0kNHsKnNwBuoCjQ1qvZfwWT9YxQEisuNsiTkI31SDjjjupcrTSKQHXV7HYgMQ0diNUNh3nxrnFPa0P3I0mOnddMFr22eDDSu4LsNAEviniZTAw7neKk5aExevbKqvTl2+rTkxGOZlE0E7sNFw8E2NllGXQBf+GbXvjdkQoRlW2zzp2B\/\/qDduaXwi5JSi5TtM4tBulfWkj0\/41iBsUYpfQNj3SiCMAnxQEoZks\/O0Hc8orRbM+sE2Voo2V3nD+NLQbZtQuZrDBkyYkfFNf9cubo5BDQEG8mJw7\/on5yllWl+59RyP0n1Oz8wOCfx6\/xGxCy9MFPhSPqzTRqdcGm5k9nod53ks5P2ug5Qy4zy+xKz1KC+wxcwt\/hF54D2EkdNPtezX7heJbSRbm3Z4KybOI2I3TnIXS3Mh9LFhwbZnJ0qsoFV6XDhuhH4\/eARQJLdoBcRJ6387+x64h5+DQzXYy43Ev0tSvmFbFDSpaLInQf9BWWZ176krpncfi5hERoOh3M5g\/zXjlPJKGWnzAsWFrwXZAjMrxfEv4do5YRzYeg2WYhxvZ1ke5WCiwShyh6W8\/VLojVVKDtEQcRazjgQxsjs+r7rzwHuMNR53MQukGOqE7FF+N+NMhXPdOdJUDX0BjmfD5g0LoQdHVH0ZpyvySR1FoY1rRiDpuLPwyMkuCyoEAs7mlKiq+6vW7uqT05txCxGJNDBKhjarQqkxtVqO2KkuYc39Vj5SjDxIHKSTR2uwyU+zzBn5E5sgThGxOaub1n3JV+S6ylr3gnK9Z2FUOZlFx2WjkELDbozuUvOnMiR038GMbzR6UDG5V7tW\/zMHpq3mQWTl5t\/3G4MOLBEuIGzYwzpzhbC+rPnNVUyjdSs8o6NsYOagcPEKnbwi2ObOYV95JCY1bt5l9TpaYCdgPzvLlvsMdhHa51PJwpRAFg3KXj9k\/2CBI\/JNgsdoqqxmNTSHL1rMIeCYRz8ZLSErJgyCbEfLYlJWQj+eHEP+8sazHoqvYGSzt2w9XV1vWCjmKUBwHaV8DLGPAqqsvtR+BKNQ6cYg6GexVK4McsnrydTQhs\/PKt9tCOOwm9+na1r9KVh2N6IxECS2oeEgcFG6ygU+kc08nkdCd18Hwq31YF\/1Fq925d2burA2YJPSTpclLRy6qWCC22oPTt2ZsBHhUBmzLikkArGgoSOIDuIW72MhV5DrjKIz9lmm0tg4uKyOKTE9qHj+gOAU5beQ\/xGDBb6SYIZmZaF8+RzCSOvfKmZCwDfPA\/dTzmlt+SsgeLJfBZcTNk9MWeutF0MqnZQIl9J2eztPuqAwNRPrqyGVihUPofydMXSyhvXa0nDokQXOQSxd9mzf4KZ7pimyW0STaqHbk1e2eo7z\/bmPDhSv15y+zxSxxqTRj6rGwoEM\/hNJA5tKGKjCRI2MchaLquVxlxRLBHFxd+uSk4jd523L6kStP3q0q3M\/3NDTqpWhgjXyymbF19cIJBjhdArLfYtxaVaPeoh0o+RD+KwOZZRx22UHVwhpg3+DwXOW9WP9YLEASOuHhhqEuZ3h\/7WhwUiamOLk0HG3fEMCavnr0JYHJWeZ74Nx9Qu10XVpsiXzSaW4eXA6IaROEmpenyuqlgiWV85bRUz4DK6uuW6W6diXGs4vC43nY4sDf25rP0TbvxXjI8c2Fm48bS8VvTseICrg+o9TIisggqN\/F9JwPyEC71Y9vZT861FqH9O9VM7bpMXYNJLwiBqO1MeuBn2iYrVbPISbDFv1rWUQAElqPTCvHkMZTLkHLHHSSwevPFJ3dIIXfPaOgsHLecpT80DgqpdbJttfZjhf7w5MVgyZfhiCoLelT1aoVLBEzD45AUFm2UHUTeJFzQRD95jN8b3O2b7\/aN3\/0HkSF1oeOFBekPzEWrNugcO5MGzq\/390LzzZqyo250loDnsXQMLc1HjqPoMBVr+l1v\/JeX22uQroNcaBuYmM8bBGRwvVNaPldlBdzRZT6HGhZOhgOmS0YCyMRbr7qYX5IP\/gbLRMWUcFeX+4e3a4HdpwdVzPZrfnOPt6OXp7w1\/OSRXIn2YyFwdMut0askDEaR77ywNUQDi\/G9JmS7byVwbN0Fsu4EjA6BPndi6YycYKeuHWGOGhvZWXG1rc0MjUNFCztlXF4tNpEspLlxI1ULaPf3xIKE26jhCp2iIMW1tfYOnoTWno+Qcic5AkgoW+aGS\/MA7+XQONxHrQkNTGrK7SINzjacLaEb0XR04lGk56JlnfRN+6VCbnP4cnd5qElxEfA+3T+yY0Sll\/4q4\/hqgzwkiDyQmbYHnESVBC6vUYaDp6V\/eiQONksCC1LBxPnJV\/u+IhGXomi9HtLYQYyZywQnUlZJoUdmgcZuGKzUl9QNedgQfXFW5qrsRz+961jUxaI9dK2jalNHinWd5YDhYln256tTy2x6W8AyMFqvhLORV3h+PadwPlzuRMraZW0viILOPzPk80hUGeZrJZjK1hSnvqsLPUpmwXI8MIDo52V866xrrK9uyXFuLciuoQmKFBMhy+9URtWW2Y2oTAFj0NrmUhR7jFmjVI3ZLyCciyt0TkzEU9zZMlnCTkuodkEGo4p1OIz++aJHwGBJPIVwz3CtH+6VSVOzHB81kfaYyXi32SYDOdqiGFuo\/NX1Dy4O2\/nfrQZJXlB7rdl+BL4TZDsIWFSnYsDivPl1lhwelHc8eBlc2eAFxxpYtL+9rxbZCy0yrfcIz0bTT8p5w84cjF222pn9HYW5N25ZYZcxgsdnbyhHw+es9+57nrlHHcdtMx9ghhR\/vK1HloOk5CgK\/OWLAfuWgz5BUNSrFUFQdCYfnDUZwn6fTcP91+BAAMUCuRi\/Jb55gPtrVjQGNunQ0KvX6189iLSZAOUxHJk89jLuMgV0sQDgnDBSWVNXEO3fNovU7TrD9\/yxvXYcJnP0vd95fDUujNrxAaeyUUO\/Vp9pttFsQuDIBCc777YlMtRxvZ1xMPnOhRxA3hVCZjcu1kr9+MvEak0RkumzH4mwHJ5eQ7ecMIviuMPGU2zKvNhQFJcw\/lw8W20F1g46tvnRA9\/rMtDXfP4vjQQMF2EgrPjKetfcEMAtzI2HiVKXoINgiDLaXBOhAQh5B930ccJrI7L\/au3\/cSPw5ssuqL9F+OKxr+ULu+HIDIHZ9DeYdXcOtNtLPL7fzWikGJQKFsX8yk0UwE\/qaKlV42uSXDW4WDGbs0Hf+a3omocxmi8l\/bUgvhPDdcwIp9KM22R\/1LbKNA7M7h8wzuD5PYSW3AKgcwyGq07oEui\/P4XwhrEQYjQYz6nRPUDr2n5\/5ETKLhd5RKiPPUpBZlTVFp06W2xXA3nXJRxMXcskLnzB2zgXeliOyaD\/v3NKalnnB0EQeRRF+nRmAxf4oCU0Pnm+aa5SKPp\/2s2m\/rC+X5Yl5AThMfzsDTddoOvfbVBRjrZbkvgry9fxCyAyYNBW0qJwsBN2RdOWK+RqvGKfJruP2MJdZ95tf4hAwfCKSlop5PttsSmTXfu+8gn+6y\/NWCliE6yJS5kx679D+Oy0bp9fxh9Zjw4NYosdmgenuVNmWiGae187FDYtaTtgOS85SjwtIXPJwNuh2w3+lT7HNeV44yvI2V5l77kHt4KgSfRViXEAvdD7dd38JUH9VGnaqO9ZGlHH75eKrI08uPbW6bO32MF7\/vO3zVjCjyaAXBaQgdnuNnJwWXTyDClGDc+oZWm+TdF+ACryvbk6Pqp5FLucpfHHA23JBZDEOSiAj9s4F7\/5hvJxxfZduYaOLh69+qyOZiUcoyglNJa9dFe8nUny855I5dcAeKRQ9v099Kth4QdxlXZhdrWweceLF43Q2LleTPgkAddaCpOWfxsYPDE\/4LxRIKElu1q6\/WyVcutgXvPKI7b0Pzy8nj2ihdyyL\/NQZA6\/OV46PHl3PRQm+dpHw\/5swjNsdnQFqG8bPISq\/9DHczrcuapFTQIgg5bw6NzcHZMwONLyRg5sE+MYEno4u+zg8WapGS+nDs7YuceAs8eGGXUF\/VRve9aNDOcb7cphmiGkFi+YVS+D2Qc29VH7LQxGqHl+9iKHk0zmh4hbYNyR+cvquvYHDUzY8x9yXY3XCONrSy1ovh19e1eF8WuhSDDRVGjy93b4vvthD8fzGrE026M6yVtC+i3BSO\/2ZE03Fj+3RAbNyX3x2Y0PeK5ldiUkuPqwYm1JSLl5GH0CgtO8BOInX0UJIOkFLwVXcdm\/8FmWNh8clmdtGwu1qqEIEiUzRN2mBjth6XqpCBaRulBEPT5YIcmIzObMzf9JbrL8aiR4JoknJ9ghbnWo3i\/eeu7\/5zOz1yHO6FXOScHmVG9qz+pXw75997hsyLnxmVLboxnwfm1roR7yavBiU\/RkbjoteMNoYA\/lyHww7d8lZGoRGM0cUmQmmc7y6nJq7fUYxeP52FyuS26TFoF4V8yMGsFOP5emwhB0Ii79NdzwGYBT8bO80TuatCyXaBsR1WFT9B2lTGlpTj5fSc7GqBydOax6fS\/UpkKdlQA4nh46GbX2Zztfuy\/P+PA67wEfvHx6M0NjVQqoDWZgAmxqCd84xty6HNTBV7YIB+jh7TweB52vmylZ\/dL2A8x7g8XpspoezY8ABfvQh6rl00r\/5Px9e2l\/UNWomXG4eBfuC2UyKqlzNcSqxVMe2wSMVXaxpGE\/m+anGe6wVcjcGptMgo2A8rrklZkzHZXPzzObRkR2mqSTQ3aI4XXytpHbwOmD5FjTxT1Y5pLR0IQtKYk4ILBWgiC\/LyqfU+Jncz7F25L14FPaNkuo+82ig5UaTX8BQRBo74kRffuqtzGrmuswi+A1zSSCsvGwlcjs8JahrtRuamo5P78EM\/sx9QXFo\/HQxDUnUkrI2R+XhHe77KrVA3WJdPUbOWjpSxKfnHDtqMzezzo+wLBSggHXX1bRGH+t0rulIa8bzSznrJfbAehZes6sH\/L9rGu7sGUoGM7Y91hInjZfkG86U4dXiZ1FjIZIK\/nJ3hbLPzgH\/8kQDkcFbR9zJLfNTQtjczj7fM3k25bfy3J7oU1BcLIXRYxB2RZcHGcOfwyV0YdpivuCXacn0n3vI\/2ygHRqZnCzqPQ+6TxSW\/0Op+ubR2w9CgEQeXnVumtAwyKeQic2+BxR0XefUTivSLNoRl803odgb9uQ2NPoWWOcY6lzKdW0H7fVuWAsTL5zET6Bm5w2rmQ0HXzZmM5aood\/LdIBnUIgqpdg4M31Ho5IR1c27Z6Kxw9yfu79uP9AHusuTklwi6uMskJ4ETKQ5pXUN9TS3h\/FW\/Y\/18AAAD\/\/0K83lJlUtYsAAAAAElFTkSuQmCC\",\r\n\t\"new_user_vc_cid\": \"d5ee4045dc8431cc657c26880e9e115a\",\r\n\t\"status\": \"ok\",\r\n\t\"test\": \"base64\/image\"\r\n}","parameter":[]}}},"3847428":{"project_id":"276173","parent_id":"3846778","target_id":"3847428","name":"\u6ce8\u518c","method":"POST","mark":"developing","target_type":"api","update_day":"1612713600","update_dtime":"2021-02-08 20:58:01","sort":"5","request":{"target_id":3847428,"auth":{"type":"noauth","kv":{"key":"","value":""},"bearer":{"key":""},"basic":{"username":"","password":""}},"body":{"mode":"json","parameter":[],"raw":"{\r\n\t\"t_s\": 1612773886,\r\n\t\"user_name\": \"muse5\",\r\n\t\"user_password\": \"cok774\"\r\n}","raw_para":[]},"description":"","event":{"pre_script":"","test":""},"header":{"parameter":[]},"query":{"parameter":[]},"resful":{"parameter":[]},"url":"http:\/\/127.0.0.1:8080\/v2\/user\/login"},"response":{"success":{"raw":"","parameter":[]}}},"3716611":{"project_id":"276173","parent_id":"0","target_id":"3716611","name":"\u66f4\u6539\u7528\u6237\u4fe1\u606f","method":"POST","mark":"developing","target_type":"api","update_day":"1611072000","update_dtime":"2021-01-20 23:48:15","sort":"6","request":{"target_id":3716611,"auth":{"type":"noauth","kv":{"key":"","value":""},"bearer":{"key":""},"basic":{"username":"","password":""}},"body":{"mode":"json","parameter":[],"raw":"{\r\n\t\"usernickname\": \"hima\",\r\n\t\"userage\": \"18\",\r\n\t\"usergender\": \"\u7537\",\r\n\t\"usercontact\": \"565584326\",\r\n\t\"userbriefid\": \"\u6ca1\u6709\u7b80\u4ecb\"\r\n}","raw_para":[]},"description":"\u6709\u503c\u4e14\u4e0d\u540c\u89c6\u4e3a\u66f4\u6539 : `\"usernickname\": \"hima\"`\n\u53c2\u6570\u7a7a\u5b57\u7b26\u89c6\u4e3a\u5220\u9664:`\"usernickname\": \"\"`\ncookie\u767b\u5f55\u6210\u529f\u65f6\u83b7\u53d6","event":{"pre_script":"","test":""},"header":{"parameter":[]},"query":{"parameter":[]},"resful":{"parameter":[]},"url":"http:\/\/127.0.0.1:8080\/v1\/user\/pushuserinfo"},"response":{"success":{"raw":"{\r\n\t\"info\": \"\u7528\u6237\u4fe1\u606f\u66f4\u6539\u6210\u529f\",\r\n\t\"status\": \"ok\"\r\n}","parameter":[]}}},"3702662":{"project_id":"276173","parent_id":"0","target_id":"3702662","name":"\u4fee\u6539\u5bc6\u7801","method":"POST","mark":"complated","target_type":"api","update_day":"1611417600","update_dtime":"2021-01-24 20:06:27","sort":"8","request":{"target_id":3702662,"auth":{"type":"noauth","kv":{"key":"","value":""},"bearer":{"key":""},"basic":{"username":"","password":""}},"body":{"mode":"json","parameter":[],"raw":"{\r\n\t\"username\": \"xiaomi\",\r\n\t\"password\": \"19726160\",\r\n\t\"rewtpassword\": \"cok774..\",\r\n\t\"rewtpasswordtwo\": \"cok774..\"\r\n}","raw_para":[]},"description":"","event":{"pre_script":"","test":""},"header":{"parameter":[]},"query":{"parameter":[]},"resful":{"parameter":[]},"url":"127.0.0.1:8080\/v1\/user\/reset"},"response":{"success":{"raw":"","parameter":[]}}}};
+        let _global_paras = {"query":[],"header":[],"body":[]};
+        let _search_apis_list = [{"target_id":"3847401","target_type":"api","method":"PUT","name":"\u8bbe\u7f6e\u7528\u6237\u4fe1\u606f","url":"http:\/\/127.0.0.1:8080\/v1\/user","pinyin":"shezhiyonghuxinxi"},{"target_id":"3850857","target_type":"api","method":"OPTIONS","name":"\u641c\u7d22\u5728\u7ebf\u7528\u6237","url":"http:\/\/127.0.0.1:8080\/v1\/user","pinyin":"sousuozaixianyonghu"},{"target_id":"3851056","target_type":"api","method":"POST","name":"\u65b0\u5efa\u597d\u53cb\u7533\u8bf7","url":"http:\/\/127.0.0.1:8080\/v1\/friend_request","pinyin":"xinjianhaoyoushenqing"},{"target_id":"3851078","target_type":"api","method":"GET","name":"\u83b7\u53d6\u597d\u53cb\u7533\u8bf7","url":"http:\/\/127.0.0.1:8080\/v1\/friend_request","pinyin":"huoquhaoyoushenqing"},{"target_id":"3701892","target_type":"api","method":"POST","name":"\u521b\u5efa\u7528\u6237","url":"127.0.0.1:8080\/v1\/user\/new","pinyin":"chuangjianyonghu"},{"target_id":"3847430","target_type":"api","method":"GET","name":"\u67e5\u8be2\u7528\u6237\u662f\u5426\u767b\u5f55","url":"http:\/\/127.0.0.1:8080\/v1\/user\/sign?uid=2009","pinyin":"chaxunyonghushifoudenglu"},{"target_id":"3705905","target_type":"api","method":"GET","name":"\u83b7\u53d6\u9a8c\u8bc1\u7801","url":"http:\/\/127.0.0.1:8080\/resources\/user_vc_code","pinyin":"huoquyanzhengma"},{"target_id":"3847253","target_type":"api","method":"POST","name":"\u767b\u5f55","url":"http:\/\/127.0.0.1:8080\/v2\/user\/sign","pinyin":"denglu"},{"target_id":"3706059","target_type":"api","method":"POST","name":"\u767b\u5f55","url":"http:\/\/127.0.0.1:8080\/v1\/user\/signs","pinyin":"denglu"},{"target_id":"3850425","target_type":"api","method":"OPTIONS","name":"\u641c\u7d22\u7528\u6237","url":"http:\/\/127.0.0.1:8080\/v1\/user","pinyin":"sousuoyonghu"},{"target_id":"3706063","target_type":"api","method":"POST","name":"\u767b\u5f55(\u540c\u65f6)","url":"http:\/\/127.0.0.1:8080\/v1\/user\/signs","pinyin":"denglu_tongshi_"},{"target_id":"3847398","target_type":"api","method":"GET","name":"\u83b7\u53d6\u7528\u6237\u4fe1\u606f","url":"http:\/\/127.0.0.1:8080\/v1\/user?uid=2008","pinyin":"huoquyonghuxinxi"},{"target_id":"3713550","target_type":"api","method":"GET","name":"\u83b7\u53d6\u6ce8\u518c\u4f7f\u7528\u7684\u9a8c\u8bc1\u7801","url":"http:\/\/127.0.0.1:8080\/resources\/new_user_vc_code","pinyin":"huoquzhuceshiyongdeyanzhengma"},{"target_id":"3847428","target_type":"api","method":"POST","name":"\u6ce8\u518c","url":"http:\/\/127.0.0.1:8080\/v2\/user\/login","pinyin":"zhuce"},{"target_id":"3716611","target_type":"api","method":"POST","name":"\u66f4\u6539\u7528\u6237\u4fe1\u606f","url":"http:\/\/127.0.0.1:8080\/v1\/user\/pushuserinfo","pinyin":"genggaiyonghuxinxi"},{"target_id":"3702662","target_type":"api","method":"POST","name":"\u4fee\u6539\u5bc6\u7801","url":"127.0.0.1:8080\/v1\/user\/reset","pinyin":"xiugaimima"}];
+        // console.log(_menu, _search_apis_list);
+        apt.init(_menu, _l1313567525, _global_paras, _search_apis_list);
+        let _project_envs = [];
+        let _html = template('template-apt-envs-desc-tpl', {'list' : _project_envs});
+        $('.apt-envs-desc').html(_html);
+
+        // 11.11代码
+        $('.apt1111 .close-btn').on('click', function(){
+        	$('.apt1111').hide();
+        });
+    })
+</script>
+<!-- 百度统计 -->
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?a046ce178828e393614822a297b8d296";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+<!-- 360统计 -->
+<script>
+    (function(){
+        var src = (document.location.protocol == "http:") ? "http://js.passport.qihucdn.com/11.0.1.js?07ef9520f5511356899444a093d03ded":"https://jspassport.ssl.qhimg.com/11.0.1.js?07ef9520f5511356899444a093d03ded";
+        document.write('<script src="' + src + '" id="sozz"><\/script>');
+    })();
+</script>
+<span style="display: none;"><script type="text/javascript" src="https://s23.cnzz.com/z_stat.php?id=1276797738&web_id=1276797738"></script></span>
+</body>
+</html>
