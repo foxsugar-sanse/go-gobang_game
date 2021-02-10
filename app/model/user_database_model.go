@@ -238,11 +238,11 @@ func (op *Operations) AddUserFriend(uid int64, fid int64) bool {
 	defer dblink.Close()
 	var UserF []*UserFriend
 	// 查询有没有重复的好友关系
-	dblink.Where("main_uid = ? and friend_uid = ?",uid,fid).First(&UserF)
+	dblink.Where("main_uid = ? and friend_uid = ?",uid,fid).Find(&UserF)
 	if len(UserF) > 0 {
 		return false
 	} else {
-		dblink.Create(UserFriend{
+		dblink.Create(&UserFriend{
 			MainUid:   uid,
 			FriendUid: fid,
 		})

@@ -16,6 +16,7 @@ type CreateUserFriendBindJson struct {
 
 type OperationUserFriendBindJson struct {
 	Operation string `json:"op"`
+	RepId	  int64  `json:"rep_id"`
 }
 
 type DeleteUserFriendBindJson struct {
@@ -40,8 +41,8 @@ func (u *UserRouter) ModifyFriendInfo(c *gin.Context) {
 	var jwt auth.JwtAPI = &auth.JWT{}
 	jwt.Init()
 	claims,_ := jwt.MatchToken(tokenInfo[1])
-	json := &ModifyFriendInfoBindJson{}
-	_ = c.BindJSON(&ModifyFriendInfoBindJson{})
+	json := ModifyFriendInfoBindJson{}
+	_ = c.BindJSON(&json)
 	var md model.User = &model.Operations{}
 	uid,_ := strconv.ParseInt(claims.Uid,10,64)
 	if md.SetUserFriendInfo(uid,json.FriendUid,json.Note,json.Group) {
@@ -133,12 +134,12 @@ func (u *UserRouter) RefuseUserFriendRequest(c *gin.Context) {
 	jwt.Init()
 	// 解密token
 	if claims,err := jwt.MatchToken(tokenInfo[1]);err {
-		json := &OperationUserFriendBindJson{}
-		_ = c.BindJSON(&OperationUserFriendBindJson{})
+		json := OperationUserFriendBindJson{}
+		_ = c.BindJSON(&json)
 		if json.Operation == "no" {
 			var md model.UserForFriend = &model.OperationRedisForUf{}
 			fid, _ := strconv.ParseInt(claims.Id,10,64)
-			if md.UserFriendRequestRefuse(fid) {
+			if md.UserFriendRequestRefuse(fid,json.RepId) {
 				c.JSON(errors.OK.HttpCode,gin.H{
 					"code":errors.OK.Code,
 					"message":errors.OK.Message,
@@ -161,13 +162,13 @@ func (u *UserRouter) ConsentUserFriendRequest(c *gin.Context) {
 	jwt.Init()
 	// 解密token
 	if claims,err := jwt.MatchToken(tokenInfo[1]);err {
-		json := &OperationUserFriendBindJson{}
-		_ = c.BindJSON(&OperationUserFriendBindJson{})
+		json := OperationUserFriendBindJson{}
+		_ = c.BindJSON(&json)
 		if json.Operation == "ok" {
 			// 同意好友申请
 			var md model.UserForFriend = &model.OperationRedisForUf{}
-			fid, _ := strconv.ParseInt(claims.Id,10,64)
-			if md.UserFriendRequestConsent(fid) {
+			fid, _ := strconv.ParseInt(claims.Uid,10,64)
+			if md.UserFriendRequestConsent(fid,json.RepId) {
 				c.JSON(errors.OK.HttpCode,gin.H{
 					"code":errors.OK.Code,
 					"message":errors.OK.Message,
@@ -197,12 +198,7 @@ func (u *UserRouter) GetUserFriendRequest(c *gin.Context) {
 			c.JSON(errors.OK.HttpCode,gin.H{
 				"code":errors.OK.Code,
 				"message":errors.OK.Message,
-				"data":map[string]string{
-					"main_uid":reFriendMap["main_uid"],
-					"friend_uid":reFriendMap["friend_uid"],
-					"note":reFriendMap["note"],
-					"state":reFriendMap["state"],
-				},
+				"data":reFriendMap,
 			})
 		} else {
 			c.JSON(errors.ErrUserFriendRequestFailed.HttpCode,gin.H{
