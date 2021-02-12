@@ -34,11 +34,17 @@ func (r *Route)Run(c *gin.Engine)  {
 		v1.PUT("/friend_request",userOp.ConsentUserFriendRequest)  // 同意好友申请
 		v1.DELETE("/friend_request",userOp.RefuseUserFriendRequest)// 拒绝好友申请
 		v1.POST("/friend_request",userOp.CreateUserFriendRequest)  // 创建好友申请
-		v1.GET("/linkman",userOp.GetUserForFriend) 				// 获取联系人列表，有num参数，代表一次返回多少个用户，默认为10
+
+		v1.GET("/group",userOp.UserGroupGet) // 获取用户分组
+		v1.POST("/group",userOp.UserGroupCreate) // 添加用户分组
+		v1.PUT("/group",userOp.UserGroupSet) // 修改用户分组
+		v1.DELETE("/group/:name",userOp.UserGroupDelete) // 删除用户分组
 		//v1.POST("/linkman/:name",userOp.AddUserForFriend) 			// 有鉴权，将指定用户添加到联系人中，需要指定用户同意
-		v1.DELETE("linkman/:name",userOp.DeleteUserForFriend) 		// 鉴权，将指定用户重联系人中删除
-		v1.PUT("linkman/:name",userOp.ModifyFriendInfo) 			// 修改该联系人的信息，比如备注等等
-		v1.OPTIONS("linkman/:name",userOp.OtherUserFriendInterface)// 联系人接口的其他功能，比如想联系人发出游戏邀请和信息等等
+		v1.GET("/linkman/:name",userOp.FormGroupGetUserFriend) // 根据指定的分组获取该用户的好友关系
+		v1.GET("/linkman",userOp.GetUserForFriend) 				// 获取联系人列表，有num参数，代表一次返回多少个用户，默认为10，name参数可以指定返回某分组下的好友
+		v1.DELETE("linkman/",userOp.DeleteUserForFriend) 		// 鉴权，将指定用户重联系人中删除
+		v1.PUT("linkman/",userOp.ModifyFriendInfo) 			// 修改该联系人的信息，比如备注等等
+		v1.OPTIONS("linkman/",userOp.OtherUserFriendInterface)// 联系人接口的其他功能，比如想联系人发出游戏邀请和信息等等
 
 		// 历史记录接口不允许修改
 		v1.GET("/history") 										// ?num=10&page=1

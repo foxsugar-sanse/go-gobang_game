@@ -48,6 +48,8 @@ var (
 	ErrUserFriendRequestFailed	= &Errno{Code: 200113, Message:"没有该用户的好友申请",HttpCode: http.StatusBadRequest}
 	ErrUserFriendNotFound	= &Errno{Code: 200114, Message: "该好友不存在",HttpCode: http.StatusBadRequest}
 	// Group模块错误
+	ErrGroupNotFound	= &Errno{Code: 200201, Message: "分组不存在",HttpCode: http.StatusForbidden}
+	ErrGroupExist       = &Errno{Code: 200202, Message: "分组已存在",HttpCode: http.StatusBadRequest}
 )
 
 func GetErrorsStruct(failed *Errno) *Errno {

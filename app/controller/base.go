@@ -23,14 +23,24 @@ type RouterRequest interface {
 	UserGetSignState		(c * gin.Context)
 
 	GetUserForFriend		(c * gin.Context)
+	FormGroupGetUserFriend  (c * gin.Context)
 	AddUserForFriend		(c * gin.Context)
 	DeleteUserForFriend		(c * gin.Context)
 	ModifyFriendInfo		(c * gin.Context)
 	OtherUserFriendInterface(c * gin.Context)
+
 	RefuseUserFriendRequest	(c * gin.Context)
 	ConsentUserFriendRequest(c * gin.Context)
 	GetUserFriendRequest	(c * gin.Context)
 	CreateUserFriendRequest	(c * gin.Context)
+	// 和控制用户分组的接口组合
+	UserGroupController
+}
+
+type UserRouter struct {
+	*OperationUserGroup
+	UserJBL *UserJsonBindLogin
+	UserJBS *UserJsonBindSign
 }
 
 type UserBindJsonOtherOpera struct {
@@ -64,10 +74,8 @@ type UserJsonBindUpdate struct {
 	UserContact		string `json:"user_contact"`
 }
 
-type UserRouter struct {
-	UserJBL *UserJsonBindLogin
-	UserJBS *UserJsonBindSign
-}
+
+
 
 func (u *UserRouter) LoginPost(c *gin.Context) {
 	json := UserJsonBindLogin{}

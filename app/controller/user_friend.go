@@ -4,6 +4,7 @@ import (
 	"github.com/foxsuagr-sanse/go-gobang_game/app/model"
 	"github.com/foxsuagr-sanse/go-gobang_game/common/auth"
 	"github.com/foxsuagr-sanse/go-gobang_game/common/errors"
+	"github.com/foxsuagr-sanse/go-gobang_game/common/utils"
 	"github.com/gin-gonic/gin"
 	"strconv"
 	"strings"
@@ -235,4 +236,30 @@ func (u *UserRouter) CreateUserFriendRequest(c *gin.Context) {
 		}
 	}
 
+}
+
+func (u *UserRouter) FormGroupGetUserFriend(c * gin.Context) {
+	// 根据用户分组获取该用户的好友
+	// TODO: 从Token中获取用户Uid的函数放在utils包里面了，简化代码
+	groupName := c.Param("name")
+	if claims,bl := utils.GinMatchToken(c);bl {
+		var md model.User = &model.Operations{}
+		uid,_ := strconv.ParseInt(claims.Uid, 10,64)
+		userFriendMap := make(map[int]int64)
+		if UserFriendSlice,bl := md.FormGroupGetUserFriend(uid,groupName); bl {
+			for i := 0;i < len(UserFriendSlice); i++ {
+				userFriendMap[i + 1] = UserFriendSlice[i].FriendUid
+			}
+		}
+		c.JSON(errors.OK.HttpCode,gin.H{
+			"code":errors.OK.Code,
+			"message":errors.OK.Message,
+			"data":userFriendMap,
+		})
+	} else {
+		c.JSON(errors.ErrGroupNotFound.HttpCode,gin.H{
+			"code":errors.ErrGroupNotFound.Code,
+			"message":errors.ErrGroupNotFound.Message,
+		})
+	}
 }
