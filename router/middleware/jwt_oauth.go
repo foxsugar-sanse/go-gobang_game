@@ -30,8 +30,16 @@ func JwtMiddlewareOAuth() gin.HandlerFunc {
 		token,code := tk.MatchToken(tokenInfo[1])
 		var md model.UserState = &model.OperationRedis{}
 		bl := md.UserGetSignState(token.Uid)
-		if code == true && bl == true{
-			goto DecodeTokenOk
+		if code == true {
+			if bl {
+				goto DecodeTokenOk
+			} else {
+				c.JSON(errors.ErrUserSignNotFound.HttpCode,gin.H{
+					"code":errors.ErrUserSignNotFound.Code,
+					"message":errors.ErrUserSignNotFound.Message,
+				})
+				c.Abort()
+			}
 		} else if code == false && token == nil && bl == false{
 			c.JSON(errors.ErrTokenValidation.HttpCode,gin.H{
 				"code":errors.ErrTokenValidation.Code,
@@ -56,7 +64,7 @@ func JwtMiddlewareOAuth() gin.HandlerFunc {
 				"message":errors.ErrTokenExpire.Message,
 			})
 		} else {
-			c.Next()
+
 		}
 	}
 

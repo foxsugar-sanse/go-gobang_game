@@ -8,8 +8,8 @@ import (
 )
 
 /*
-	1数据库存储连接状态
-	2数据库存储好友申请
+	0数据库存储连接状态
+	1数据库存储好友申请
 */
 
 type UserState interface {
@@ -26,7 +26,7 @@ type OperationRedis struct {
 func (o OperationRedis) UserDelSignState(uid string) bool {
 	// 初始化redis连接
 	var d db.DB = &db.SetData{}
-	dblink := d.RedisInit(1)
+	dblink := d.RedisInit(0)
 	defer dblink.Close()
 	_,err := dblink.Del(uid).Result()
 	return err != redis.Nil
@@ -35,7 +35,7 @@ func (o OperationRedis) UserDelSignState(uid string) bool {
 func (o OperationRedis) UserGetSignState(uid string) bool {
 	// 初始化redis连接
 	var d db.DB = &db.SetData{}
-	dblink := d.RedisInit(1)
+	dblink := d.RedisInit(0)
 	defer dblink.Close()
 	_,err := dblink.Get(uid).Result()
 	// 返回成功/失败
@@ -46,7 +46,7 @@ func (o OperationRedis) UserSearchSignUser(user interface{}) ([]int64, bool) {
 	// 搜索登录用户
 	// 初始化redis和mysql连接
 	var d db.DB = &db.SetData{}
-	dblink := d.RedisInit(1)
+	dblink := d.RedisInit(0)
 	var dd db.DB = &db.SetData{}
 	dblink2 := dd.MySqlInit()
 	defer func() {
@@ -82,7 +82,7 @@ func (o OperationRedis) UserSearchSignUser(user interface{}) ([]int64, bool) {
 func (o OperationRedis) UserCreateSignState(uid string) bool {
 	// 初始化redis连接
 	var d db.DB = &db.SetData{}
-	dblink := d.RedisInit(1)
+	dblink := d.RedisInit(0)
 	defer dblink.Close()
 	err := dblink.Set(uid,"0",0).Err()
 	return err == nil

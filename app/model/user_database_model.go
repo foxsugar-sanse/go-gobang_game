@@ -19,11 +19,14 @@ type User interface {
 	DeleteUser(uid int64) 											*errors.Errno
 	SearchUser(userSearch interface{}) 								([]int64,bool)
 	AddUserFriend(uid int64,fid int64) 								bool
-	SetUserFriendInfo(uid int64,fid int64,note string,group string) bool
+	SetUserFriendInfo(uid int64,fid int64,note string,group string) *errors.Errno
 	DeleteUserFriend(uid int64,fid int64) 							bool
 	QueryUserFriend(uid int64) 										([]*UserFriend,bool)
 	FormGroupGetUserFriend(uid int64,group string) 					([]*UserFriend,bool)
 }
+
+// 默认好友分组name
+const DefaultUserGroupName = "我的好友"
 
 // 数据库表映射 {user}
 type Users struct {
@@ -71,7 +74,7 @@ func (op *Operations) Login(user map[string]string) (bool,*errors.Errno) {
 			s := strconv.FormatInt(db.GODETIME + int64(User1[len(User1) - 1].Id + 1),10)
 			return s
 		} else {
-			s := strconv.FormatInt(db.GODETIME + int64(0),10)
+			s := strconv.FormatInt(db.GODETIME + int64(1),10)
 			return s
 		}
 
@@ -156,6 +159,7 @@ func (op *Operations) Sign(user map[string]string) (int64,string,*errors.Errno){
 }
 
 func (op *Operations)SetInfo(uid int64,user map[string]interface{}) *errors.Errno {
+	// TODO:头像等设置还未做
 	// 初始化数据库连接
 	var d db.DB = &db.SetData{}
 	dblink := d.MySqlInit()
@@ -259,12 +263,13 @@ func (op *Operations) AddUserFriend(uid int64, fid int64) bool {
 		dblink.Create(&UserFriend{
 			MainUid:   uid,
 			FriendUid: fid,
+			UserGroup: DefaultUserGroupName,
 		})
 		return true
 	}
 }
 
-func (op *Operations) SetUserFriendInfo(uid int64, fid int64, note string, group string) bool {
+func (op *Operations) SetUserFriendInfo(uid int64, fid int64, note string, group string) *errors.Errno {
 	var d db.DB = &db.SetData{}
 	dblink := d.MySqlInit()
 	defer dblink.Close()
@@ -272,13 +277,19 @@ func (op *Operations) SetUserFriendInfo(uid int64, fid int64, note string, group
 	// 查询是否为好友
 	dblink.Where("main_uid = ? and friend_uid = ?",uid,fid).First(&UserF)
 	if len(UserF) > 0 {
+		var UserGroups []*UserGroup
+		// 检查用户设置的分组在数据库中有没有存在
+		dblink.Where("uid = ? and group = ?",uid,group).First(&UserGroups)
+		if len(UserGroups) == 0 {
+			return errors.ErrGroupNotFound
+		}
 		dblink.Model(&UserF).Where("main_uid = ? and friend_uid = ?",uid,fid).Updates(&UserFriend{
 			FriendNote: note,
 			UserGroup: group,
 		})
-		return true
+		return errors.OK
 	} else {
-		return false
+		return errors.ErrBadRequest
 	}
 }
 
@@ -311,11 +322,18 @@ func (op *Operations) QueryUserFriend(uid int64) ([]*UserFriend,bool) {
 	}
 }
 
-func (op Operations) FormGroupGetUserFriend(uid int64, group string) ([]*UserFriend,bool){
+func (op Operations) FormGroupGetUserFriend(uid int64, group string) ([]*UserFriend,bool) {
 	var d db.DB = &db.SetData{}
 	dblink := d.MySqlInit()
 	defer dblink.Close()
-	var UserFriends []*UserFriend
-	dblink.Where("main_uid = ? And user_group = ?",uid,group).Find(&UserFriends)
-	return UserFriends, len(UserFriends) > 0
+	var UserGroups []*UserGroup
+	// 检查用户设置的分组在数据库中有没有存在
+	dblink.Where("uid = ? And group = ?", uid, group).First(&UserGroups)
+	if len(UserGroups) > 0 {
+		var UserFriends []*UserFriend
+		dblink.Where("main_uid = ? And user_group = ?", uid, group).Find(&UserFriends)
+		return UserFriends, len(UserFriends) > 0
+	} else {
+		return nil, false
+	}
 }

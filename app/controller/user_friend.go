@@ -46,15 +46,15 @@ func (u *UserRouter) ModifyFriendInfo(c *gin.Context) {
 	_ = c.BindJSON(&json)
 	var md model.User = &model.Operations{}
 	uid,_ := strconv.ParseInt(claims.Uid,10,64)
-	if md.SetUserFriendInfo(uid,json.FriendUid,json.Note,json.Group) {
+	if err := md.SetUserFriendInfo(uid,json.FriendUid,json.Note,json.Group); err == errors.OK {
 		c.JSON(errors.OK.HttpCode,gin.H{
 			"code":errors.OK.Code,
 			"message":errors.OK.Message,
 		})
 	} else {
-		c.JSON(errors.ErrUserFriendNotFound.HttpCode,gin.H{
-			"code":errors.ErrUserFriendNotFound.Code,
-			"message":errors.ErrUserFriendNotFound.Message,
+		c.JSON(err.HttpCode,gin.H{
+			"code":err.Code,
+			"message":err.Message,
 		})
 	}
 }
@@ -222,15 +222,15 @@ func (u *UserRouter) CreateUserFriendRequest(c *gin.Context) {
 		if claims,bl := jwt.MatchToken(tokenInfo[1]);bl {
 			var md model.UserForFriend = &model.OperationRedisForUf{}
 			uid,_ := strconv.ParseInt(claims.Uid,10,64)
-			if md.UserFriendRequestCreate(uid,json.ReceiveId,json.NoteInfo) {
+			if err := md.UserFriendRequestCreate(uid,json.ReceiveId,json.NoteInfo); err == errors.OK {
 				c.JSON(errors.OK.HttpCode,gin.H{
 					"code":errors.OK.Code,
 					"message":errors.OK.Message,
 				})
 			} else {
-				c.JSON(errors.ErrUserFriendRequest.HttpCode,gin.H{
-					"code":errors.ErrUserFriendRequest.Code,
-					"message":errors.ErrUserFriendRequest.Message,
+				c.JSON(err.HttpCode,gin.H{
+					"code":err.Code,
+					"message":err.Message,
 				})
 			}
 		}

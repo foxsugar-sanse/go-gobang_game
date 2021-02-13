@@ -43,13 +43,15 @@ var (
 	ErrUserNameExist	  = &Errno{Code: 200108, Message: "用户名已存在", HttpCode: http.StatusBadRequest}
 	ErrUsernameValidation = &Errno{Code: 200109, Message: "用户名不合法", HttpCode: http.StatusBadRequest}
 	ErrPasswordValidation = &Errno{Code: 200110, Message: "密码不合法", HttpCode: http.StatusBadRequest}
-	ErrUserSignNotFound	  = &Errno{Code: 200111, Message: "该用户为登录", HttpCode: http.StatusBadRequest}
+	ErrUserSignNotFound	  = &Errno{Code: 200111, Message: "该用户未登录", HttpCode: http.StatusBadRequest}
 	ErrUserFriendRequest  = &Errno{Code: 200112, Message: "好友申请创建失败",HttpCode: http.StatusInternalServerError}
 	ErrUserFriendRequestFailed	= &Errno{Code: 200113, Message:"没有该用户的好友申请",HttpCode: http.StatusBadRequest}
 	ErrUserFriendNotFound	= &Errno{Code: 200114, Message: "该好友不存在",HttpCode: http.StatusBadRequest}
 	// Group模块错误
 	ErrGroupNotFound	= &Errno{Code: 200201, Message: "分组不存在",HttpCode: http.StatusForbidden}
 	ErrGroupExist       = &Errno{Code: 200202, Message: "分组已存在",HttpCode: http.StatusBadRequest}
+	ErrGroupDefault     = &Errno{Code: 200203, Message: "默认分组不允许更改", HttpCode: http.StatusBadRequest}
+	ErrGroupReName      = &Errno{Code: 200204, Message: "重命名的分组不能与存在的相同", HttpCode: http.StatusBadRequest}
 )
 
 func GetErrorsStruct(failed *Errno) *Errno {
