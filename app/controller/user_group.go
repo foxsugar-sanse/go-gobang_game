@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"strconv"
 	"strings"
+	"github.com/foxsuagr-sanse/go-gobang_game/common/utils"
 )
 
 type UserGroupController interface {
@@ -67,6 +68,7 @@ func (o OperationUserGroup) UserGroupCreate(c *gin.Context) {
 	tokenInfo := strings.SplitN(tokenHeader, " ", 2)
 	var jwt auth.JwtAPI = &auth.JWT{}
 	jwt.Init()
+	utils.UserInput(json)
 	if claims,bl := jwt.MatchToken(tokenInfo[1]); bl {
 		uid,_ := strconv.ParseInt(claims.Uid,10,64)
 		if md.AddUserGroup(uid,json.Group) {

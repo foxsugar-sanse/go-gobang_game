@@ -93,7 +93,7 @@ func (op *Operations) Login(user map[string]string) (bool,*errors.Errno) {
 		//}).Error
 		//// 为用户创建一个默认分组{我的好友}
 		//// {GroupRank : 0},0表示分组等级，0表示默认为系统创建用户时添加，用户添加的分组则按数据库规则默认为1
-		//err2 := dblink.Create(&UserGroup{
+		//err2 := dblink.Create(&UserGroups{
 		//	Uid:   int64(2000 + len(User1) + 1),
 		//	Group: "我的好友",
 		//	GroupRank: 0,
@@ -112,7 +112,7 @@ func (op *Operations) Login(user map[string]string) (bool,*errors.Errno) {
 			}
 			// 为用户创建一个默认分组{我的好友}
 			// {GroupRank : 0},0表示分组等级，0表示默认为系统创建用户时添加，用户添加的分组则按数据库规则默认为1
-			if err := tx.Create(&UserGroup{
+			if err := tx.Create(&UserGroups{
 				Uid:   int64(2000 + len(User1) + 1),
 				Group: "我的好友",
 				GroupRank: 0,
@@ -277,10 +277,10 @@ func (op *Operations) SetUserFriendInfo(uid int64, fid int64, note string, group
 	// 查询是否为好友
 	dblink.Where("main_uid = ? and friend_uid = ?",uid,fid).First(&UserF)
 	if len(UserF) > 0 {
-		var UserGroups []*UserGroup
+		var UserGroup []*UserGroups
 		// 检查用户设置的分组在数据库中有没有存在
-		dblink.Where("uid = ? and group = ?",uid,group).First(&UserGroups)
-		if len(UserGroups) == 0 {
+		dblink.Where("uid = ? and group = ?",uid,group).First(&UserGroup)
+		if len(UserGroup) == 0 {
 			return errors.ErrGroupNotFound
 		}
 		dblink.Model(&UserF).Where("main_uid = ? and friend_uid = ?",uid,fid).Updates(&UserFriend{
@@ -326,12 +326,12 @@ func (op Operations) FormGroupGetUserFriend(uid int64, group string) ([]*UserFri
 	var d db.DB = &db.SetData{}
 	dblink := d.MySqlInit()
 	defer dblink.Close()
-	var UserGroups []*UserGroup
+	var UserGroup []*UserGroups
 	// 检查用户设置的分组在数据库中有没有存在
-	dblink.Where("uid = ? And group = ?", uid, group).First(&UserGroups)
-	if len(UserGroups) > 0 {
+	dblink.Where("uid = ? and group = ?", uid, group).First(&UserGroup)
+	if len(UserGroup) > 0 {
 		var UserFriends []*UserFriend
-		dblink.Where("main_uid = ? And user_group = ?", uid, group).Find(&UserFriends)
+		dblink.Where("main_uid = ? and user_group = ?", uid, group).Find(&UserFriends)
 		return UserFriends, len(UserFriends) > 0
 	} else {
 		return nil, false

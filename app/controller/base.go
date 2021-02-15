@@ -38,9 +38,9 @@ type RouterRequest interface {
 }
 
 type UserRouter struct {
-	*OperationUserGroup
-	UserJBL *UserJsonBindLogin
-	UserJBS *UserJsonBindSign
+	OperationUserGroup
+	//UserJBL *UserJsonBindLogin
+	//UserJBS *UserJsonBindSign
 }
 
 type UserBindJsonOtherOpera struct {

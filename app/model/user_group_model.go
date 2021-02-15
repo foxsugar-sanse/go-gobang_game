@@ -14,10 +14,10 @@ type UserGroupDataBase interface {
 }
 
 // 数据库表映射
-type UserGroup struct {
+type UserGroups struct {
 	Id 				int
 	Uid 			int64
-	Group 			string
+	Group 			string `gorm:"column:user_group"`
 	GroupRank 		int
 }
 
@@ -30,15 +30,16 @@ func (o OperationsUserGroup) AddUserGroup(uid int64, group string) bool {
 	dblink := d.MySqlInit()
 	defer dblink.Close()
 	// 检测有没有相同
-	if func() bool {
-		var UserGroups []*UserGroup
-		dblink.Where("uid = ? And group = ?",uid,group).First(&UserGroups)
-		return len(UserGroups) == 0
-	}() {
+	if bl := func() bool {
+		var UserGroup []*UserGroups
+		dblink.Where("uid = ? and user_group = ?",uid,group).First(&UserGroup)
+		return len(UserGroup) == 0
+	}() ; bl {
 		// 没有相同则添加
-		err := dblink.Model(&UserGroup{}).Create(&UserGroup{
+		err := dblink.Model(&UserGroups{}).Create(&UserGroups{
 			Uid:   uid,
 			Group: group,
+			GroupRank: 1,
 		}).Error
 		return err == nil
 	} else {
@@ -50,12 +51,12 @@ func (o OperationsUserGroup) DeleteUserGroup(uid int64, group string) bool {
 	var d db.DB = &db.SetData{}
 	dblink := d.MySqlInit()
 	defer dblink.Close()
-	if func() bool {
-		var UserGroups []*UserGroup
-		dblink.Where("uid = ? And group = ?",uid,group).First(&UserGroups)
-		return len(UserGroups) == 1
-	}() {
-		err2 := dblink.Model(&UserGroup{}).Where("uid = ? And group = ?",uid,group).Delete(&UserGroup{}).Error
+	if bl := func() bool {
+		var UserGroup []*UserGroups
+		dblink.Where("uid = ? and user_group = ? and group_rank = ? ",uid,group,1).Find(&UserGroup)
+		return len(UserGroup) == 1
+	}() ; bl{
+		err2 := dblink.Model(&UserGroups{}).Where("uid = ? and user_group = ?",uid,group).Delete(&UserGroups{}).Error
 		return err2 == nil
 	} else {
 		return false
@@ -66,14 +67,14 @@ func (o OperationsUserGroup) SetUserGroup(uid int64, group string, setGroup stri
 	var d db.DB = &db.SetData{}
 	dblink := d.MySqlInit()
 	defer dblink.Close()
-	if func() bool {
-		var UserGroups []*UserGroup
-		dblink.Where("uid = ? And group = ?",uid,group).First(&UserGroups)
-		return len(UserGroups) == 1
-	}() {
-		err2 := dblink.Model(&UserGroup{}).Where("uid = ? And group = ?",uid,group).Updates(&UserGroup{
+	var UserGroup []*UserGroups
+	if bl := func() bool {
+		dblink.Where("uid = ? and user_group = ? and group_rank = ?",uid,group,1).Find(&UserGroup)
+		return len(UserGroup) != 0
+	}(); bl {
+		err2 := dblink.Model(&UserGroups{}).Where("uid = ? and user_group = ?",uid,group).Updates(&UserGroups{
 			Group: setGroup,
-		})
+		}).Error
 		return err2 == nil
 	} else {
 		return false
@@ -84,7 +85,7 @@ func (o OperationsUserGroup) GetUserGroup(uid int64) []string {
 	var d db.DB = &db.SetData{}
 	dblink := d.MySqlInit()
 	defer dblink.Close()
-	var UserGroups []*UserGroup
+	var UserGroups []*UserGroups
 	dblink.Where("uid = ?",uid).Find(&UserGroups)
 	strSlice := make([]string,0)
 	for i := 0 ; i < len(UserGroups); i++ {
