@@ -11,7 +11,7 @@ type Info struct {
 }
 
 
-
+// 现阶段只能匹配map和slice之外的数据
 func UserInput(data interface{}) *Info {
 	switch value := reflect.ValueOf(data); value.Kind() {
 	case reflect.Struct:

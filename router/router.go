@@ -4,6 +4,7 @@ import (
 	"github.com/foxsuagr-sanse/go-gobang_game/app/controller"
 	"github.com/foxsuagr-sanse/go-gobang_game/router/middleware"
 	"github.com/gin-gonic/gin"
+	"github.com/foxsuagr-sanse/go-gobang_game/common/config"
 )
 
 
@@ -16,6 +17,9 @@ type Route struct {
 }
 
 func (r *Route)Run(c *gin.Engine)  {
+	// 载入配置
+	var con config.ConFig = &config.Config{}
+	conf := con.InitConfig()
 	// 实现关于user api部分的接口
 	var userOp controller.RouterRequest = &controller.UserRouter{}
 	v1 := c.Group("/v1")
@@ -27,6 +31,10 @@ func (r *Route)Run(c *gin.Engine)  {
 		v1.DELETE("/user/sign", userOp.UserDeleteSignState) 		// 注销登录用户
 		v1.DELETE("/user", userOp.UserDelete)               		// 软删除用户
 		v1.OPTIONS("/user", userOp.UserOtherOperations)     		// 用户接口的其他操作,比如search一个用户
+
+		c.MaxMultipartMemory = 5 << 20
+		v1.POST("/user/portrait", userOp.CreateUserPortrait)
+		v1.DELETE("/user/portrait", userOp.CreateUserPortrait)
 
 		v1.GET("/rankles") 										// 根据name获取指定的排行榜，比如胜场榜，有num和page参数，num代表依次传回多少个用户，默认为10,page为分页
 
@@ -60,6 +68,9 @@ func (r *Route)Run(c *gin.Engine)  {
 		v1Pub.POST("/user/login", userOp.LoginPost) 				// 注册用户
 		//v1Pub.GET("/user/sign")               								// 获取登录所需的一些参数
 		v1Pub.POST("/user/sign", userOp.SignPost) 					// 创建用户登录
+		if conf.ConfData.Model.Imgsave == "local" {
+			v1Pub.Static("/user/portrait",conf.ConfData.Model.Localurl)
+		}
 	}
 
 }

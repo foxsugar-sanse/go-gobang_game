@@ -33,6 +33,9 @@ type RouterRequest interface {
 	ConsentUserFriendRequest(c * gin.Context)
 	GetUserFriendRequest	(c * gin.Context)
 	CreateUserFriendRequest	(c * gin.Context)
+
+	CreateUserPortrait		(c * gin.Context)
+	DeleteUserPortrait	    (c * gin.Context)
 	// 和控制用户分组的接口组合
 	UserGroupController
 }
@@ -330,5 +333,12 @@ func (u *UserRouter) UserGetSignState(c *gin.Context) {
 	}
 }
 
+func (u *UserRouter) CreateUserPortrait(c *gin.Context) {
+	// TODO:用户头像上传模块
+}
+
+func (u *UserRouter) DeleteUserPortrait(c *gin.Context) {
+	panic("implement me")
+}
 
 

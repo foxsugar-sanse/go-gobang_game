@@ -35,6 +35,7 @@ var (
 	ErrTokenExpire     = &Errno{Code: 200005, Message: "用户 token 过期", HttpCode: http.StatusForbidden}
 	ErrTokenValidation = &Errno{Code: 200005, Message: "用户 token 无效", HttpCode: http.StatusForbidden}
 	ErrTimeNoSwitch	   = &Errno{Code: 200006, Message: "提交时间不正确",HttpCode: http.StatusForbidden}
+	ErrJsonArgFailed   = &Errno{Code: 200007, Message: "提交的Json参数有误",HttpCode: http.StatusBadRequest}
 
 	// User模块错误
 	ErrUserNotFound       = &Errno{Code: 200104, Message: "用户不存在", HttpCode: http.StatusBadRequest}

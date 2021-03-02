@@ -24,6 +24,10 @@
     password = ""
     filepath   = ""
 
+[model]
+    imgsave = "local" # local & qiniuyun 图片保存方式
+    localurl = ""
+    [qiniuyun]
 
 [jwt]
     encodeMethod = "HS256" # [HS256, HS384, HS512]
@@ -31,7 +35,7 @@
     maxEffectiveTime = "72h"  # 最大存活时间:秒("s")，分钟("m")，小时("h")
 
 [redis]
-    ipaddr = "127.0.0.1"
+    ipaddr = "192.168.31.161"
     port = ":6379"
     username = ""
     password = ""
