@@ -3,11 +3,15 @@ package model
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"github.com/foxsuagr-sanse/go-gobang_game/common/config"
 	"github.com/foxsuagr-sanse/go-gobang_game/common/db"
 	"github.com/foxsuagr-sanse/go-gobang_game/common/errors"
 	"github.com/jinzhu/gorm"
+	"log"
+	"os"
 	"reflect"
 	"strconv"
+	"github.com/ymzuiku/hit"
 )
 
 // 用户的数据库操作
@@ -23,6 +27,8 @@ type User interface {
 	DeleteUserFriend(uid int64,fid int64) 							bool
 	QueryUserFriend(uid int64) 										([]*UserFriend,bool)
 	FormGroupGetUserFriend(uid int64,group string) 					([]*UserFriend,bool)
+	SetUserPortraitUrl(uid int64,url string)						*errors.Errno
+	DeleteUserPortrait(uid int64)						            *errors.Errno
 }
 
 // 默认好友分组name
@@ -337,3 +343,52 @@ func (op Operations) FormGroupGetUserFriend(uid int64, group string) ([]*UserFri
 		return nil, false
 	}
 }
+
+func (op *Operations) SetUserPortraitUrl(uid int64, url string) *errors.Errno {
+	var d db.DB = &db.SetData{}
+	dblink := d.MySqlInit()
+	defer dblink.Close()
+	var user []*Users
+	dblink.Where("uid = ?",uid).First(&user)
+	if len(user) > 0 {
+		// 如果已有图片则删除覆盖
+		if user[0].UserPortrait != "." && user[0].UserPortrait != "" {
+			var con config.ConFig = &config.Config{}
+			conf := con.InitConfig()
+			err := os.Remove(conf.ConfData.Model.Localurl + "/" + user[0].UserPortrait)
+			if err != nil {
+				log.Println(err)
+			}
+		}
+		dblink.Model(&user).Where("uid = ?",uid).Updates(&Users{
+			UserPortrait: url,
+		})
+		return errors.UploadOK
+	} else {
+		return errors.ErrUserNotFound
+	}
+}
+
+func (op *Operations) DeleteUserPortrait(uid int64) *errors.Errno {
+	var d db.DB = &db.SetData{}
+	dblink := d.MySqlInit()
+	defer dblink.Close()
+	var user []*Users
+	dblink.Where("uid = ?",uid).First(&user)
+	if len(user) > 0 {
+		// 被删除的头像路径一律改为"."
+		if err := dblink.Model(&user).Where("uid = ?",uid).Updates(&Users{
+			UserPortrait: ".",
+		}).Error ; err == nil {
+			var con config.ConFig = &config.Config{}
+			conf := con.InitConfig()
+			err2 := os.Remove(conf.ConfData.Model.Localurl + "/" + user[0].UserPortrait)
+			return hit.If(err2 == nil,errors.OK,errors.ErrUserUploadUrlNot).(*errors.Errno)
+		} else {
+			return errors.ErrDatabase
+		}
+	} else {
+		return errors.ErrUserNotFound
+	}
+}
+

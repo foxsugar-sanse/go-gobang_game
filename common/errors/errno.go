@@ -21,11 +21,13 @@ var (
 	OK = &Errno{Code: 0, Message: "OK", HttpCode: http.StatusOK}
 	DelSignOK = &Errno{Code: 1, Message: "DEL USER SIGN OK", HttpCode: http.StatusOK}
 	UserSignOk = &Errno{Code: 2, Message: "USER SIGN OK", HttpCode: http.StatusOK}
+	UploadOK = &Errno{Code: 3, Message: "Upload OK", HttpCode: http.StatusOK}
 	// 系统错误
 	ErrUnKnown        = &Errno{Code: 100000, Message: "未知错误", HttpCode: http.StatusInternalServerError}
 	ErrInternalServer = &Errno{Code: 100001, Message: "内部服务器错误", HttpCode: http.StatusInternalServerError}
 	ErrParamConvert   = &Errno{Code: 100002, Message: "参数转换时发生错误", HttpCode: http.StatusInternalServerError}
 	ErrDatabase       = &Errno{Code: 100003, Message: "数据库错误", HttpCode: http.StatusInternalServerError}
+	ErrRedis          = &Errno{Code: 100004, Message: "Redis错误", HttpCode: http.StatusInternalServerError}
 
 	// 模块通用错误
 	ErrValidation      = &Errno{Code: 200001, Message: "参数校验失败", HttpCode: http.StatusForbidden}
@@ -53,6 +55,12 @@ var (
 	ErrGroupExist       = &Errno{Code: 200202, Message: "分组已存在",HttpCode: http.StatusBadRequest}
 	ErrGroupDefault     = &Errno{Code: 200203, Message: "默认分组不允许更改", HttpCode: http.StatusBadRequest}
 	ErrGroupReName      = &Errno{Code: 200204, Message: "重命名的分组不能与存在的相同", HttpCode: http.StatusBadRequest}
+
+	// 文件上传模块错误
+	ErrUserUploadNotFound  = &Errno{Code: 200301, Message: "上传的文件为空",HttpCode: http.StatusBadRequest}
+	ErrUserUploadExceedMax = &Errno{Code: 200302, Message: "上传的文件超过最大限制",HttpCode: http.StatusBadRequest}
+	ErrUserUploadFormatNo  = &Errno{Code: 200303, Message: "上传的文件格式不正确",HttpCode: http.StatusBadRequest}
+	ErrUserUploadUrlNot    = &Errno{Code: 200304, Message: "上传文件保存路径不存在",HttpCode: http.StatusBadRequest}
 )
 
 func GetErrorsStruct(failed *Errno) *Errno {

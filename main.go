@@ -17,6 +17,7 @@ func main() {
 	}
 	r := gin.Default()
 	// 初始化路由
+	r.MaxMultipartMemory = 64 << 20 // 64MiB 上传时用到的内存大小
 	var x router.Router = &router.Route{}
 	x.Run(r)
 

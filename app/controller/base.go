@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
 	"github.com/foxsuagr-sanse/go-gobang_game/app/model"
 	"github.com/foxsuagr-sanse/go-gobang_game/common/auth"
 	"github.com/foxsuagr-sanse/go-gobang_game/common/config"
@@ -38,10 +40,13 @@ type RouterRequest interface {
 	DeleteUserPortrait	    (c * gin.Context)
 	// 和控制用户分组的接口组合
 	UserGroupController
+	// 和控制用户游戏邀请的接口结合
+	UserGames
 }
 
 type UserRouter struct {
 	OperationUserGroup
+	UserInviteFunc
 	//UserJBL *UserJsonBindLogin
 	//UserJBS *UserJsonBindSign
 }
@@ -102,21 +107,51 @@ func (u *UserRouter) UserInfoGet(c *gin.Context) {
 	// 根据参数获取用户信息
 	var md model.User = &model.Operations{}
 	idArgs:= c.Query("uid")
-	uid,_ := strconv.ParseInt(idArgs,10,64)
-	users := md.GetUserInfo(uid)
-	c.JSON(errors.OK.HttpCode,gin.H{
-		"code":errors.OK.Code,
-		"message":errors.OK.Message,
-		"data":map[string]interface{}{
-			"uid":            users.Uid,
-			"user_name":      users.UserName,
-			"user_nick_name": users.UserNickName,
-			"user_brief":     users.UserBrief,
-			"user_age":       users.UserAge,
-			"user_sex":       users.UserSex,
-			"user_contact":   users.UserContact,
-		},
-	})
+	if idArgs == "self" {
+		// ?self 获取关于自己的详细信息
+		var jwt auth.JwtAPI = &auth.JWT{}
+		jwt.Init()
+		tokenHead := c.Request.Header.Get("Authorization")
+		tokenHeadInfo := strings.SplitN(tokenHead, " ", 2)
+		if token,bl := jwt.MatchToken(tokenHeadInfo[1]); bl {
+			uid,_ := strconv.ParseInt(token.Uid,10,64)
+			users := md.GetUserInfo(uid)
+			c.JSON(errors.OK.HttpCode,gin.H{
+				"code":errors.OK.Code,
+				"message":errors.OK.Message,
+				"data":map[string]interface{}{
+					"uid":             users.Uid,
+					"user_name":       users.UserName,
+					"user_nick_name":  users.UserNickName,
+					"user_brief":      users.UserBrief,
+					"user_age":        users.UserAge,
+					"user_sex":        users.UserSex,
+					"user_contact":    users.UserContact,
+					"user_portrait":   users.UserPortrait,
+					"user_email":	   users.UserEmail,
+					"user_phone":      users.UserPhone,
+					"email_validation":users.EmailValidation,
+					"phone_validation":users.PhoneValidation,
+				},
+			})
+		}
+	} else {
+		uid,_ := strconv.ParseInt(idArgs,10,64)
+		users := md.GetUserInfo(uid)
+		c.JSON(errors.OK.HttpCode,gin.H{
+			"code":errors.OK.Code,
+			"message":errors.OK.Message,
+			"data":map[string]interface{}{
+				"uid":            users.Uid,
+				"user_name":      users.UserName,
+				"user_nick_name": users.UserNickName,
+				"user_age":       users.UserAge,
+				"user_sex":       users.UserSex,
+				"user_contact":   users.UserContact,
+				"user_portrait":  users.UserPortrait,
+			},
+		})
+	}
 }
 
 func (u *UserRouter) UserInfoUpdate(c *gin.Context) {
@@ -335,10 +370,93 @@ func (u *UserRouter) UserGetSignState(c *gin.Context) {
 
 func (u *UserRouter) CreateUserPortrait(c *gin.Context) {
 	// TODO:用户头像上传模块
+	file, err := c.FormFile("file")
+	if err != nil {
+		c.JSON(errors.ErrUserUploadNotFound.HttpCode,gin.H{
+			"code": errors.ErrUserUploadNotFound.Code,
+			"message": errors.ErrUserUploadNotFound.Message,
+		})
+	} else {
+		// 判断文件名是否满足要求
+		// 载入配置
+		var con config.ConFig = &config.Config{}
+		conf := con.InitConfig()
+		filenames := strings.Split(conf.ConfData.Model.Contentfilename,",")
+		fileformat := strings.Split(file.Filename,".")
+		for i := 0; i < len(filenames); i++ {
+			if fileformat[len(fileformat) - 1] == filenames[i] {
+				// 判断文件大小
+				if file.Size / (1024 * 1024) > int64(conf.ConfData.Model.UploadMax) {
+					c.JSON(errors.ErrUserUploadExceedMax.HttpCode,gin.H{
+						"code":errors.ErrUserUploadExceedMax.Code,
+						"message":errors.ErrUserUploadExceedMax.Message,
+					})
+					break
+				}
+				var jwt auth.JwtAPI = &auth.JWT{}
+				jwt.Init()
+				tokenHead := c.Request.Header.Get("Authorization")
+				tokenInfo := strings.SplitN(tokenHead, " ", 2)
+				if token,err2 := jwt.MatchToken(tokenInfo[1]); err2 == true {
+					if conf.ConfData.Model.Imgsave == "local" {
+						// 更改文件名保存文件{本地存储}
+						filename := sha256.New()
+						filename.Write([]byte(token.Uid + file.Filename))
+						file.Filename = hex.EncodeToString(filename.Sum(nil))
+						// 先打开数据库把url存储,格式{xxx.jpg}
+						var md model.User = &model.Operations{}
+						uid,_ := strconv.ParseInt(token.Uid,10,64)
+						if errno := md.SetUserPortraitUrl(uid,file.Filename + "." + fileformat[len(fileformat) - 1]); errno.HttpCode == 200 {
+							if err3 := c.SaveUploadedFile(file,conf.ConfData.Model.Localurl + "/" + file.Filename + "." + fileformat[len(fileformat) - 1]); err3 == nil {
+								c.JSON(errno.HttpCode,gin.H{
+									"code":errno.Code,
+									"message":errno.Message,
+								})
+							} else {
+								c.JSON(errors.ErrUserUploadUrlNot.HttpCode,gin.H{
+									"code":errors.ErrUserUploadUrlNot.Code,
+									"message":errors.ErrUserUploadUrlNot.Message,
+								})
+							}
+						} else {
+							c.JSON(errno.HttpCode,gin.H{
+								"code":errno.Code,
+								"message":errno.Message,
+							})
+						}
+
+					} else if conf.ConfData.Model.Imgsave == "qiniuyun" {
+						// 在七牛云上存储
+					}
+				}
+				break
+			} else if i + 1 == len(filenames) {
+				// 匹配了全部条件还未匹配到则返回错误
+				c.JSON(errors.ErrUserUploadFormatNo.HttpCode,gin.H{
+					"code":errors.ErrUserUploadFormatNo.Code,
+					"message":errors.ErrUserUploadFormatNo.Message,
+				})
+			}
+		}
+
+	}
 }
 
 func (u *UserRouter) DeleteUserPortrait(c *gin.Context) {
-	panic("implement me")
+	// 删除头像
+	var jwt auth.JwtAPI = &auth.JWT{}
+	jwt.Init()
+	tokenHead := c.Request.Header.Get("Authorization")
+	tokenInfo := strings.SplitN(tokenHead, " ", 2)
+	if token,err2 := jwt.MatchToken(tokenInfo[1]); err2 == true {
+		var md model.User = &model.Operations{}
+		uid,_ := strconv.ParseInt(token.Uid,10,64)
+		errno := md.DeleteUserPortrait(uid)
+		c.JSON(errno.HttpCode,gin.H{
+			"code":errno.Code,
+			"message":errno.Message,
+		})
+	}
 }
 
 

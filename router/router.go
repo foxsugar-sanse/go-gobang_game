@@ -2,9 +2,9 @@ package router
 
 import (
 	"github.com/foxsuagr-sanse/go-gobang_game/app/controller"
+	"github.com/foxsuagr-sanse/go-gobang_game/common/config"
 	"github.com/foxsuagr-sanse/go-gobang_game/router/middleware"
 	"github.com/gin-gonic/gin"
-	"github.com/foxsuagr-sanse/go-gobang_game/common/config"
 )
 
 
@@ -32,9 +32,8 @@ func (r *Route)Run(c *gin.Engine)  {
 		v1.DELETE("/user", userOp.UserDelete)               		// 软删除用户
 		v1.OPTIONS("/user", userOp.UserOtherOperations)     		// 用户接口的其他操作,比如search一个用户
 
-		c.MaxMultipartMemory = 5 << 20
 		v1.POST("/user/portrait", userOp.CreateUserPortrait)
-		v1.DELETE("/user/portrait", userOp.CreateUserPortrait)
+		v1.DELETE("/user/portrait", userOp.DeleteUserPortrait)
 
 		v1.GET("/rankles") 										// 根据name获取指定的排行榜，比如胜场榜，有num和page参数，num代表依次传回多少个用户，默认为10,page为分页
 
@@ -42,6 +41,11 @@ func (r *Route)Run(c *gin.Engine)  {
 		v1.PUT("/friend_request",userOp.ConsentUserFriendRequest)  // 同意好友申请
 		v1.DELETE("/friend_request",userOp.RefuseUserFriendRequest)// 拒绝好友申请
 		v1.POST("/friend_request",userOp.CreateUserFriendRequest)  // 创建好友申请
+
+		v1.GET("/game/invite",userOp.GetUserInvite)
+		v1.POST("/game/invite",userOp.CreateUserInvite)
+		v1.PUT("/game/invite",userOp.ConSentInvite)
+		v1.DELETE("/game/invite",userOp.RefuseUserInvite)
 
 		v1.GET("/group",userOp.UserGroupGet) // 获取用户分组
 		v1.POST("/group",userOp.UserGroupCreate) // 添加用户分组
@@ -55,9 +59,9 @@ func (r *Route)Run(c *gin.Engine)  {
 		v1.OPTIONS("linkman/",userOp.OtherUserFriendInterface)// 联系人接口的其他功能，比如想联系人发出游戏邀请和信息等等
 
 		// 历史记录接口不允许修改
-		v1.GET("/history") 										// ?num=10&page=1
-		v1.GET("/history/:history_id") 							// 鉴权接口，获取指定的一条历史记录的所有数据
-		v1.DELETE("/history/:history_id") 							// 鉴权接口，删除指定的历史记录
+		v1.GET("/game/history") 										// ?num=10&page=1
+		v1.GET("game/history/:history_id") 							// 鉴权接口，获取指定的一条历史记录的所有数据
+		v1.DELETE("/game/history/:history_id") 							// 鉴权接口，删除指定的历史记录
 	}
 	// 公共接口不需要鉴权
 	v1Pub := c.Group("/v2")
@@ -72,5 +76,10 @@ func (r *Route)Run(c *gin.Engine)  {
 			v1Pub.Static("/user/portrait",conf.ConfData.Model.Localurl)
 		}
 	}
-
+	pub := c.Group("/pub")
+	{
+		if conf.ConfData.Model.Imgsave == "local" {
+			pub.Static("/user/portrait",conf.ConfData.Model.Localurl)
+		}
+	}
 }
