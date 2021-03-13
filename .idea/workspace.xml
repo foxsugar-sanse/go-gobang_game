@@ -22,18 +22,8 @@
     <list default="true" id="b1a6f5dc-f627-4784-aa1c-4012ecc2474a" name="默认的" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/controller/base.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/controller/base.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/controller/invite_control.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/controller/invite_control.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/model/user_database_model.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/model/user_database_model.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/model/user_game_invite.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/model/user_game_invite.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/service/games.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/service/games.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/config/config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/errors/errno.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/errors/errno.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/conf/dev/app.conf.toml" beforeDir="false" afterPath="$PROJECT_DIR$/conf/dev/app.conf.toml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/conf/pro/app.conf.toml" beforeDir="false" afterPath="$PROJECT_DIR$/conf/pro/app.conf.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/router/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/router/router.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,22 +76,13 @@
       <recent name="$PROJECT_DIR$/doc" />
     </key>
   </component>
-  <component name="RunManager" selected="Go 构建.go build main.go">
+  <component name="RunManager" selected="Shell Script.make.sh">
     <configuration name="go build github.com/foxsuagr-sanse/go-gobang_game/example" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="go-gobang_game" />
       <working_directory value="$PROJECT_DIR$" />
       <kind value="FILE" />
       <filePath value="$PROJECT_DIR$/example/file_upload_tencentcloud.go" />
       <package value="github.com/foxsuagr-sanse/go-gobang_game/example" />
-      <directory value="$PROJECT_DIR$" />
-      <method v="2" />
-    </configuration>
-    <configuration name="go build invite_control.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
-      <module name="go-gobang_game" />
-      <working_directory value="$PROJECT_DIR$" />
-      <kind value="FILE" />
-      <filePath value="$PROJECT_DIR$/app/controller/invite_control.go" />
-      <package value="github.com/foxsuagr-sanse/go-gobang_game" />
       <directory value="$PROJECT_DIR$" />
       <method v="2" />
     </configuration>
@@ -146,6 +127,17 @@
       <directory value="$PROJECT_DIR$" />
       <method v="2" />
     </configuration>
+    <configuration name="make.sh" type="ShConfigurationType" temporary="true">
+      <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
+      <option name="SCRIPT_PATH" value="$PROJECT_DIR$/make.sh" />
+      <option name="SCRIPT_OPTIONS" value="" />
+      <option name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY" value="true" />
+      <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="INDEPENDENT_INTERPRETER_PATH" value="true" />
+      <option name="INTERPRETER_PATH" value="/bin/zsh" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="make.dockerfile" type="docker-deploy" factoryName="dockerfile" temporary="true">
       <deployment type="dockerfile">
         <settings>
@@ -156,18 +148,18 @@
     </configuration>
     <list>
       <item itemvalue="Docker.make.dockerfile" />
-      <item itemvalue="Go 构建.go build invite_control.go" />
       <item itemvalue="Go 构建.go build main.go" />
       <item itemvalue="Go 构建.go build websocket.go" />
       <item itemvalue="Go 构建.go build github.com/foxsuagr-sanse/go-gobang_game/example" />
+      <item itemvalue="Shell Script.make.sh" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Shell Script.make.sh" />
         <item itemvalue="Go 构建.go build main.go" />
         <item itemvalue="Go 构建.go build github.com/foxsuagr-sanse/go-gobang_game/example" />
         <item itemvalue="Docker.make.dockerfile" />
         <item itemvalue="Go 构建.go build websocket.go" />
-        <item itemvalue="Go 构建.go build invite_control.go" />
       </list>
     </recent_temporary>
   </component>
@@ -191,9 +183,10 @@
     <integration-enabled>true</integration-enabled>
   </component>
   <component name="WindowStateProjectService">
-    <state x="824" y="364" width="409" height="288" key="#Custom_Plugin_Repositories" timestamp="1615564647283">
+    <state x="824" y="364" width="354" height="371" key="#Custom_Plugin_Repositories" timestamp="1615650722519">
       <screen x="36" y="23" width="1884" height="1057" />
     </state>
+    <state x="824" y="364" width="354" height="371" key="#Custom_Plugin_Repositories/36.23.1884.1057/1920.23.720.1257/2640.23.1280.697@36.23.1884.1057" timestamp="1615650722519" />
     <state x="824" y="364" width="409" height="288" key="#Custom_Plugin_Repositories/36.23.1884.1057@36.23.1884.1057" timestamp="1615564647283" />
     <state x="777" y="392" key="#Go_模块" timestamp="1611988109499">
       <screen x="33" y="23" width="1887" height="1057" />
@@ -332,12 +325,13 @@
     <state width="1844" height="275" key="GridCell.Tab.1.right/36.23.1884.1057@36.23.1884.1057" timestamp="1613145004834" />
     <state width="1844" height="355" key="GridCell.Tab.1.right/37.23.1883.1057@37.23.1883.1057" timestamp="1615623392840" />
     <state width="1835" height="258" key="GridCell.Tab.1.right/40.23.1880.1057@40.23.1880.1057" timestamp="1615100856233" />
-    <state x="457" y="110" key="SettingsEditor" timestamp="1615564792578">
+    <state x="457" y="110" key="SettingsEditor" timestamp="1615650723964">
       <screen x="36" y="23" width="1884" height="1057" />
     </state>
     <state x="508" y="190" key="SettingsEditor/33.23.1887.1057@33.23.1887.1057" timestamp="1612587364862" />
     <state x="509" y="190" key="SettingsEditor/34.23.1886.1057@34.23.1886.1057" timestamp="1613192135555" />
     <state x="492" y="204" key="SettingsEditor/35.23.1885.1057@35.23.1885.1057" timestamp="1613201367725" />
+    <state x="457" y="110" key="SettingsEditor/36.23.1884.1057/1920.23.720.1257/2640.23.1280.697@36.23.1884.1057" timestamp="1615650723964" />
     <state x="457" y="110" key="SettingsEditor/36.23.1884.1057@36.23.1884.1057" timestamp="1615564792578" />
     <state x="458" y="110" key="SettingsEditor/37.23.1883.1057@37.23.1883.1057" timestamp="1615562250628" />
     <state width="939" height="528" key="XDebugger.FullValuePopup" timestamp="1615100749532">
