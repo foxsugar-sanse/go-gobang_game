@@ -1,16 +1,23 @@
 package controller
 
 import (
+	"bytes"
+	"context"
 	"crypto/sha256"
 	"encoding/hex"
+	"fmt"
 	"github.com/foxsuagr-sanse/go-gobang_game/app/model"
 	"github.com/foxsuagr-sanse/go-gobang_game/common/auth"
 	"github.com/foxsuagr-sanse/go-gobang_game/common/config"
 	"github.com/foxsuagr-sanse/go-gobang_game/common/errors"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
+	"io"
+	"net/http"
+	"net/url"
 	"strconv"
 	"strings"
+	"github.com/tencentyun/cos-go-sdk-v5"
 )
 
 
@@ -425,8 +432,61 @@ func (u *UserRouter) CreateUserPortrait(c *gin.Context) {
 							})
 						}
 
-					} else if conf.ConfData.Model.Imgsave == "qiniuyun" {
-						// 在七牛云上存储
+					} else if conf.ConfData.Model.Imgsave == "tencentcloud" {
+						// 在腾讯COS上存储
+						filename := sha256.New()
+						filename.Write([]byte(token.Uid + file.Filename))
+						file.Filename = hex.EncodeToString(filename.Sum(nil))
+						file.Filename = file.Filename + "." + fileformat[len(fileformat) - 1]
+						fileSrc,err  := file.Open()
+						if err != nil {
+							panic(err)
+						}
+						buf := bytes.NewBuffer(nil)
+						_, _ = io.Copy(buf, fileSrc)
+						bufReader := strings.NewReader(buf.String())
+
+						// 使用永久密钥连接腾讯COS
+						// 桶的路径
+						u,_ := url.Parse(conf.ConfData.Tencentcloud.Bucketurl)
+						urlSplit := strings.SplitN(conf.ConfData.Tencentcloud.Bucketurl,".",5)
+						CosRegion := urlSplit[2]
+						// 地区url
+						su,_ := url.Parse(fmt.Sprintf("https://cos.%s.myqcloud.com", CosRegion))
+						b := cos.BaseURL{BucketURL: u,ServiceURL: su}
+
+						// 开始连接
+						client := cos.NewClient(&b,&http.Client{
+							Transport: &cos.AuthorizationTransport{
+								SecretID:  conf.ConfData.Tencentcloud.Secretid,
+								SecretKey: conf.ConfData.Tencentcloud.Secretkey,
+							},
+						})
+						if client != nil {
+							// 调用cos请求
+							// 上传文件到存储桶
+							_,err2 := client.Object.Put(context.Background(),file.Filename,bufReader,nil)
+							if err2 != nil {
+								c.JSON(errors.ErrTencentCosUploadNot.HttpCode,gin.H{
+									"code":errors.ErrTencentCosUploadNot.Code,
+									"message":errors.ErrTencentCosUploadNot.Message,
+								})
+							} else {
+								// 将Url存入数据库
+								var md model.User = &model.Operations{}
+								uid,_ := strconv.ParseInt(token.Uid,10,64)
+								errno := md.SetUserPortraitUrl(uid,conf.ConfData.Tencentcloud.Bucketurl + "/" + file.Filename)
+								c.JSON(errno.HttpCode,gin.H{
+									"code":errno.Code,
+									"message":errno.Message,
+								})
+							}
+						} else {
+							c.JSON(errors.ErrTencentCosLinkError.HttpCode,gin.H{
+								"code":errors.ErrTencentCosLinkError.Code,
+								"message":errors.ErrTencentCosLinkError.Message,
+							})
+						}
 					}
 				}
 				break

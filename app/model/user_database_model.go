@@ -7,11 +7,11 @@ import (
 	"github.com/foxsuagr-sanse/go-gobang_game/common/db"
 	"github.com/foxsuagr-sanse/go-gobang_game/common/errors"
 	"github.com/jinzhu/gorm"
+	"github.com/ymzuiku/hit"
 	"log"
 	"os"
 	"reflect"
 	"strconv"
-	"github.com/ymzuiku/hit"
 )
 
 // 用户的数据库操作
@@ -351,8 +351,11 @@ func (op *Operations) SetUserPortraitUrl(uid int64, url string) *errors.Errno {
 	var user []*Users
 	dblink.Where("uid = ?",uid).First(&user)
 	if len(user) > 0 {
+		var con config.ConFig = &config.Config{}
+		conf := con.InitConfig()
 		// 如果已有图片则删除覆盖
-		if user[0].UserPortrait != "." && user[0].UserPortrait != "" {
+		// 配置为本地存储图片则执行
+		if user[0].UserPortrait != "." && user[0].UserPortrait != "" && conf.ConfData.Model.Imgsave == "local" {
 			var con config.ConFig = &config.Config{}
 			conf := con.InitConfig()
 			err := os.Remove(conf.ConfData.Model.Localurl + "/" + user[0].UserPortrait)

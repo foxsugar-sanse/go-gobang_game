@@ -2,6 +2,7 @@ package router
 
 import (
 	"github.com/foxsuagr-sanse/go-gobang_game/app/controller"
+	"github.com/foxsuagr-sanse/go-gobang_game/app/service"
 	"github.com/foxsuagr-sanse/go-gobang_game/common/config"
 	"github.com/foxsuagr-sanse/go-gobang_game/router/middleware"
 	"github.com/gin-gonic/gin"
@@ -9,14 +10,21 @@ import (
 
 
 type Router interface {
-	Run(engine *gin.Engine)
+	Run(engine *gin.Engine,wsChan1 chan *service.ClientMessage,wsChan2 chan *service.ClientMessage,wsChan3 chan string,wsChan4 chan string)
 }
 
 type Route struct {
-
+	WsChan1 chan *service.ClientMessage
+	WsChan2 chan *service.ClientMessage
+	WsChan3 chan string
+	WsChan4 chan string
 }
 
-func (r *Route)Run(c *gin.Engine)  {
+func (r *Route)Run(c *gin.Engine,wsChan1 chan *service.ClientMessage,wsChan2 chan *service.ClientMessage,wsChan3 chan string,wsChan4 chan string)  {
+	r.WsChan1 = wsChan1
+	r.WsChan2 = wsChan2
+	r.WsChan3 = wsChan3
+	r.WsChan4 = wsChan4
 	// 载入配置
 	var con config.ConFig = &config.Config{}
 	conf := con.InitConfig()
@@ -32,8 +40,8 @@ func (r *Route)Run(c *gin.Engine)  {
 		v1.DELETE("/user", userOp.UserDelete)               		// 软删除用户
 		v1.OPTIONS("/user", userOp.UserOtherOperations)     		// 用户接口的其他操作,比如search一个用户
 
-		v1.POST("/user/portrait", userOp.CreateUserPortrait)
-		v1.DELETE("/user/portrait", userOp.DeleteUserPortrait)
+		v1.POST("/user/portrait", userOp.CreateUserPortrait)       // 上传用户头像
+		v1.DELETE("/user/portrait", userOp.DeleteUserPortrait)     // 删除用户头像
 
 		v1.GET("/rankles") 										// 根据name获取指定的排行榜，比如胜场榜，有num和page参数，num代表依次传回多少个用户，默认为10,page为分页
 
@@ -45,7 +53,11 @@ func (r *Route)Run(c *gin.Engine)  {
 		v1.GET("/game/invite",userOp.GetUserInvite)
 		v1.POST("/game/invite",userOp.CreateUserInvite)
 		v1.PUT("/game/invite",userOp.ConSentInvite)
-		v1.DELETE("/game/invite",userOp.RefuseUserInvite)
+		v1.DELETE("/game/invite",userOp.RefuseUserInvite) // ?aid=?
+
+		v1.GET("/game", func(context *gin.Context) {
+			userOp.ResponseWebSocketLink(context,r.WsChan1,r.WsChan2,r.WsChan3,r.WsChan4)
+		}) // ?op=
 
 		v1.GET("/group",userOp.UserGroupGet) // 获取用户分组
 		v1.POST("/group",userOp.UserGroupCreate) // 添加用户分组

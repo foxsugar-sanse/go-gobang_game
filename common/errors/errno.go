@@ -61,6 +61,15 @@ var (
 	ErrUserUploadExceedMax = &Errno{Code: 200302, Message: "上传的文件超过最大限制",HttpCode: http.StatusBadRequest}
 	ErrUserUploadFormatNo  = &Errno{Code: 200303, Message: "上传的文件格式不正确",HttpCode: http.StatusBadRequest}
 	ErrUserUploadUrlNot    = &Errno{Code: 200304, Message: "上传文件保存路径不存在",HttpCode: http.StatusBadRequest}
+	ErrTencentCosLinkError = &Errno{Code: 200305, Message: "腾讯COS连接失败",HttpCode: http.StatusBadRequest}
+	ErrTencentCosUploadNot = &Errno{Code: 200306, Message: "上传文件至COS失败",HttpCode: http.StatusBadRequest}
+
+	// 游戏申请模块错误
+	ErrUserInviteNotFound  = &Errno{Code: 200401, Message: "该游戏申请不存在",HttpCode: http.StatusNotFound}
+	ErrUserInviteNot       = &Errno{Code: 200402, Message: "没有查询到该用户的游戏申请",HttpCode: http.StatusNotFound}
+
+	// 游戏模块错误
+	ErrUserGameUnconfirmed = &Errno{Code: 200501, Message: "该用户未确认"}
 )
 
 func GetErrorsStruct(failed *Errno) *Errno {
