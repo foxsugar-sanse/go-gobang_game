@@ -2,10 +2,10 @@ package db
 
 import (
 	"fmt"
+	"github.com/foxsuagr-sanse/go-gobang_game/common/config"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm"
-	"github.com/foxsuagr-sanse/go-gobang_game/common/config"
 )
 
 var Db *gorm.DB
