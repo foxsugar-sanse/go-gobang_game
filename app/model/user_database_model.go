@@ -1,7 +1,7 @@
 package model
 
 import (
-	"crypto/md5"
+	"crypto/sha512"
 	"encoding/hex"
 	"github.com/foxsuagr-sanse/go-gobang_game/common/config"
 	"github.com/foxsuagr-sanse/go-gobang_game/common/db"
@@ -12,6 +12,9 @@ import (
 	"os"
 	"reflect"
 	"strconv"
+	"strings"
+	"time"
+	"github.com/foxsuagr-sanse/go-gobang_game/common/utils"
 )
 
 // 用户的数据库操作
@@ -52,6 +55,13 @@ type Users struct {
 	PhoneValidation int
 }
 
+// 数据库表映射 {salt}
+type Salt struct {
+	Id		int
+	Uid     int64
+	Salt_   string
+}
+
 // 数据库表映射 {user_friend}
 type UserFriend struct {
 	Id 				int
@@ -68,71 +78,79 @@ type Operations struct {
 
 
 func (op *Operations) Login(user map[string]string) (bool,*errors.Errno) {
+	// TODO:更新数据库数据表结构
 	var d db.DB = &db.SetData{}
 	dblink := d.MySqlInit()
 	defer dblink.Close()
-	// 密码加密策略,通过规定的时间戳，数据表里有多少用户字段就读取然后len加到原来的时间戳和一个固定的key组成盐值
-	var User1 []*Users
-	dblink.Find(&User1)
-	pwd := md5.New()
-	pwd.Write([]byte(user["UserPassWord"] + db.SALT + func() string {
-		if len(User1) > 0 {
-			s := strconv.FormatInt(db.GODETIME + int64(User1[len(User1) - 1].Id + 1),10)
-			return s
-		} else {
-			s := strconv.FormatInt(db.GODETIME + int64(1),10)
-			return s
-		}
-
-	}()))
-	user["UserPassWord"] = hex.EncodeToString(pwd.Sum(nil))
+	/*
+		初始密码加密策略: 通过规定的时间戳，数据表里有多少用户字段就读取然后len加到原来的时间戳和一个固定的key组成盐值
+		更新后的密码加密策略 : 对前端bcrypt过的字符串的-1索引插入为用户生成的盐值,之后使用SHA-512生成摘要存储在数据库中
+	*/
 	// 检测有没有重名用户
 	var User []*Users
 	dblink.Where("user_name = ?",user["UserName"]).First(&User)
 	if len(User) > 0 {
 		return false,errors.ErrUserNameExist
-	} else {
-		//err := dblink.Create(&Users{
-		//	Uid: int64(2000 + len(User1) + 1),
-		//	UserName: user["UserName"],
-		//	PassWord: user["UserPassWord"],
-		//}).Error
-		//// 为用户创建一个默认分组{我的好友}
-		//// {GroupRank : 0},0表示分组等级，0表示默认为系统创建用户时添加，用户添加的分组则按数据库规则默认为1
-		//err2 := dblink.Create(&UserGroups{
-		//	Uid:   int64(2000 + len(User1) + 1),
-		//	Group: "我的好友",
-		//	GroupRank: 0,
-		//}).Error
-		//return err == nil && err2 == nil,errors.OK
+	}
 
-		// 使用事务确保两次操作成功
-		err := dblink.Transaction(func(tx *gorm.DB) error {
+	// 通过最后一条记录获取uid具体偏移的值
+	var User1 []*Users
+	dblink.Last(&User1)
+	uidOffset := User1[0].Id
+	if len(User1) == 0 {
+		uidOffset = 0
+	}
 
-			if err := tx.Create(&Users{
-				Uid: int64(2000 + len(User1) + 1),
-				UserName: user["UserName"],
-				PassWord: user["UserPassWord"],
-			}).Error; err != nil {
-				return err
-			}
-			// 为用户创建一个默认分组{我的好友}
-			// {GroupRank : 0},0表示分组等级，0表示默认为系统创建用户时添加，用户添加的分组则按数据库规则默认为1
-			if err := tx.Create(&UserGroups{
-				Uid:   int64(2000 + len(User1) + 1),
-				Group: "我的好友",
-				GroupRank: 0,
-			}).Error; err != nil {
-				return err
-			}
+	// 生成盐值 {唯一用户名 + 用户密码 + 时间戳}
+	saltOld := sha512.New()
+	saltOld.Write([]byte(user["UserName"] + user["UserPassword"] + strconv.FormatInt(time.Now().Unix(),10)))
+	salt := hex.EncodeToString(saltOld.Sum(nil))
 
-			return nil
-		})
-		if err != nil {
-			return false,errors.ErrDatabase
-		} else {
-			return true,errors.OK
+	// 将盐值插入数据库和用户密码
+	strSlice := strings.Split(user["UserPassword"],"")
+	strSlice[len(strSlice)-2] = salt
+	dblink.Create(&Salt{
+		Uid:   int64(2000 + uidOffset),
+		Salt_: salt,
+	})
+
+	// 将修改好的字符串拼接
+	var saltPwd  string
+	for _,v := range strSlice {
+		saltPwd += v
+	}
+
+	// 生成用户密码
+	password := sha512.New()
+	password.Write([]byte(saltPwd))
+	user["UserPassword"] = hex.EncodeToString(password.Sum(nil))
+
+	// 使用事务确保两次操作成功
+	err := dblink.Transaction(func(tx *gorm.DB) error {
+
+		if err := tx.Create(&Users{
+			Uid: int64(2000 + uidOffset + 1),
+			UserName: user["UserName"],
+			PassWord: user["UserPassWord"],
+		}).Error; err != nil {
+			return err
 		}
+		// 为用户创建一个默认分组{我的好友}
+		// {GroupRank : 0},0表示分组等级，0表示默认为系统创建用户时添加，用户添加的分组则按数据库规则默认为1
+		if err := tx.Create(&UserGroups{
+			Uid:   int64(2000 + uidOffset + 1),
+			Group: "我的好友",
+			GroupRank: 0,
+		}).Error; err != nil {
+			return err
+		}
+
+		return nil
+	})
+	if err != nil {
+		return false,errors.ErrDatabase
+	} else {
+		return true,errors.OK
 	}
 }
 
@@ -140,22 +158,33 @@ func (op *Operations) Sign(user map[string]string) (int64,string,*errors.Errno){
 	var d db.DB = &db.SetData{}
 	dblink := d.MySqlInit()
 	defer dblink.Close()
-	// 登录密码加密策略，根据用户名到数据库中获取指定用户的id，(id + 时间戳 + 固定字符串值)组成盐值
+	/*
+		初始密码登录策略:	根据用户名到数据库中获取指定用户的id，(id + 时间戳 + 固定字符串值)组成盐值
+		现在密码登录策略:  先根据用户名查询到uid,根据uid获取匹配的盐值,对密码的-1索引进行替换运算
+	*/
 	var User1 []*Users
 	dblink.Where("user_name = ?",user["UserName"]).First(&User1)
+	var userSalt string
+	var userPwd  string
 	if len(User1) > 0 {
-		pwd := md5.New()
-		pwd.Write([]byte(user["UserPassWord"] + db.SALT + func() string {
-			s := strconv.FormatInt(db.GODETIME + int64(User1[0].Id),10)
-			return s
-		}()))
-		user["UserPassWord"] = hex.EncodeToString(pwd.Sum(nil))
+		// 获取用户的盐值
+		var salts []*Salt
+		dblink.Where("uid = ?",User1[0].Uid).First(&salts)
+		userSalt = salts[0].Salt_
+		pwd := sha512.New()
+		pwdSlice := strings.Split(user["UserPassWord"],"")
+		pwdSlice[len(pwdSlice)-2] = userSalt
+		for _,v := range pwdSlice {
+			userPwd += v
+		}
+		pwd.Write([]byte(userPwd))
+		userPwd = hex.EncodeToString(pwd.Sum(nil))
 	} else {
 		return 0,"",errors.ErrUserNotFound
 	}
 	// 查询数据库
 	var User []*Users
-	dblink.Where("user_name = ? and pass_word = ?",user["UserName"],user["UserPassWord"]).First(&User)
+	dblink.Where("user_name = ? and pass_word = ?",user["UserName"],userPwd).First(&User)
 	if len(User) > 0 {
 		// 生成并返回token
 		return User[0].Uid,User[0].UserName,errors.OK
@@ -383,15 +412,21 @@ func (op *Operations) DeleteUserPortrait(uid int64) *errors.Errno {
 		if err := dblink.Model(&user).Where("uid = ?",uid).Updates(&Users{
 			UserPortrait: ".",
 		}).Error ; err == nil {
-			var con config.ConFig = &config.Config{}
-			conf := con.InitConfig()
-			err2 := os.Remove(conf.ConfData.Model.Localurl + "/" + user[0].UserPortrait)
-			return hit.If(err2 == nil,errors.OK,errors.ErrUserUploadUrlNot).(*errors.Errno)
+			conf := utils.OpenConfig()
+			switch conf.Model.Imgsave {
+			case "local":
+				err2 := os.Remove(conf.Model.Localurl + "/" + user[0].UserPortrait)
+				return hit.If(err2 == nil,errors.OK,errors.ErrUserUploadUrlNot).(*errors.Errno)
+			case "tencentcloud":
+				return errors.OK
+			}
+
 		} else {
 			return errors.ErrDatabase
 		}
 	} else {
 		return errors.ErrUserNotFound
 	}
+	return errors.OK
 }
 
