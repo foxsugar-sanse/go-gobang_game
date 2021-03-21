@@ -1,19 +1,22 @@
 [run]
 ipaddr = "127.0.0.1"
 port = ":8080"
-mode = "debug"
+mode = "release"
 
+[operation]
 database = "mysql"
+oauth = "jwt"
+jwt_state_save = true
 
-ouath = "jwt"
 
 [mysql]
 maxidle = 5
 maxopen = 10
 debug = false
-username = "root"
-password = "cok774.."
-ipaddr   = "192.168.31.161"
+username = "godb"
+dbname = "godb"
+password = "0xcok77566.com/df"
+ipaddr   = "192.168.137.218"
 port     = ":3306"
 
 [sqllite]
@@ -21,8 +24,20 @@ username = ""
 password = ""
 filepath   = ""
 
+[model]
+imgsave = "local" # local & qiniuyun 图片保存方式
+localurl = "/app/data"
+uploadMax = 8
+contentfilename = "jpg,png,gif,jpeg"
+[qiniuyun]
+
 
 [jwt]
 encodeMethod = "HS256" # [HS256, HS384, HS512]
 key = "0x264uuffg#$%^"
 maxEffectiveTime = "72h"  # 最大存活时间:秒("s")，分钟("m")，小时("h")
+
+[redis]
+ipaddr = "192.168.137.218"
+port = ":6379"
+password = ""

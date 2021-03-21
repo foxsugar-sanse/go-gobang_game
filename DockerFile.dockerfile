@@ -1,11 +1,11 @@
 FROM apline
 
-# 为镜像设置环境变量
-ENV GO111MODULE=on \
-    CGO_ENABLED=0 \
-    GOOS=linux \
-    GOARCH=amd64 \
-	GOPROXY="https://goproxy.cn,direct"
+## 为镜像设置环境变量
+#ENV GO111MODULE=on \
+#    CGO_ENABLED=0 \
+#    GOOS=linux \
+#    GOARCH=amd64 \
+#	GOPROXY="https://goproxy.cn,direct"
 
 # 复制文件
 COPY ./conf/pro/ /app/conf/pro

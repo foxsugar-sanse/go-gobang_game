@@ -25,12 +25,16 @@
     filepath   = ""
 
 [model]
-    imgsave = "local" # local & qiniuyun 图片保存方式
+    imgsave = "tencentcloud" # local & tencentcloud 图片保存方式
     localurl = "/Users/harder/github.com-codes/go-gobang_game/test/data"
     uploadMax = 8
     contentfilename = "jpg,png,gif,jpeg"
-[qiniuyun]
 
+
+[tencentcloud]
+    bucketurl   = ""
+    secretid = ""
+    secretkey = ""
 
 [jwt]
     encodeMethod = "HS256" # [HS256, HS384, HS512]
@@ -40,5 +44,4 @@
 [redis]
     ipaddr = "192.168.42.26"
     port = ":6379"
-    username = ""
     password = ""
